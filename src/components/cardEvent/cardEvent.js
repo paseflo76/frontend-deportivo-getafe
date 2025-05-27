@@ -4,6 +4,8 @@ import { Button } from '../button/button'
 
 import './cardEvent.css'
 
+const API_BASE = 'https://backend-deportivo-getafe.onrender.com'
+
 //! funcion mostrar cardEvento
 
 export const cardEvent = async () => {
@@ -12,7 +14,7 @@ export const cardEvent = async () => {
 
   loader(true)
 
-  const eventos = await apiCatch('http://localhost:3000/api/v2/eventos')
+  const eventos = await apiCatch(`${API_BASE}/api/v2/eventos`)
 
   loader(false)
 
@@ -102,7 +104,7 @@ const menuAsist = (eventoId, divEvento) => {
 const envAsistencia = async (eventoId, estado) => {
   const token = localStorage.getItem('token')
   await apiCatch(
-    `http://localhost:3000/api/v2/eventos/${eventoId}/asistencia`,
+    `${API_BASE}/api/v2/eventos/${eventoId}/asistencia`,
     'PATCH',
     { estado },
     token
@@ -110,7 +112,7 @@ const envAsistencia = async (eventoId, estado) => {
 }
 
 const mostrarAsistentes = async (eventoId, asistContainer) => {
-  const eventos = await apiCatch('http://localhost:3000/api/v2/eventos')
+  const eventos = await apiCatch(`${API_BASE}/api/v2/eventos`)
   const evento = eventos.find((e) => e._id === eventoId)
 
   const contenedor = asistContainer.querySelector('.asistentes')
