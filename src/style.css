@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@100..900&display=swap');
+
+:root {
+  font-family: 'Work Sans', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Colores */
+  --background: #7102c6;
+  --heading: #4b1a72;
+  --body: #ffffff;
+  --colorText: #2b024a;
+  --colorText2: lightblue;
+  --colorText3: #ffffff;
+  --colorcard: #373ae9;
+  --primary: #000000;
+  --secondary: #e4e3e3;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style-type: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 115svh;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  background-image: url(/assets/fondoDG.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  overflow: visible;
+  margin-bottom: 80px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 120px;
+}
+@media (max-width: 720px) {
+  body {
+    background-size: contain;
+    background-position: top;
+    background-repeat: repeat;
+  }
+  main {
+    flex: 1;
+    display: flex;
+    overflow: visible;
+    margin-bottom: 80px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+}

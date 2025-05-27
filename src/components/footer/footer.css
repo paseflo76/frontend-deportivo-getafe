@@ -1,0 +1,14 @@
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width: 100%;
+  background: var(--body);
+}
+
+@media (max-width: 720px) {
+  footer div {
+    font-size: 12px;
+  }
+}

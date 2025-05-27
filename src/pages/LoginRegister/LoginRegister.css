@@ -1,0 +1,33 @@
+#login > form {
+  padding-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+#login input {
+  background-color: var(--colorText2) !important;
+  -webkit-text-fill-color: black !important;
+  box-shadow: 0 0 0px 1000px var(--colorText2) inset !important;
+  border-radius: 20px;
+  padding: 15px;
+  border: 2px solid black;
+  cursor: pointer;
+}
+
+#login button {
+  padding: 5px;
+  border-radius: 10px;
+  border: 2px solid black;
+  background-color: var(--colorText2);
+  cursor: pointer;
+}
+#login p {
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+}
+.pError {
+  color: red;
+  font-size: 20px;
+}

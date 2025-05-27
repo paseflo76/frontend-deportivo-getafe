@@ -1,0 +1,37 @@
+.main-button {
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.primary {
+  width: 123px;
+  height: 60px;
+  background-color: var(--primary);
+  color: var(--color-background);
+  border-radius: 30px;
+}
+
+.secondary {
+  background-color: var(--color-background);
+  color: var(--primary);
+  border-radius: 40px;
+}
+
+.s {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.m {
+  padding: 8px 18px;
+  font-size: 15px;
+}
+
+.l {
+  padding: 20px 30px;
+  font-size: 18px;
+}
+
+@media (max-width: 700px) {
+}
