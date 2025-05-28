@@ -4,8 +4,6 @@ import { apiCatch } from '../../utils/fetch/fech'
 import { Button } from '../../components/button/button'
 import { loader } from '../../utils/loader/loader'
 
-const API_BASE = 'https://backend-deportivo-getafe.onrender.com'
-
 export const Admin = async () => {
   const main = document.querySelector('main')
   const body = document.querySelector('body')
@@ -32,7 +30,7 @@ const obtenerTipos = async () => {
   const token = localStorage.getItem('token')
   try {
     return await apiCatch(
-      `${API_BASE}/api/v2/eventos/tipos`,
+      'http://localhost:3000/api/v2/eventos/tipos',
       'GET',
       null,
       token
@@ -80,7 +78,12 @@ const crearFormularioEvento = async () => {
     loader(true)
     try {
       const token = localStorage.getItem('token')
-      await apiCatch(`${API_BASE}/api/v2/eventos`, 'POST', formData, token)
+      await apiCatch(
+        'http://localhost:3000/api/v2/eventos',
+        'POST',
+        formData,
+        token
+      )
       await Admin()
     } catch (err) {
       console.error(err)
@@ -98,7 +101,7 @@ const renderEventos = async (container) => {
 
   try {
     const eventos = await apiCatch(
-      `${API_BASE}/api/v2/eventos`,
+      'http://localhost:3000/api/v2/eventos',
       'GET',
       null,
       token
@@ -131,7 +134,7 @@ const renderEventos = async (container) => {
       deleteBtn.addEventListener('click', async () => {
         loader(true)
         await apiCatch(
-          `${API_BASE}/api/v2/eventos/${evento._id}`,
+          `http://localhost:3000/api/v2/eventos/${evento._id}`,
           'DELETE',
           null,
           token
@@ -227,7 +230,7 @@ const editarEvento = async (evento) => {
       formData.append('tipo', selectTipo.value)
 
       try {
-        await fetch(`${API_BASE}/api/v2/eventos/${evento._id}`, {
+        await fetch(`http://localhost:3000/api/v2/eventos/${evento._id}`, {
           method: 'PUT',
           headers: { Authorization: `Bearer ${token}` },
           body: formData
@@ -247,7 +250,7 @@ const editarEvento = async (evento) => {
       }
 
       try {
-        await fetch(`${API_BASE}/api/v2/eventos/${evento._id}`, {
+        await fetch(`http://localhost:3000/api/v2/eventos/${evento._id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
