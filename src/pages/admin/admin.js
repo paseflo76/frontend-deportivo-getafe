@@ -225,7 +225,7 @@ const editarEvento = async (evento) => {
       formData.append('tipo', selectTipo.value)
 
       try {
-        await fetch(`${API_BASE}/api/v2/eventos/${evento._id}`, {
+        await apiCatch(`${API_BASE}/api/v2/eventos/${evento._id}`, {
           method: 'PUT',
           headers: { Authorization: `Bearer ${token}` },
           body: formData
@@ -245,7 +245,7 @@ const editarEvento = async (evento) => {
       }
 
       try {
-        await fetch(`${API_BASE}/api/v2/eventos/${evento._id}`, {
+        await apiCatch(`${API_BASE}/api/v2/eventos/${evento._id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
