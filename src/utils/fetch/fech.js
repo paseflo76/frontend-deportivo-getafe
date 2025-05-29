@@ -1,3 +1,5 @@
+export const API_BASE = 'https://backend-deportivo-getafe.onrender.com'
+
 export const apiCatch = async (
   url,
   method = 'GET',
@@ -28,3 +30,4 @@ export const apiCatch = async (
     throw error
   }
 }
+
