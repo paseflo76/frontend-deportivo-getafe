@@ -1,4 +1,4 @@
-import { API_BASE, apiCatch } from '../../utils/fetch/fech'
+import { API_BASE, apiCatch } from '../../utils/fetch/fech.js'
 import { loader } from '../../utils/loader/loader'
 import { Button } from '../button/button'
 
