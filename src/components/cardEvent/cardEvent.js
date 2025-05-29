@@ -1,8 +1,7 @@
+import './cardEvent.css'
 import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 import { loader } from '../../utils/loader/loader'
 import { Button } from '../button/button'
-
-import './cardEvent.css'
 
 //! funcion mostrar cardEvento
 

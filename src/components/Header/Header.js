@@ -54,7 +54,6 @@ export const Header = () => {
   imgJudador1.alt = 'jugador futbol'
   imgJudador2.src = 'assets/jugador-de-futbol2.png'
   imgJudador2.alt = 'jugador futbol2'
-  imgPortero.src = 'assets/portero.png'
   imgPortero.alt = 'portero'
   divDecoracion.appendChild(imgJudador1)
   divDecoracion.appendChild(imgJudador2)
