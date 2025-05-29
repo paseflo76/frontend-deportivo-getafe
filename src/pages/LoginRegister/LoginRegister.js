@@ -1,11 +1,10 @@
-import './loginRegister.css'
+import './LoginRegister.css'
 import { navigate } from '../../main'
 import { Header } from '../../components/Header/Header'
-import { apiCatch } from '../../utils/fetch/fech'
+import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 import { loader } from '../../utils/loader/loader'
 
-//!Funcion registro
-const API_BASE = 'https://backend-deportivo-getafe.onrender.com'
+//!
 
 export const LoginRegister = () => {
   const main = document.querySelector('main')

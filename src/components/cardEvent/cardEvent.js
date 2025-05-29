@@ -1,10 +1,8 @@
-import { apiCatch } from '../../utils/fetch/fech'
+import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 import { loader } from '../../utils/loader/loader'
 import { Button } from '../button/button'
 
 import './cardEvent.css'
-
-const API_BASE = 'https://backend-deportivo-getafe.onrender.com'
 
 //! funcion mostrar cardEvento
 

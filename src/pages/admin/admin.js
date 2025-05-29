@@ -1,10 +1,8 @@
-import './Admin.css'
+import './admin.css'
 import { navigate } from '../../main'
-import { apiCatch } from '../../utils/fetch/fech'
+import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 import { Button } from '../../components/button/button'
 import { loader } from '../../utils/loader/loader'
-
-const API_BASE = 'https://backend-deportivo-getafe.onrender.com'
 
 export const Admin = async () => {
   const main = document.querySelector('main')
@@ -122,7 +120,7 @@ const renderEventos = async (container) => {
 
       const editBtn = Button(divAdminEvent, 'Editar', 'secundary', 's')
       editBtn.addEventListener('click', () => {
-        // Evitar múltiples modales de edición simultáneos
+        //? Evitar múltiples modales de edición simultáneos
         if (document.querySelector('.modal-edicion')) return
         editarEvento(evento)
       })
@@ -247,7 +245,7 @@ const editarEvento = async (evento) => {
       }
 
       try {
-        await fetch(`http://localhost:3000/api/v2/eventos/${evento._id}`, {
+        await fetch(`${API_BASE}/api/v2/eventos/${evento._id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
