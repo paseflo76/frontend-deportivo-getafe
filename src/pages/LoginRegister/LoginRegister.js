@@ -1,7 +1,7 @@
-import './loginRegister.css'
+import './LoginRegister.css'
 import { navigate } from '../../main'
 import { Header } from '../../components/Header/Header'
-import { apiCatch } from '../../utils/fetch/fech'
+import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 import { loader } from '../../utils/loader/loader'
 
 //!
@@ -78,8 +78,8 @@ const submit = async (userName, email, password, form, isLogin) => {
 
   const loadOut = { userName, email, password }
   const url = isLogin
-    ? 'http://localhost:3000/api/v2/users/Login'
-    : 'http://localhost:3000/api/v2/users/Register'
+    ? `${API_BASE}/api/v2/users/Login`
+    : `${API_BASE}/api/v2/users/Register`
 
   loader(true)
   try {
