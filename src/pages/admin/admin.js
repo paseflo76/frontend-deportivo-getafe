@@ -1,6 +1,6 @@
 import './admin.css'
 import { navigate } from '../../main'
-import { API_BASE, apiCatch } from '../../utils/fetch/fech'
+import { API_BASE, apiCatch } from '../../utils/fetch/fech.js'
 import { Button } from '../../components/button/button'
 import { loader } from '../../utils/loader/loader'
 
