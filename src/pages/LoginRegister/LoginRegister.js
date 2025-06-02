@@ -1,8 +1,8 @@
 import './LoginRegister.css'
 import { navigate } from '../../main'
 import { Header } from '../../components/Header/Header'
-import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 import { loader } from '../../utils/loader/loader'
+import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 
 //!
 

@@ -1,8 +1,8 @@
 import './admin.css'
 import { navigate } from '../../main'
-import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 import { Button } from '../../components/button/button'
 import { loader } from '../../utils/loader/loader'
+import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 
 export const Admin = async () => {
   const main = document.querySelector('main')
@@ -245,7 +245,7 @@ const editarEvento = async (evento) => {
       }
 
       try {
-        await fetch(`${API_BASE}/api/v2/eventos/${evento._id}`, {
+        await apiCatch(`${API_BASE}/api/v2/eventos/${evento._id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
