@@ -1,19 +1,15 @@
-import { API_BASE, apiCatch } from '../../utils/fetch/fech'
-import { loader } from '../../utils/loader/loader'
-import { Button } from '../button/button'
-
 import './cardEvent.css'
 
-//! funcion mostrar cardEvento
+import { loader } from '../../utils/loader/loader'
+import { Button } from '../button/button'
+import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 
 export const cardEvent = async () => {
   const main = document.querySelector('main')
   main.innerHTML = ''
 
   loader(true)
-
   const eventos = await apiCatch(`${API_BASE}/api/v2/eventos`)
-
   loader(false)
 
   printEventos(eventos, main)
@@ -42,27 +38,9 @@ export const printEventos = (eventos, ePadre) => {
     fecha.textContent = evento.fecha
     lugar.textContent = evento.lugar
 
-    btnAsist.addEventListener('click', () => {
-      const modalExistente = divEvento.querySelector('.asist-list')
-      if (modalExistente) return
-
-      const modal = document.createElement('div')
-      modal.className = 'asist-list'
-
-      const opciones = document.createElement('div')
-      opciones.className = 'asist-options'
-
-      const lista = document.createElement('div')
-      lista.className = 'asistentes'
-
-      const btnCerrar = Button(opciones, 'cerrar', 'secundary', 's')
-      btnCerrar.addEventListener('click', () => modal.remove())
-
-      modal.append(opciones, lista, btnCerrar)
-      divEvento.appendChild(modal)
-
-      menuAsist(evento._id, modal)
-    })
+    btnAsist.addEventListener('click', () =>
+      mostrarMenuAsistencia(evento._id, divEvento)
+    )
 
     divEvento.append(tipo, imgEvent, titulo, fecha, lugar, btnAsist)
     divEventos.appendChild(divEvento)
@@ -70,9 +48,9 @@ export const printEventos = (eventos, ePadre) => {
   }
 }
 
-const menuAsist = (eventoId, divEvento) => {
+const mostrarMenuAsistencia = async (eventoId, divEvento) => {
   const existente = divEvento.querySelector('.asist-list')
-  if (existente) existente.remove()
+  if (existente) return
 
   const modal = document.createElement('div')
   modal.className = 'asist-list'
@@ -91,12 +69,16 @@ const menuAsist = (eventoId, divEvento) => {
     const btn = Button(opciones, estado, 'secundary', 's')
     btn.addEventListener('click', async () => {
       await envAsistencia(eventoId, estado)
-      await mostrarAsistentes(eventoId, modal)
+      await mostrarAsistentes(eventoId, lista)
     })
     opciones.appendChild(btn)
   })
 
-  mostrarAsistentes(eventoId, modal)
+  const btnCerrar = Button(opciones, 'cerrar', 'secundary', 's')
+  btnCerrar.addEventListener('click', () => modal.remove())
+  opciones.appendChild(btnCerrar)
+
+  await mostrarAsistentes(eventoId, lista)
 }
 
 const envAsistencia = async (eventoId, estado) => {
@@ -109,11 +91,10 @@ const envAsistencia = async (eventoId, estado) => {
   )
 }
 
-const mostrarAsistentes = async (eventoId, asistContainer) => {
+const mostrarAsistentes = async (eventoId, contenedor) => {
   const eventos = await apiCatch(`${API_BASE}/api/v2/eventos`)
   const evento = eventos.find((e) => e._id === eventoId)
 
-  const contenedor = asistContainer.querySelector('.asistentes')
   contenedor.innerHTML = ''
 
   const categorias = {
@@ -132,12 +113,14 @@ const mostrarAsistentes = async (eventoId, asistContainer) => {
   for (const estado in categorias) {
     const seccion = document.createElement('div')
     seccion.className = 'options'
+
     const titulo = document.createElement('h4')
     titulo.textContent = estado
     seccion.appendChild(titulo)
 
     const lista = document.createElement('ul')
     lista.className = 'ulAsist'
+
     categorias[estado].forEach((nombre) => {
       const li = document.createElement('li')
       li.textContent = nombre
@@ -148,3 +131,4 @@ const mostrarAsistentes = async (eventoId, asistContainer) => {
     contenedor.appendChild(seccion)
   }
 }
+
