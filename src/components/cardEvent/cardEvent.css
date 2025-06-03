@@ -50,6 +50,11 @@ div .asist-list {
   gap: 15px;
   color: var(--primary);
 }
+.asist-options {
+  padding-top: 30px;
+  display: flex;
+  gap: 5px;
+}
 
 .asist-options > button {
   border-radius: 15px;
