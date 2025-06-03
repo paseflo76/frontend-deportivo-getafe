@@ -1,23 +1,21 @@
 import './cardEvent.css'
-
 import { loader } from '../../utils/loader/loader'
 import { Button } from '../button/button'
 import { API_BASE, apiCatch } from '../../utils/fetch/fech'
+import { Admin } from '../../pages/admin/admin'
+import { navigate } from '../../utils/navigate/navigate'
 
 export const cardEvent = async () => {
   const main = document.querySelector('main')
   main.innerHTML = ''
-
   loader(true)
   const eventos = await apiCatch(`${API_BASE}/api/v2/eventos`)
   loader(false)
-
   printEventos(eventos, main)
 }
 
 export const printEventos = (eventos, ePadre) => {
   ePadre.innerHTML = ''
-
   for (const evento of eventos) {
     const divEventos = document.createElement('div')
     divEventos.id = 'Eventos'
@@ -129,5 +127,117 @@ const mostrarAsistentes = async (eventoId, contenedor) => {
 
     seccion.appendChild(lista)
     contenedor.appendChild(seccion)
+  }
+}
+
+export const editarEvento = async (evento) => {
+  const container = document.createElement('div')
+  container.className = 'modal-edicion'
+
+  const form = document.createElement('form')
+  const inputTitulo = document.createElement('input')
+  const inputFecha = document.createElement('input')
+  const inputLugar = document.createElement('input')
+  const inputImg = document.createElement('input')
+  const vistaImg = document.createElement('img')
+  const selectTipo = document.createElement('select')
+
+  inputTitulo.value = evento.titulo
+  inputTitulo.placeholder = 'Título'
+
+  inputFecha.value = evento.fecha
+  inputFecha.placeholder = 'Fecha'
+
+  inputLugar.value = evento.lugar
+  inputLugar.placeholder = 'Lugar'
+
+  inputImg.type = 'file'
+  vistaImg.src = evento.img
+
+  const tipos = await obtenerTipos()
+  tipos.forEach((tipo) => {
+    const option = document.createElement('option')
+    option.value = tipo
+    option.textContent = tipo
+    if (tipo === evento.tipo) option.selected = true
+    selectTipo.appendChild(option)
+  })
+
+  const btnGuardar = document.createElement('button')
+  btnGuardar.textContent = 'Guardar'
+  btnGuardar.type = 'submit'
+
+  const btnCancelar = document.createElement('button')
+  btnCancelar.textContent = 'Cerrar'
+  btnCancelar.type = 'button'
+  btnCancelar.addEventListener('click', () => container.remove())
+
+  form.append(
+    inputTitulo,
+    inputFecha,
+    inputLugar,
+    vistaImg,
+    inputImg,
+    selectTipo,
+    btnGuardar,
+    btnCancelar
+  )
+  container.appendChild(form)
+
+  const listaEventos = document.getElementById('lista-eventos') || document.body
+  listaEventos.appendChild(container)
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const token = localStorage.getItem('token')
+
+    try {
+      if (inputImg.files.length > 0) {
+        const file = inputImg.files[0]
+        const formData = new FormData()
+        formData.append('img', file)
+        formData.append('titulo', inputTitulo.value)
+        formData.append('fecha', inputFecha.value)
+        formData.append('lugar', inputLugar.value)
+        formData.append('tipo', selectTipo.value)
+
+        await fetch(`${API_BASE}/api/v2/eventos/${evento._id}`, {
+          method: 'PUT',
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData
+        })
+      } else {
+        const actualizado = {
+          titulo: inputTitulo.value,
+          fecha: inputFecha.value,
+          lugar: inputLugar.value,
+          img: evento.img,
+          tipo: selectTipo.value
+        }
+
+        await fetch(`${API_BASE}/api/v2/eventos/${evento._id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(actualizado)
+        })
+      }
+
+      container.remove()
+      await Admin()
+    } catch (error) {
+      console.error(error)
+    }
+  })
+}
+
+const obtenerTipos = async () => {
+  try {
+    const tipos = await apiCatch(`${API_BASE}/api/v2/eventos/tipos`)
+    return tipos
+  } catch {
+    return ['Entrenamiento', 'Partido', 'Otro']
   }
 }
