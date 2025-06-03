@@ -2,7 +2,6 @@ import './cardEvent.css'
 import { loader } from '../../utils/loader/loader'
 import { Button } from '../button/button'
 import { apiCatch } from '../../utils/fetch/fech'
-import { editarEvento } from '../../pages/admin/admin'
 
 export const cardEvent = async () => {
   const main = document.querySelector('main')
