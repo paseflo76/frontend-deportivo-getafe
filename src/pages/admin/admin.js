@@ -1,8 +1,7 @@
 import './admin.css'
-import { navigate } from '../../main'
+import { apiCatch } from '../../utils/fetch/fech'
 import { Button } from '../../components/button/button'
 import { loader } from '../../utils/loader/loader'
-import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 
 export const Admin = async () => {
   const main = document.querySelector('main')
@@ -30,14 +29,13 @@ const obtenerTipos = async () => {
   const token = localStorage.getItem('token')
   try {
     return await apiCatch(
-      `${API_BASE}/api/v2/eventos/tipos`,
+      'https://pryecto10backend-3.onrender.com/api/v2/eventos/tipos',
       'GET',
       null,
       token
     )
-  } catch (err) {
-    console.error(err)
-    return []
+  } catch {
+    return ['Entrenamiento', 'Partido', 'Otro']
   }
 }
 
@@ -76,9 +74,14 @@ const crearFormularioEvento = async () => {
     formData.append('img', inputImg.files[0])
 
     loader(true)
+    const token = localStorage.getItem('token')
     try {
-      const token = localStorage.getItem('token')
-      await apiCatch(`${API_BASE}/api/v2/eventos`, 'POST', formData, token)
+      await apiCatch(
+        'https://pryecto10backend-3.onrender.com/api/v2/eventos',
+        'POST',
+        formData,
+        token
+      )
       await Admin()
     } catch (err) {
       console.error(err)
@@ -94,68 +97,65 @@ const renderEventos = async (container) => {
   container.innerHTML = ''
   const token = localStorage.getItem('token')
 
-  try {
-    const eventos = await apiCatch(
-      `${API_BASE}/api/v2/eventos`,
-      'GET',
-      null,
-      token
-    )
+  const eventos = await apiCatch(
+    'https://pryecto10backend-3.onrender.com/api/v2/eventos',
+    'GET',
+    null,
+    token
+  )
 
-    for (const evento of eventos) {
-      const divAdminEvent = document.createElement('div')
-      divAdminEvent.className = 'admin-evento'
+  for (const evento of eventos) {
+    const divAdminEvent = document.createElement('div')
+    divAdminEvent.className = 'admin-evento'
 
-      const h3 = document.createElement('h3')
-      const imgEvent = document.createElement('img')
-      const pFecha = document.createElement('p')
-      const pLugar = document.createElement('p')
-      const pTipo = document.createElement('p')
+    const h3 = document.createElement('h3')
+    const imgEvent = document.createElement('img')
+    const pFecha = document.createElement('p')
+    const pLugar = document.createElement('p')
+    const pTipo = document.createElement('p')
 
-      h3.textContent = evento.titulo
-      imgEvent.src = evento.img
-      pFecha.textContent = evento.fecha
-      pLugar.textContent = evento.lugar
-      pTipo.textContent = evento.tipo
+    h3.textContent = evento.titulo
+    imgEvent.src = evento.img
+    pFecha.textContent = evento.fecha
+    pLugar.textContent = evento.lugar
+    pTipo.textContent = evento.tipo
 
-      const editBtn = Button(divAdminEvent, 'Editar', 'secundary', 's')
-      editBtn.addEventListener('click', () => {
-        //? Evitar múltiples modales de edición simultáneos
-        if (document.querySelector('.modal-edicion')) return
-        editarEvento(evento)
-      })
+    const editBtn = Button(divAdminEvent, 'Editar', 'secundary', 's')
+    editBtn.addEventListener('click', () => {
+      if (document.querySelector('.modal-edicion')) return
+      editarEvento(evento)
+    })
 
-      const deleteBtn = Button(divAdminEvent, 'Borrar', 'secundary', 's')
-      deleteBtn.addEventListener('click', async () => {
-        loader(true)
-        await apiCatch(
-          `${API_BASE}/api/v2/eventos/${evento._id}`,
-          'DELETE',
-          null,
-          token
-        )
-        await renderEventos(container)
-        loader(false)
-      })
-
-      divAdminEvent.append(
-        h3,
-        pFecha,
-        imgEvent,
-        pLugar,
-        pTipo,
-        editBtn,
-        deleteBtn
+    const deleteBtn = Button(divAdminEvent, 'Borrar', 'secundary', 's')
+    deleteBtn.addEventListener('click', async () => {
+      loader(true)
+      await apiCatch(
+        `https://pryecto10backend-3.onrender.com/api/v2/eventos/${evento._id}`,
+        'DELETE',
+        null,
+        token
       )
-      container.append(divAdminEvent)
-    }
-  } catch (err) {
-    console.error(err)
+      await renderEventos(container)
+      loader(false)
+    })
+
+    divAdminEvent.append(
+      h3,
+      pFecha,
+      imgEvent,
+      pLugar,
+      pTipo,
+      editBtn,
+      deleteBtn
+    )
+    container.append(divAdminEvent)
   }
 }
 
-const editarEvento = async (evento) => {
+export const editarEvento = async (evento) => {
   const container = document.createElement('div')
+  container.className = 'modal-edicion'
+
   const form = document.createElement('form')
   const inputTitulo = document.createElement('input')
   const inputFecha = document.createElement('input')
@@ -163,19 +163,11 @@ const editarEvento = async (evento) => {
   const inputImg = document.createElement('input')
   const vistaImg = document.createElement('img')
   const selectTipo = document.createElement('select')
-  container.className = 'modal-edicion'
 
   inputTitulo.value = evento.titulo
-  inputTitulo.placeholder = 'Título'
-
   inputFecha.value = evento.fecha
-  inputFecha.placeholder = 'Fecha'
-
   inputLugar.value = evento.lugar
-  inputLugar.placeholder = 'Lugar'
-
   inputImg.type = 'file'
-
   vistaImg.src = evento.img
 
   const tipos = await obtenerTipos()
@@ -188,12 +180,12 @@ const editarEvento = async (evento) => {
   })
 
   const btnGuardar = document.createElement('button')
-  btnGuardar.textContent = 'Guardar'
   btnGuardar.type = 'submit'
+  btnGuardar.textContent = 'Guardar'
 
   const btnCancelar = document.createElement('button')
-  btnCancelar.textContent = 'Cerrar'
   btnCancelar.type = 'button'
+  btnCancelar.textContent = 'Cerrar'
   btnCancelar.addEventListener('click', () => container.remove())
 
   form.append(
@@ -208,56 +200,56 @@ const editarEvento = async (evento) => {
   )
   container.appendChild(form)
 
-  const listaEventos = document.getElementById('lista-eventos')
-  listaEventos.appendChild(container)
+  document.getElementById('lista-eventos').appendChild(container)
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault()
     const token = localStorage.getItem('token')
 
-    if (inputImg.files.length > 0) {
-      const file = inputImg.files[0]
-      const formData = new FormData()
-      formData.append('img', file)
-      formData.append('titulo', inputTitulo.value)
-      formData.append('fecha', inputFecha.value)
-      formData.append('lugar', inputLugar.value)
-      formData.append('tipo', selectTipo.value)
+    try {
+      if (inputImg.files.length > 0) {
+        const file = inputImg.files[0]
+        const formData = new FormData()
+        formData.append('img', file)
+        formData.append('titulo', inputTitulo.value)
+        formData.append('fecha', inputFecha.value)
+        formData.append('lugar', inputLugar.value)
+        formData.append('tipo', selectTipo.value)
 
-      try {
-        await fetch(`${API_BASE}/api/v2/eventos/${evento._id}`, {
-          method: 'PUT',
-          headers: { Authorization: `Bearer ${token}` },
-          body: formData
-        })
-        container.remove()
-        await Admin()
-      } catch (error) {
-        console.error(error)
-      }
-    } else {
-      const actualizado = {
-        titulo: inputTitulo.value,
-        fecha: inputFecha.value,
-        lugar: inputLugar.value,
-        img: evento.img,
-        tipo: selectTipo.value
+        await fetch(
+          `https://pryecto10backend-3.onrender.com/api/v2/eventos/${evento._id}`,
+          {
+            method: 'PUT',
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData
+          }
+        )
+      } else {
+        const actualizado = {
+          titulo: inputTitulo.value,
+          fecha: inputFecha.value,
+          lugar: inputLugar.value,
+          img: evento.img,
+          tipo: selectTipo.value
+        }
+
+        await fetch(
+          `https://pryecto10backend-3.onrender.com/api/v2/eventos/${evento._id}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(actualizado)
+          }
+        )
       }
 
-      try {
-        await apiCatch(`${API_BASE}/api/v2/eventos/${evento._id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify(actualizado)
-        })
-        container.remove()
-        navigate('Admin')
-      } catch (error) {
-        console.error(error)
-      }
+      container.remove()
+      await Admin()
+    } catch (error) {
+      console.error(error)
     }
   })
 }
