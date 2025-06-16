@@ -69,7 +69,7 @@ export const Header = () => {
     { texto: 'Login', path: 'login', function: LoginRegister }
   ]
 
-  if (user?.rol !== 'Admin') {
+  if (user?.rol !== 'admin') {
     routes.splice(1, 1)
   }
 
