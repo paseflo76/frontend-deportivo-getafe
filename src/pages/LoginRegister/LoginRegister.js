@@ -74,12 +74,12 @@ const login = (container) => {
 const submit = async (userName, email, password, form, isLogin) => {
   if (isLogin) {
     if (!userName || !password) {
-      showError(form, 'Completa usuario y contraseña.')
+      showError(form, 'Por favor completa todos los campos.')
       return
     }
   } else {
     if (!userName || !email || !password) {
-      showError(form, 'Completa usuario, email y contraseña.')
+      showError(form, 'Por favor completa todos los campos.')
       return
     }
   }
@@ -87,6 +87,10 @@ const submit = async (userName, email, password, form, isLogin) => {
   const payload = isLogin
     ? { userName, password }
     : { userName, email, password }
+
+ 
+}
+
 
 
   const url = isLogin
