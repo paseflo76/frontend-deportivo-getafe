@@ -1,14 +1,13 @@
+// frontend/src/pages/LoginRegister.js
+
 import './LoginRegister.css'
 import { navigate } from '../../main'
 import { Header } from '../../components/Header/Header'
 import { loader } from '../../utils/loader/loader'
 import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 
-//!
-
 export const LoginRegister = () => {
   const main = document.querySelector('main')
-
   main.innerHTML = ''
 
   const loginDiv = document.createElement('div')
@@ -30,7 +29,7 @@ const showError = (form, message) => {
   setTimeout(() => pError.remove(), 3000)
 }
 
-const login = (e) => {
+const login = (container) => {
   const form = document.createElement('form')
   const toggleText = document.createElement('p')
   const inputUserName = document.createElement('input')
@@ -38,61 +37,70 @@ const login = (e) => {
   const inputPassword = document.createElement('input')
   const button = document.createElement('button')
 
-  inputPassword.type = 'password'
   inputUserName.placeholder = 'User Name'
   inputEmail.placeholder = 'Email'
   inputPassword.placeholder = '******'
+  inputPassword.type = 'password'
   button.textContent = 'login'
 
-  let islogin = true
+  let isLogin = true
 
   toggleText.textContent = '¿No tienes cuenta? Regístrate aquí.'
   toggleText.addEventListener('click', () => {
-    islogin = !islogin
-    button.textContent = islogin ? 'login' : 'register'
-    toggleText.textContent = islogin
+    isLogin = !isLogin
+    button.textContent = isLogin ? 'login' : 'register'
+    toggleText.textContent = isLogin
       ? '¿No tienes cuenta? Regístrate aquí.'
       : '¿Ya tienes cuenta? Inicia sesión aquí.'
+    if (isLogin) {
+      inputUserName.style.display = 'none'
+    } else {
+      inputUserName.style.display = 'block'
+    }
   })
 
-  e.append(form)
+  if (isLogin) inputUserName.style.display = 'none'
+
   form.append(toggleText, inputUserName, inputEmail, inputPassword, button)
+  container.append(form)
 
   form.addEventListener('submit', (event) => {
     event.preventDefault()
     submit(
-      inputUserName.value,
-      inputEmail.value,
+      inputUserName.value.trim(),
+      inputEmail.value.trim(),
       inputPassword.value,
       form,
-      islogin
+      isLogin
     )
   })
 }
 
-const submit = async (userName, email, password, form, islogin) => {
-  if (!email || !password || (!islogin && !userName)) {
+const submit = async (userName, email, password, form, isLogin) => {
+  if (!email || !password || (!isLogin && !userName)) {
     showError(form, 'Por favor completa todos los campos.')
     return
   }
 
- const loadOut = islogin ? { userName: email, password } : { userName, email, password }
+  // En login enviar solo email y password
+  const payload = isLogin
+    ? { email, password }
+    : { userName, email, password }
 
-
-  const url = islogin
+  const url = isLogin
     ? `${API_BASE}/api/v2/users/login`
     : `${API_BASE}/api/v2/users/register`
 
   loader(true)
   try {
-    const data = await apiCatch(url, 'POST', loadOut)
+    const data = await apiCatch(url, 'POST', payload)
     localStorage.setItem('token', data.token)
     await navigate('home')
     Header()
   } catch (err) {
     if (err.status === 400) {
       const msg = err.body?.message || 'Error'
-      if (islogin) {
+      if (isLogin) {
         showError(form, 'Usuario o Contraseña Incorrectos')
       } else if (msg === 'User already exists') {
         return submit(userName, email, password, form, true)
