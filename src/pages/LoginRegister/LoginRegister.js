@@ -71,12 +71,15 @@ const Login = (e) => {
 }
 
 const submit = async (userName, email, password, form, isLogin) => {
-  if (!userName || !email || !password) {
+  if (!email || !password || (!isLogin && !userName)) {
     showError(form, 'Por favor completa todos los campos.')
     return
   }
 
-  const loadOut = { userName, email, password }
+  const loadOut = isLogin
+    ? { email, password }
+    : { userName, email, password }
+
   const url = isLogin
     ? `${API_BASE}/api/v2/users/Login`
     : `${API_BASE}/api/v2/users/Register`
