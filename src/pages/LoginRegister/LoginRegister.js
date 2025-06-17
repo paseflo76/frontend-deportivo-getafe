@@ -1,5 +1,7 @@
 // frontend/src/pages/LoginRegister.js
 
+// frontend/src/pages/LoginRegister.js
+
 import './LoginRegister.css'
 import { navigate } from '../../main'
 import { Header } from '../../components/Header/Header'
@@ -39,8 +41,8 @@ const login = (container) => {
 
   inputUserName.placeholder = 'User Name'
   inputEmail.placeholder = 'Email'
-  inputPassword.placeholder = '******'
   inputPassword.type = 'password'
+  inputPassword.placeholder = '******'
   button.textContent = 'login'
 
   let isLogin = true
@@ -52,17 +54,10 @@ const login = (container) => {
     toggleText.textContent = isLogin
       ? '¿No tienes cuenta? Regístrate aquí.'
       : '¿Ya tienes cuenta? Inicia sesión aquí.'
-    if (isLogin) {
-      inputUserName.style.display = 'none'
-    } else {
-      inputUserName.style.display = 'block'
-    }
   })
 
-  if (isLogin) inputUserName.style.display = 'none'
-
-  form.append(toggleText, inputUserName, inputEmail, inputPassword, button)
   container.append(form)
+  form.append(toggleText, inputUserName, inputEmail, inputPassword, button)
 
   form.addEventListener('submit', (event) => {
     event.preventDefault()
@@ -76,10 +71,8 @@ const login = (container) => {
   })
 }
 
-// frontend/src/pages/LoginRegister.js (submit modificado)
-
 const submit = async (userName, email, password, form, isLogin) => {
-  if (!password || (!isLogin && !userName) || (isLogin && !userName)) {
+  if (!userName || !password) {
     showError(form, 'Por favor completa todos los campos.')
     return
   }
