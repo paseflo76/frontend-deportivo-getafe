@@ -30,3 +30,4 @@ export const apiCatch = async (
     throw error
   }
 }
+
