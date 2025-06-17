@@ -76,15 +76,16 @@ const login = (container) => {
   })
 }
 
+// frontend/src/pages/LoginRegister.js (submit modificado)
+
 const submit = async (userName, email, password, form, isLogin) => {
-  if (!email || !password || (!isLogin && !userName)) {
+  if (!password || (!isLogin && !userName) || (isLogin && !userName)) {
     showError(form, 'Por favor completa todos los campos.')
     return
   }
 
-  // En login enviar solo email y password
   const payload = isLogin
-    ? { email, password }
+    ? { userName, password }
     : { userName, email, password }
 
   const url = isLogin
