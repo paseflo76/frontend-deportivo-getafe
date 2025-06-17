@@ -72,14 +72,22 @@ const login = (container) => {
 }
 
 const submit = async (userName, email, password, form, isLogin) => {
-  if (!userName || !password) {
-    showError(form, 'Por favor completa todos los campos.')
-    return
+  if (isLogin) {
+    if (!userName || !password) {
+      showError(form, 'Completa usuario y contraseña.')
+      return
+    }
+  } else {
+    if (!userName || !email || !password) {
+      showError(form, 'Completa usuario, email y contraseña.')
+      return
+    }
   }
 
   const payload = isLogin
     ? { userName, password }
     : { userName, email, password }
+
 
   const url = isLogin
     ? `${API_BASE}/api/v2/users/login`
