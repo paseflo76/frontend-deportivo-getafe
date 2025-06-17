@@ -76,7 +76,8 @@ const submit = async (userName, email, password, form, islogin) => {
     return
   }
 
-  const loadOut = islogin ? { email, password } : { userName, email, password }
+ const loadOut = islogin ? { userName: email, password } : { userName, email, password }
+
 
   const url = islogin
     ? `${API_BASE}/api/v2/users/login`
