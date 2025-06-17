@@ -1,7 +1,3 @@
-// frontend/src/pages/LoginRegister.js
-
-// frontend/src/pages/LoginRegister.js
-
 import './LoginRegister.css'
 import { navigate } from '../../main'
 import { Header } from '../../components/Header/Header'
@@ -47,6 +43,10 @@ const login = (container) => {
 
   let isLogin = true
 
+  const toggleFields = () => {
+    inputEmail.style.display = isLogin ? 'none' : 'block'
+  }
+
   toggleText.textContent = '¿No tienes cuenta? Regístrate aquí.'
   toggleText.addEventListener('click', () => {
     isLogin = !isLogin
@@ -54,8 +54,10 @@ const login = (container) => {
     toggleText.textContent = isLogin
       ? '¿No tienes cuenta? Regístrate aquí.'
       : '¿Ya tienes cuenta? Inicia sesión aquí.'
+    toggleFields()
   })
 
+  inputEmail.style.display = 'none'
   container.append(form)
   form.append(toggleText, inputUserName, inputEmail, inputPassword, button)
 
@@ -87,11 +89,6 @@ const submit = async (userName, email, password, form, isLogin) => {
   const payload = isLogin
     ? { userName, password }
     : { userName, email, password }
-
- 
-}
-
-
 
   const url = isLogin
     ? `${API_BASE}/api/v2/users/login`
