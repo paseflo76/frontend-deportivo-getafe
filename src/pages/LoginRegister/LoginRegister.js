@@ -14,7 +14,7 @@ export const LoginRegister = () => {
   const loginDiv = document.createElement('div')
   loginDiv.id = 'login'
 
-  Login(loginDiv)
+  login(loginDiv)
 
   main.append(loginDiv)
 }
@@ -30,7 +30,7 @@ const showError = (form, message) => {
   setTimeout(() => pError.remove(), 3000)
 }
 
-const Login = (e) => {
+const login = (e) => {
   const form = document.createElement('form')
   const toggleText = document.createElement('p')
   const inputUserName = document.createElement('input')
@@ -42,15 +42,15 @@ const Login = (e) => {
   inputUserName.placeholder = 'User Name'
   inputEmail.placeholder = 'Email'
   inputPassword.placeholder = '******'
-  button.textContent = 'Login'
+  button.textContent = 'login'
 
-  let isLogin = true
+  let islogin = true
 
   toggleText.textContent = '¿No tienes cuenta? Regístrate aquí.'
   toggleText.addEventListener('click', () => {
-    isLogin = !isLogin
-    button.textContent = isLogin ? 'Login' : 'Register'
-    toggleText.textContent = isLogin
+    islogin = !islogin
+    button.textContent = islogin ? 'login' : 'register'
+    toggleText.textContent = islogin
       ? '¿No tienes cuenta? Regístrate aquí.'
       : '¿Ya tienes cuenta? Inicia sesión aquí.'
   })
@@ -65,21 +65,22 @@ const Login = (e) => {
       inputEmail.value,
       inputPassword.value,
       form,
-      isLogin
+      islogin
     )
   })
 }
 
-const submit = async (userName, email, password, form, isLogin) => {
-  if (!userName || !email || !password) {
+const submit = async (userName, email, password, form, islogin) => {
+  if (!email || !password || (!islogin && !userName)) {
     showError(form, 'Por favor completa todos los campos.')
     return
   }
 
-  const loadOut = { userName, email, password }
-  const url = isLogin
-    ? `${API_BASE}/api/v2/users/Login`
-    : `${API_BASE}/api/v2/users/Register`
+  const loadOut = islogin ? { email, password } : { userName, email, password }
+
+  const url = islogin
+    ? `${API_BASE}/api/v2/users/login`
+    : `${API_BASE}/api/v2/users/register`
 
   loader(true)
   try {
@@ -90,7 +91,7 @@ const submit = async (userName, email, password, form, isLogin) => {
   } catch (err) {
     if (err.status === 400) {
       const msg = err.body?.message || 'Error'
-      if (isLogin) {
+      if (islogin) {
         showError(form, 'Usuario o Contraseña Incorrectos')
       } else if (msg === 'User already exists') {
         return submit(userName, email, password, form, true)

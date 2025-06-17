@@ -39,9 +39,7 @@ export const printEventos = (eventos, ePadre) => {
     fecha.textContent = evento.fecha
     lugar.textContent = evento.lugar
 
-    btnAsist.addEventListener('click', () =>
-      mostrarMenuAsistencia(evento._id, divEvento)
-    )
+    btnAsist.addEventListener('click', () => menuAsist(evento._id, divEvento))
 
     divEvento.append(tipo, imgEvent, titulo, fecha, lugar, btnAsist)
     divEventos.appendChild(divEvento)
@@ -49,9 +47,9 @@ export const printEventos = (eventos, ePadre) => {
   }
 }
 
-const mostrarMenuAsistencia = async (eventoId, divEvento) => {
+const menuAsist = (eventoId, divEvento) => {
   const existente = divEvento.querySelector('.asist-list')
-  if (existente) return
+  if (existente) existente.remove()
 
   const modal = document.createElement('div')
   modal.className = 'asist-list'
@@ -65,21 +63,31 @@ const mostrarMenuAsistencia = async (eventoId, divEvento) => {
   modal.append(opciones, lista)
   divEvento.appendChild(modal)
 
-  const estados = ['Va a entrenar 👍', 'En duda ❓', 'No puede ❌']
-  estados.forEach((estado) => {
-    const btn = Button(opciones, estado, 'secundary', 's')
-    btn.addEventListener('click', async () => {
-      await envAsistencia(eventoId, estado)
-      await mostrarAsistentes(eventoId, lista)
-    })
-    opciones.appendChild(btn)
-  })
+  apiCatch('https://pryecto10backend-3.onrender.com/api/v2/eventos').then(
+    (eventos) => {
+      const evento = eventos.find((e) => e._id === eventoId)
+      const esPartido = evento.tipo.toLowerCase() === 'partido'
 
-  const btnCerrar = Button(opciones, 'cerrar', 'secundary', 's')
-  btnCerrar.addEventListener('click', () => modal.remove())
-  opciones.appendChild(btnCerrar)
+      const estados = esPartido
+        ? ['Sí va a jugar 👍', 'En duda ❓', 'No puede ❌']
+        : ['Va a entrenar 👍', 'En duda ❓', 'No puede ❌']
 
-  await mostrarAsistentes(eventoId, lista)
+      estados.forEach((estado) => {
+        const btn = Button(opciones, estado, 'secundary', 's')
+        btn.addEventListener('click', async () => {
+          await envAsistencia(eventoId, estado)
+          await mostrarAsistentes(eventoId, modal)
+        })
+        opciones.appendChild(btn)
+      })
+
+      const btnCerrar = Button(opciones, 'cerrar', 'secundary', 's')
+      btnCerrar.addEventListener('click', () => modal.remove())
+      opciones.appendChild(btnCerrar)
+
+      mostrarAsistentes(eventoId, modal)
+    }
+  )
 }
 
 const envAsistencia = async (eventoId, estado) => {
@@ -92,38 +100,45 @@ const envAsistencia = async (eventoId, estado) => {
   )
 }
 
-const mostrarAsistentes = async (eventoId, contenedor) => {
+const mostrarAsistentes = async (eventoId, asistContainer) => {
   const eventos = await apiCatch(
     'https://pryecto10backend-3.onrender.com/api/v2/eventos'
   )
   const evento = eventos.find((e) => e._id === eventoId)
-
+  const contenedor = asistContainer.querySelector('.asistentes')
   contenedor.innerHTML = ''
 
-  const categorias = {
-    'Va a entrenar 👍': [],
-    'En duda ❓': [],
-    'No puede ❌': []
-  }
+  const esPartido = evento.tipo.toLowerCase() === 'partido'
+
+  const categorias = esPartido
+    ? {
+        'Sí va a jugar 👍': [],
+        'En duda ❓': [],
+        'No puede ❌': []
+      }
+    : {
+        'Va a entrenar 👍': [],
+        'En duda ❓': [],
+        'No puede ❌': []
+      }
 
   evento.asistentes.forEach((a) => {
     const nombre = a.user?.userName || 'Usuario'
-    if (categorias[a.estado]) {
-      categorias[a.estado].push(nombre)
+    const estado = a.estado
+    if (categorias[estado]) {
+      categorias[estado].push(nombre)
     }
   })
 
   for (const estado in categorias) {
     const seccion = document.createElement('div')
     seccion.className = 'options'
-
     const titulo = document.createElement('h4')
     titulo.textContent = estado
     seccion.appendChild(titulo)
 
     const lista = document.createElement('ul')
     lista.className = 'ulAsist'
-
     categorias[estado].forEach((nombre) => {
       const li = document.createElement('li')
       li.textContent = nombre
