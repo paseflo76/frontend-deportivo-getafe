@@ -71,16 +71,12 @@ const login = (container) => {
 }
 
 const submit = async (userName, email, password, form, isLogin) => {
-  if (isLogin) {
-    if (!userName || !password) {
-      showError(form, 'Por favor completa todos los campos.')
-      return
-    }
-  } else {
-    if (!userName || !email || !password) {
-      showError(form, 'Por favor completa todos los campos.')
-      return
-    }
+  if (
+    (isLogin && (!userName || !password)) ||
+    (!isLogin && (!userName || !email || !password))
+  ) {
+    showError(form, 'Por favor completa todos los campos.')
+    return
   }
 
   const payload = isLogin
@@ -88,8 +84,8 @@ const submit = async (userName, email, password, form, isLogin) => {
     : { userName, email, password }
 
   const url = isLogin
-    ? `${API_BASE}/api/v2/users/login`
-    : `${API_BASE}/api/v2/users/register`
+    ? '/api/v2/users/login'
+    : '/api/v2/users/register'
 
   loader(true)
   try {
@@ -114,3 +110,4 @@ const submit = async (userName, email, password, form, isLogin) => {
     loader(false)
   }
 }
+
