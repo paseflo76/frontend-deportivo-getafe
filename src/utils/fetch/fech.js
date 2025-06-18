@@ -12,6 +12,9 @@ export const apiCatch = async (
   if (token) headers['Authorization'] = `Bearer ${token}`
   if (!isFormData) headers['Content-Type'] = 'application/json'
 
+  // Si url es absoluta (empieza por http/https), usarla tal cual. Si no, concatenar con API_BASE
+  const fullUrl = url.startsWith('http://') || url.startsWith('https://') ? url : API_BASE + url
+
   const options = {
     method,
     headers,
@@ -19,7 +22,7 @@ export const apiCatch = async (
   }
 
   try {
-    const res = await fetch( url, options)
+    const res = await fetch(fullUrl, options)
     const contentType = res.headers.get('Content-Type') || ''
     const isJson = contentType.includes('application/json')
     const body = isJson ? await res.json() : null
@@ -30,4 +33,3 @@ export const apiCatch = async (
     throw error
   }
 }
-
