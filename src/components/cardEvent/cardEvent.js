@@ -1,16 +1,14 @@
 import './cardEvent.css'
 import { loader } from '../../utils/loader/loader'
 import { Button } from '../button/button'
-import { apiCatch } from '../../utils/fetch/fech'
+import { API_BASE, apiCatch } from '../../utils/fetch/fetch'
 
 export const cardEvent = async () => {
   const main = document.querySelector('main')
   main.innerHTML = ''
   loader(true)
 
-  const eventos = await apiCatch(
-    'https://pryecto10backend-3.onrender.com/api/v2/eventos'
-  )
+  const eventos = await apiCatch('/api/v2/eventos')
 
   loader(false)
   printEventos(eventos, main)
@@ -63,47 +61,38 @@ const menuAsist = (eventoId, divEvento) => {
   modal.append(opciones, lista)
   divEvento.appendChild(modal)
 
-  apiCatch('https://pryecto10backend-3.onrender.com/api/v2/eventos').then(
-    (eventos) => {
-      const evento = eventos.find((e) => e._id === eventoId)
-      const esPartido = evento.tipo.toLowerCase() === 'partido'
+  apiCatch('/api/v2/eventos').then((eventos) => {
+    const evento = eventos.find((e) => e._id === eventoId)
+    const esPartido = evento.tipo.toLowerCase() === 'partido'
 
-      const estados = esPartido
-        ? ['Sí va a jugar 👍', 'En duda ❓', 'No puede ❌']
-        : ['Va a entrenar 👍', 'En duda ❓', 'No puede ❌']
+    const estados = esPartido
+      ? ['Sí va a jugar 👍', 'En duda ❓', 'No puede ❌']
+      : ['Va a entrenar 👍', 'En duda ❓', 'No puede ❌']
 
-      estados.forEach((estado) => {
-        const btn = Button(opciones, estado, 'secundary', 's')
-        btn.addEventListener('click', async () => {
-          await envAsistencia(eventoId, estado)
-          await mostrarAsistentes(eventoId, modal)
-        })
-        opciones.appendChild(btn)
+    estados.forEach((estado) => {
+      const btn = Button(opciones, estado, 'secundary', 's')
+      btn.addEventListener('click', async () => {
+        await envAsistencia(eventoId, estado)
+        await mostrarAsistentes(eventoId, modal)
       })
+      opciones.appendChild(btn)
+    })
 
-      const btnCerrar = Button(opciones, 'cerrar', 'secundary', 's')
-      btnCerrar.addEventListener('click', () => modal.remove())
-      opciones.appendChild(btnCerrar)
+    const btnCerrar = Button(opciones, 'cerrar', 'secundary', 's')
+    btnCerrar.addEventListener('click', () => modal.remove())
+    opciones.appendChild(btnCerrar)
 
-      mostrarAsistentes(eventoId, modal)
-    }
-  )
+    mostrarAsistentes(eventoId, modal)
+  })
 }
 
 const envAsistencia = async (eventoId, estado) => {
   const token = localStorage.getItem('token')
-  await apiCatch(
-    `https://pryecto10backend-3.onrender.com/api/v2/eventos/${eventoId}/asistencia`,
-    'PATCH',
-    { estado },
-    token
-  )
+  await apiCatch(`/api/v2/eventos/${eventoId}/asistencia`, 'PATCH', { estado }, token)
 }
 
 const mostrarAsistentes = async (eventoId, asistContainer) => {
-  const eventos = await apiCatch(
-    'https://pryecto10backend-3.onrender.com/api/v2/eventos'
-  )
+  const eventos = await apiCatch('/api/v2/eventos')
   const evento = eventos.find((e) => e._id === eventoId)
   const contenedor = asistContainer.querySelector('.asistentes')
   contenedor.innerHTML = ''
