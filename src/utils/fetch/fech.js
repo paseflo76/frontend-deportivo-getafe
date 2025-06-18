@@ -19,7 +19,7 @@ export const apiCatch = async (
   }
 
   try {
-    const res = await fetch(url, options)
+    const res = await fetch(API_BASE + url, options)
     const contentType = res.headers.get('Content-Type') || ''
     const isJson = contentType.includes('application/json')
     const body = isJson ? await res.json() : null
