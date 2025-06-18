@@ -43,10 +43,6 @@ const login = (container) => {
 
   let isLogin = true
 
-  const toggleFields = () => {
-    inputEmail.style.display = isLogin ? 'none' : 'block'
-  }
-
   toggleText.textContent = '¿No tienes cuenta? Regístrate aquí.'
   toggleText.addEventListener('click', () => {
     isLogin = !isLogin
@@ -54,10 +50,11 @@ const login = (container) => {
     toggleText.textContent = isLogin
       ? '¿No tienes cuenta? Regístrate aquí.'
       : '¿Ya tienes cuenta? Inicia sesión aquí.'
-    toggleFields()
+    inputEmail.style.display = isLogin ? 'none' : 'block'
   })
 
   inputEmail.style.display = 'none'
+
   container.append(form)
   form.append(toggleText, inputUserName, inputEmail, inputPassword, button)
 
@@ -117,4 +114,3 @@ const submit = async (userName, email, password, form, isLogin) => {
     loader(false)
   }
 }
-
