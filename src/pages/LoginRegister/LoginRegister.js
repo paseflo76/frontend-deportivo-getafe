@@ -29,7 +29,6 @@ const showError = (form, message) => {
 
 const login = (container) => {
   const form = document.createElement('form')
-  const toggleText = document.createElement('p')
   const inputUserName = document.createElement('input')
   const inputEmail = document.createElement('input')
   const inputPassword = document.createElement('input')
@@ -39,24 +38,10 @@ const login = (container) => {
   inputEmail.placeholder = 'Email'
   inputPassword.type = 'password'
   inputPassword.placeholder = '******'
-  button.textContent = 'login'
-
-  let isLogin = true
-
-  toggleText.textContent = '¿No tienes cuenta? Regístrate aquí.'
-  toggleText.addEventListener('click', () => {
-    isLogin = !isLogin
-    button.textContent = isLogin ? 'login' : 'register'
-    toggleText.textContent = isLogin
-      ? '¿No tienes cuenta? Regístrate aquí.'
-      : '¿Ya tienes cuenta? Inicia sesión aquí.'
-    inputEmail.style.display = isLogin ? 'none' : 'block'
-  })
-
-  inputEmail.style.display = 'none'
+  button.textContent = 'Login'
 
   container.append(form)
-  form.append(toggleText, inputUserName, inputEmail, inputPassword, button)
+  form.append(inputUserName, inputEmail, inputPassword, button)
 
   form.addEventListener('submit', (event) => {
     event.preventDefault()
@@ -64,28 +49,19 @@ const login = (container) => {
       inputUserName.value.trim(),
       inputEmail.value.trim(),
       inputPassword.value,
-      form,
-      isLogin
+      form
     )
   })
 }
 
-const submit = async (userName, email, password, form, isLogin) => {
-  if (
-    (isLogin && (!userName || !password)) ||
-    (!isLogin && (!userName || !email || !password))
-  ) {
+const submit = async (userName, email, password, form) => {
+  if (!userName || !email || !password) {
     showError(form, 'Por favor completa todos los campos.')
     return
   }
 
-  const payload = isLogin
-    ? { userName, password }
-    : { userName, email, password }
-
-  const url = isLogin
-    ? '/api/v2/users/login'
-    : '/api/v2/users/register'
+  const payload = { userName, email, password }
+  const url = '/api/v2/users/login'
 
   loader(true)
   try {
@@ -94,20 +70,9 @@ const submit = async (userName, email, password, form, isLogin) => {
     await navigate('home')
     Header()
   } catch (err) {
-    if (err.status === 400) {
-      const msg = err.body?.message || 'Error'
-      if (isLogin) {
-        showError(form, 'Usuario o Contraseña Incorrectos')
-      } else if (msg === 'User already exists') {
-        return submit(userName, email, password, form, true)
-      } else {
-        showError(form, msg)
-      }
-    } else {
-      showError(form, 'Error de red o servidor.')
-    }
+    const msg = err.body?.message || 'Error'
+    showError(form, msg)
   } finally {
     loader(false)
   }
 }
-
