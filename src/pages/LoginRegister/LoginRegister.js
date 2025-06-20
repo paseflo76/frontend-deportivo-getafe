@@ -36,6 +36,7 @@ const login = (container) => {
 
   inputUserName.placeholder = 'User Name'
   inputEmail.placeholder = 'Email'
+  inputEmail.style.display = 'block' // asegurar que email se muestra
   inputPassword.type = 'password'
   inputPassword.placeholder = '******'
   button.textContent = 'Login'
