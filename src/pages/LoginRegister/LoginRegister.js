@@ -34,10 +34,15 @@ const login = (container) => {
   const inputPassword = document.createElement('input')
   const button = document.createElement('button')
 
+  inputUserName.type = 'text'
   inputUserName.placeholder = 'User Name'
+
+  inputEmail.type = 'email'
   inputEmail.placeholder = 'Email'
+
   inputPassword.type = 'password'
   inputPassword.placeholder = '******'
+
   button.textContent = 'Login'
 
   container.append(form)
