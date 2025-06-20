@@ -36,7 +36,6 @@ const login = (container) => {
 
   inputUserName.placeholder = 'User Name'
   inputEmail.placeholder = 'Email'
- 
   inputPassword.type = 'password'
   inputPassword.placeholder = '******'
   button.textContent = 'Login'
@@ -77,3 +76,4 @@ const submit = async (userName, email, password, form) => {
     loader(false)
   }
 }
+
