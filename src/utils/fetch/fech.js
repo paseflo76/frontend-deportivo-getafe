@@ -1,4 +1,4 @@
-export const API_BASE = 'https://pryecto10backend-3.onrender.com'
+export const API_BASE = 'https://proyecto10backend-3.onrender.com'
 
 export const apiCatch = async (
   url,
