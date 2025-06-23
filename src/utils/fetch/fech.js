@@ -1,4 +1,4 @@
-export const API_BASE = 'https://backend-deportivo-getafe.onrender.com'
+export const API_BASE = 'https://pryecto10backend-3.onrender.com'
 
 export const apiCatch = async (
   url,
@@ -19,7 +19,7 @@ export const apiCatch = async (
   }
 
   try {
-    const res = await fetch(url, options)
+    const res = await fetch(API_BASE + url, options)
     const contentType = res.headers.get('Content-Type') || ''
     const isJson = contentType.includes('application/json')
     const body = isJson ? await res.json() : null
@@ -30,4 +30,3 @@ export const apiCatch = async (
     throw error
   }
 }
-

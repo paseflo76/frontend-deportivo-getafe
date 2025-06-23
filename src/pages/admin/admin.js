@@ -28,12 +28,7 @@ export const Admin = async () => {
 const obtenerTipos = async () => {
   const token = localStorage.getItem('token')
   try {
-    return await apiCatch(
-      'https://pryecto10backend-3.onrender.com/api/v2/eventos/tipos',
-      'GET',
-      null,
-      token
-    )
+    return await apiCatch('/api/v2/eventos/tipos', 'GET', null, token)
   } catch {
     return ['Entrenamiento', 'Partido', 'Otro']
   }
@@ -76,12 +71,7 @@ const crearFormularioEvento = async () => {
     loader(true)
     const token = localStorage.getItem('token')
     try {
-      await apiCatch(
-        'https://pryecto10backend-3.onrender.com/api/v2/eventos',
-        'POST',
-        formData,
-        token
-      )
+      await apiCatch('/api/v2/eventos', 'POST', formData, token)
       await Admin()
     } catch (err) {
       console.error(err)
@@ -97,12 +87,7 @@ const renderEventos = async (container) => {
   container.innerHTML = ''
   const token = localStorage.getItem('token')
 
-  const eventos = await apiCatch(
-    'https://pryecto10backend-3.onrender.com/api/v2/eventos',
-    'GET',
-    null,
-    token
-  )
+  const eventos = await apiCatch('/api/v2/eventos', 'GET', null, token)
 
   for (const evento of eventos) {
     const divAdminEvent = document.createElement('div')
@@ -129,12 +114,7 @@ const renderEventos = async (container) => {
     const deleteBtn = Button(divAdminEvent, 'Borrar', 'secundary', 's')
     deleteBtn.addEventListener('click', async () => {
       loader(true)
-      await apiCatch(
-        `https://pryecto10backend-3.onrender.com/api/v2/eventos/${evento._id}`,
-        'DELETE',
-        null,
-        token
-      )
+      await apiCatch(`/api/v2/eventos/${evento._id}`, 'DELETE', null, token)
       await renderEventos(container)
       loader(false)
     })
@@ -216,14 +196,7 @@ export const editarEvento = async (evento) => {
         formData.append('lugar', inputLugar.value)
         formData.append('tipo', selectTipo.value)
 
-        await fetch(
-          `https://pryecto10backend-3.onrender.com/api/v2/eventos/${evento._id}`,
-          {
-            method: 'PUT',
-            headers: { Authorization: `Bearer ${token}` },
-            body: formData
-          }
-        )
+        await apiCatch(`/api/v2/eventos/${evento._id}`, 'PUT', formData, token)
       } else {
         const actualizado = {
           titulo: inputTitulo.value,
@@ -233,16 +206,11 @@ export const editarEvento = async (evento) => {
           tipo: selectTipo.value
         }
 
-        await fetch(
-          `https://pryecto10backend-3.onrender.com/api/v2/eventos/${evento._id}`,
-          {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify(actualizado)
-          }
+        await apiCatch(
+          `/api/v2/eventos/${evento._id}`,
+          'PUT',
+          actualizado,
+          token
         )
       }
 
