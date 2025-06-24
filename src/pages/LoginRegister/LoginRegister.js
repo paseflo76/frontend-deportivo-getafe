@@ -5,48 +5,54 @@ import { loader } from '../../utils/loader/loader'
 import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 import { Button } from '../../components/button/button'
 
-export const LoginRegister = () => {
+export const LoginRegister = async () => {
   const main = document.querySelector('main')
   main.innerHTML = ''
 
-  const loginDiv = document.createElement('div')
-  loginDiv.id = 'login'
-
-  login(loginDiv)
-
-  main.append(loginDiv)
-}
-
-const showError = (form, message) => {
-  let pError = form.querySelector('.pError')
-  if (!pError) {
-    pError = document.createElement('p')
-    pError.classList.add('pError')
-    form.append(pError)
+  const token = localStorage.getItem('token')
+  if (token) {
+    try {
+      const res = await fetch(`${API_BASE}/api/v2/users/validate`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      if (res.ok) {
+        await navigate('home')
+        Header()
+        return
+      }
+    } catch {
+      localStorage.removeItem('token')
+    }
   }
-  pError.textContent = message
-  setTimeout(() => pError.remove(), 3000)
-}
 
-const login = (container) => {
+  const container = document.createElement('div')
+  container.id = 'login-register-container'
+
   const form = document.createElement('form')
-  const inputUserName = document.createElement('input')
-    const inputEmail = document.createElement('input') 
-  const inputPassword = document.createElement('input')
 
+  const inputUserName = document.createElement('input')
   inputUserName.placeholder = 'User Name'
-   inputEmail.placeholder = 'Email' 
+  const inputEmail = document.createElement('input')
+  inputEmail.placeholder = 'Email'
+  const inputPassword = document.createElement('input')
   inputPassword.type = 'password'
   inputPassword.placeholder = '******'
 
   form.append(inputUserName, inputEmail, inputPassword)
   container.append(form)
 
-  const loginButton = Button(form, 'Login', 'primary', 'medium')
-  const registerButton = Button(form, 'Register', 'secondary', 'medium')
+  const buttonsDiv = document.createElement('div')
+  buttonsDiv.id = 'buttons-container'
+
+  const loginButton = Button(null, 'Login', 'primary', 'medium')
+  const registerButton = Button(null, 'Register', 'secondary', 'medium')
 
   loginButton.type = 'button'
   registerButton.type = 'button'
+
+  buttonsDiv.append(loginButton, registerButton)
+  container.append(buttonsDiv)
+  main.append(container)
 
   loginButton.addEventListener('click', () => {
     submit(
@@ -67,6 +73,17 @@ const login = (container) => {
       false
     )
   })
+}
+
+const showError = (form, message) => {
+  let pError = form.querySelector('.pError')
+  if (!pError) {
+    pError = document.createElement('p')
+    pError.classList.add('pError')
+    form.append(pError)
+  }
+  pError.textContent = message
+  setTimeout(() => pError.remove(), 3000)
 }
 
 const submit = async (userName, email, password, form, isLogin) => {
