@@ -31,11 +31,11 @@ const showError = (form, message) => {
 const login = (container) => {
   const form = document.createElement('form')
   const inputUserName = document.createElement('input')
-  const inputEmail = document.createElement('input')
+  /*  const inputEmail = document.createElement('input') */
   const inputPassword = document.createElement('input')
 
   inputUserName.placeholder = 'User Name'
-  inputEmail.placeholder = 'Email'
+  /* inputEmail.placeholder = 'Email' */
   inputPassword.type = 'password'
   inputPassword.placeholder = '******'
 
