@@ -56,7 +56,7 @@ const crearFormularioEvento = async () => {
     selectTipo.appendChild(option)
   })
 
-  const btn = Button(form, 'Crear Evento', 'secundary', 's')
+  const btn = Button('Crear Evento', 'secundary', 's', 'submit')
   form.append(inputTitulo, inputFecha, inputLugar, selectTipo, inputImg, btn)
 
   form.addEventListener('submit', async (e) => {
