@@ -7,6 +7,7 @@ import { Button } from '../../components/button/button'
 
 export const LoginRegister = async () => {
   const main = document.querySelector('main')
+  console.log('main element', main)
   main.innerHTML = ''
 
   const token = localStorage.getItem('token')
@@ -46,8 +47,8 @@ export const LoginRegister = async () => {
   const buttonsDiv = document.createElement('div')
   buttonsDiv.className = 'buttons'
 
-  const loginButton = Button(null, 'Login', 'primary', 'medium')
-  const registerButton = Button(null, 'Register', 'secondary', 'medium')
+  const loginButton = Button(buttonsDiv, 'Login', 'primary', 'medium')
+  const registerButton = Button(buttonsDiv, 'Register', 'secondary', 'medium')
 
   loginButton.type = 'button'
   registerButton.type = 'button'
