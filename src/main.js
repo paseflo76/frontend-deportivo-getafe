@@ -46,8 +46,12 @@ const Main = () => {
 
 window.addEventListener('load', async () => {
   Main()
-  const initialPath = location.hash.replace('#', '') || 'home'
-  await navigate(initialPath)
+  const token = localStorage.getItem('token')
+  if (!token) {
+    await navigate('login')
+  } else {
+    await navigate('home')
+  }
 })
 
 window.addEventListener('hashchange', async () => {
