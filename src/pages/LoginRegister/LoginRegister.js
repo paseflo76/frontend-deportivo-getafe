@@ -7,7 +7,6 @@ import { Button } from '../../components/button/button'
 
 export const LoginRegister = async () => {
   const main = document.querySelector('main')
-  console.log('main element', main)
   main.innerHTML = ''
 
   const token = localStorage.getItem('token')
@@ -33,48 +32,37 @@ export const LoginRegister = async () => {
 
   const form = document.createElement('form')
   const inputUserName = document.createElement('input')
-  const inputEmail = document.createElement('input')
   const inputPassword = document.createElement('input')
 
   inputUserName.placeholder = 'User Name'
-  inputEmail.placeholder = 'Email'
   inputPassword.type = 'password'
   inputPassword.placeholder = '******'
 
-  form.append(inputUserName, inputEmail, inputPassword)
-  container.append(form)
+  form.append(inputUserName, inputPassword)
 
   const buttonsDiv = document.createElement('div')
   buttonsDiv.className = 'buttons'
 
-  const loginButton = Button(buttonsDiv, 'Login', 'primary', 'medium')
-  const registerButton = Button(buttonsDiv, 'Register', 'secondary', 'medium')
-
+  const loginButton = Button(null, 'Login', 'primary', 'medium')
   loginButton.type = 'button'
-  registerButton.type = 'button'
 
-  buttonsDiv.append(loginButton, registerButton)
-  container.append(form, buttonsDiv)
+  const registerText = document.createElement('p')
+  registerText.textContent = '¿No estás registrado? Regístrate aquí'
+  registerText.className = 'register-link'
+
+  registerText.style.cursor = 'pointer'
+  registerText.style.textDecoration = 'underline'
+
+  buttonsDiv.append(loginButton)
+  container.append(form, buttonsDiv, registerText)
   main.append(container)
 
   loginButton.addEventListener('click', () => {
-    submit(
-      inputUserName.value.trim(),
-      inputEmail.value.trim(),
-      inputPassword.value,
-      form,
-      true
-    )
+    submitLogin(inputUserName.value.trim(), inputPassword.value, form)
   })
 
-  registerButton.addEventListener('click', () => {
-    submit(
-      inputUserName.value.trim(),
-      inputEmail.value.trim(),
-      inputPassword.value,
-      form,
-      false
-    )
+  registerText.addEventListener('click', () => {
+    renderRegisterForm(main)
   })
 }
 
@@ -89,34 +77,90 @@ const showError = (form, message) => {
   setTimeout(() => pError.remove(), 3000)
 }
 
-const submit = async (userName, email, password, form, isLogin) => {
-  if (
-    (isLogin && (!userName || !password)) ||
-    (!isLogin && (!userName || !email || !password))
-  ) {
+const submitLogin = async (userName, password, form) => {
+  if (!userName || !password) {
     showError(form, 'Por favor completa todos los campos.')
     return
   }
 
-  const payload = isLogin
-    ? { userName, password }
-    : { userName, email, password }
+  loader(true)
+  try {
+    const data = await apiCatch('/api/v2/users/login', 'POST', {
+      userName,
+      password
+    })
+    localStorage.setItem('token', data.token)
+    await navigate('home')
+    Header()
+  } catch (err) {
+    if (err.status === 400) {
+      showError(form, 'Usuario o Contraseña Incorrectos')
+    } else {
+      showError(form, 'Error de red o servidor.')
+    }
+  } finally {
+    loader(false)
+  }
+}
 
-  const url = isLogin ? '/api/v2/users/login' : '/api/v2/users/register'
+const renderRegisterForm = (main) => {
+  main.innerHTML = ''
+  const container = document.createElement('div')
+  container.id = 'login'
+
+  const form = document.createElement('form')
+  const inputUserName = document.createElement('input')
+  const inputEmail = document.createElement('input')
+  const inputPassword = document.createElement('input')
+
+  inputUserName.placeholder = 'User Name'
+  inputEmail.placeholder = 'Email'
+  inputPassword.type = 'password'
+  inputPassword.placeholder = '******'
+
+  form.append(inputUserName, inputEmail, inputPassword)
+
+  const buttonsDiv = document.createElement('div')
+  buttonsDiv.className = 'buttons'
+
+  const registerButton = Button(null, 'Register', 'secondary', 'medium')
+  registerButton.type = 'button'
+
+  buttonsDiv.append(registerButton)
+  container.append(form, buttonsDiv)
+  main.append(container)
+
+  registerButton.addEventListener('click', () => {
+    submitRegister(
+      inputUserName.value.trim(),
+      inputEmail.value.trim(),
+      inputPassword.value,
+      form
+    )
+  })
+}
+
+const submitRegister = async (userName, email, password, form) => {
+  if (!userName || !email || !password) {
+    showError(form, 'Por favor completa todos los campos.')
+    return
+  }
 
   loader(true)
   try {
-    const data = await apiCatch(url, 'POST', payload)
+    const data = await apiCatch('/api/v2/users/register', 'POST', {
+      userName,
+      email,
+      password
+    })
     localStorage.setItem('token', data.token)
     await navigate('home')
     Header()
   } catch (err) {
     if (err.status === 400) {
       const msg = err.body?.message || 'Error'
-      if (isLogin) {
-        showError(form, 'Usuario o Contraseña Incorrectos')
-      } else if (msg === 'User already exists') {
-        return submit(userName, email, password, form, true)
+      if (msg === 'User already exists') {
+        showError(form, 'El usuario ya existe')
       } else {
         showError(form, msg)
       }

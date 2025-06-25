@@ -9,6 +9,6 @@ export const Button = (nodoPadre, texto, importance, size) => {
   button.classList.add(size)
   button.textContent = texto
 
-  nodoPadre.append(button)
+  if (nodoPadre) nodoPadre.append(button)
   return button
-} 
+}
