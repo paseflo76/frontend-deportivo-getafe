@@ -14,6 +14,14 @@ const routes = {
 
 export const navigate = async (path) => {
   document.querySelectorAll('.modal-edicion')?.forEach((el) => el.remove())
+
+  const token = localStorage.getItem('token')
+
+  if (!token && path !== 'login') {
+    path = 'login'
+    location.hash = '#login'
+  }
+
   const view = routes[path]
   if (view) {
     loader(true)
@@ -21,7 +29,6 @@ export const navigate = async (path) => {
     location.hash = `#${path}`
     Header()
     Footer()
-
     loader(false)
   }
 }
@@ -39,8 +46,8 @@ const Main = () => {
 
 window.addEventListener('load', async () => {
   Main()
-  const path = location.hash.replace('#', '') || 'home'
-  await navigate(path)
+  const initialPath = location.hash.replace('#', '') || 'home'
+  await navigate(initialPath)
 })
 
 window.addEventListener('hashchange', async () => {
