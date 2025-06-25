@@ -19,6 +19,8 @@ export const LoginRegister = async () => {
         await navigate('home')
         Header()
         return
+      } else {
+        localStorage.removeItem('token')
       }
     } catch {
       localStorage.removeItem('token')
@@ -26,15 +28,15 @@ export const LoginRegister = async () => {
   }
 
   const container = document.createElement('div')
-  container.id = 'login-register-container'
+  container.id = 'login'
 
   const form = document.createElement('form')
-
   const inputUserName = document.createElement('input')
-  inputUserName.placeholder = 'User Name'
   const inputEmail = document.createElement('input')
-  inputEmail.placeholder = 'Email'
   const inputPassword = document.createElement('input')
+
+  inputUserName.placeholder = 'User Name'
+  inputEmail.placeholder = 'Email'
   inputPassword.type = 'password'
   inputPassword.placeholder = '******'
 
@@ -42,7 +44,7 @@ export const LoginRegister = async () => {
   container.append(form)
 
   const buttonsDiv = document.createElement('div')
-  buttonsDiv.id = 'buttons-container'
+  buttonsDiv.className = 'buttons'
 
   const loginButton = Button(null, 'Login', 'primary', 'medium')
   const registerButton = Button(null, 'Register', 'secondary', 'medium')
@@ -51,7 +53,7 @@ export const LoginRegister = async () => {
   registerButton.type = 'button'
 
   buttonsDiv.append(loginButton, registerButton)
-  container.append(buttonsDiv)
+  container.append(form, buttonsDiv)
   main.append(container)
 
   loginButton.addEventListener('click', () => {
