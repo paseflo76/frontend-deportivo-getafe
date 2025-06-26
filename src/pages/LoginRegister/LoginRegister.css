@@ -28,6 +28,11 @@
   padding-top: 5px;
 }
 
+div.buttons {
+  display: flex;
+  justify-content: center;
+}
+
 .register-link {
   color: var(--colorText);
   font-size: 20px;

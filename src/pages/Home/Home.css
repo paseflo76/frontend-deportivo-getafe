@@ -6,13 +6,13 @@
 }
 
 .home-title {
-  font-size: 2rem;
+  font-size: 10px;
   color: var(--colorText);
   margin-top: 1rem;
 }
 
 .home-description {
-  font-size: 1.1rem;
+  font-size: 10px;
   color: var(--colorText2);
   max-width: 600px;
   text-align: center;

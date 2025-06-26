@@ -53,7 +53,7 @@ export const LoginRegister = async () => {
   const buttonsDiv = document.createElement('div')
   buttonsDiv.className = 'buttons'
 
-  const loginButton = Button(form, 'Login', 'secundary', 's')
+  const loginButton = Button(form, 'Login', 'secondary', 's')
   loginButton.type = 'button'
   buttonsDiv.append(loginButton)
 
