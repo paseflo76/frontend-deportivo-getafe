@@ -60,7 +60,7 @@ export const LoginRegister = async () => {
 
   if (!token) {
     const registerText = document.createElement('p')
-    registerText.textContent = '¿No estás registrado? Regístrate aquí'
+    registerText.textContent = '¿No estás registrado? Regístrate Aquí'
     registerText.className = 'register-link'
     registerText.addEventListener('click', () => {
       renderRegisterForm(main)

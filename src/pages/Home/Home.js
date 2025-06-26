@@ -8,7 +8,7 @@ export const Home = async () => {
   main.innerHTML = ''
 
   const container = document.createElement('div')
-  container.className = 'home-container'
+  container.className = 'Home-container'
 
   const titulo = document.createElement('h1')
   titulo.textContent = 'Eventos del Club Deportivo Getafe'
