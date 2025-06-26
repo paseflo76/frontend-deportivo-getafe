@@ -3,7 +3,7 @@ import { apiCatch } from '../../utils/fetch/fech'
 import { Button } from '../../components/button/button'
 import { loader } from '../../utils/loader/loader'
 
-export const Admin = async () => {
+export const admin = async () => {
   const main = document.querySelector('main')
   const body = document.querySelector('body')
   if (!body) return console.error('body no encontrado')
@@ -73,7 +73,7 @@ const crearFormularioEvento = async () => {
     const token = localStorage.getItem('token')
     try {
       await apiCatch('/api/v2/eventos', 'POST', formData, token)
-      await Admin()
+      await admin()
     } catch (err) {
       console.error(err)
     } finally {
@@ -91,8 +91,8 @@ const renderEventos = async (container) => {
   const eventos = await apiCatch('/api/v2/eventos', 'GET', null, token)
 
   for (const evento of eventos) {
-    const divAdminEvent = document.createElement('div')
-    divAdminEvent.className = 'admin-evento'
+    const divadminEvent = document.createElement('div')
+    divadminEvent.className = 'admin-evento'
 
     const h3 = document.createElement('h3')
     const imgEvent = document.createElement('img')
@@ -106,13 +106,13 @@ const renderEventos = async (container) => {
     pLugar.textContent = evento.lugar
     pTipo.textContent = evento.tipo
 
-    const editBtn = Button(divAdminEvent, 'Editar', 'secundary', 's')
+    const editBtn = Button(divadminEvent, 'Editar', 'secundary', 's')
     editBtn.addEventListener('click', () => {
       if (document.querySelector('.modal-edicion')) return
       editarEvento(evento)
     })
 
-    const deleteBtn = Button(divAdminEvent, 'Borrar', 'secundary', 's')
+    const deleteBtn = Button(divadminEvent, 'Borrar', 'secundary', 's')
     deleteBtn.addEventListener('click', async () => {
       loader(true)
       await apiCatch(`/api/v2/eventos/${evento._id}`, 'DELETE', null, token)
@@ -120,7 +120,7 @@ const renderEventos = async (container) => {
       loader(false)
     })
 
-    divAdminEvent.append(
+    divadminEvent.append(
       h3,
       pFecha,
       imgEvent,
@@ -129,7 +129,7 @@ const renderEventos = async (container) => {
       editBtn,
       deleteBtn
     )
-    container.append(divAdminEvent)
+    container.append(divadminEvent)
   }
 }
 
@@ -180,7 +180,6 @@ export const editarEvento = async (evento) => {
     btnCancelar
   )
   container.appendChild(form)
-
   document.getElementById('lista-eventos').appendChild(container)
 
   form.addEventListener('submit', async (e) => {
@@ -206,7 +205,6 @@ export const editarEvento = async (evento) => {
           img: evento.img,
           tipo: selectTipo.value
         }
-
         await apiCatch(
           `/api/v2/eventos/${evento._id}`,
           'PUT',
@@ -214,9 +212,8 @@ export const editarEvento = async (evento) => {
           token
         )
       }
-
       container.remove()
-      await Admin()
+      await admin()
     } catch (error) {
       console.error(error)
     }

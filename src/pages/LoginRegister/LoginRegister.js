@@ -5,6 +5,21 @@ import { loader } from '../../utils/loader/loader'
 import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 import { Button } from '../../components/button/button'
 
+// utilidades comunes
+const createInput = (type = 'text', placeholder = '') => {
+  const input = document.createElement('input')
+  input.type = type
+  input.placeholder = placeholder
+  return input
+}
+
+const createFormWithInputs = (placeholders) => {
+  const form = document.createElement('form')
+  const inputs = placeholders.map(([type, text]) => createInput(type, text))
+  inputs.forEach((i) => form.append(i))
+  return { form, inputs }
+}
+
 export const LoginRegister = async () => {
   const main = document.querySelector('main')
   main.innerHTML = ''
@@ -30,39 +45,34 @@ export const LoginRegister = async () => {
   const container = document.createElement('div')
   container.id = 'login'
 
-  const form = document.createElement('form')
-  const inputUserName = document.createElement('input')
-  const inputPassword = document.createElement('input')
-
-  inputUserName.placeholder = 'User Name'
-  inputPassword.type = 'password'
-  inputPassword.placeholder = '******'
-
-  form.append(inputUserName, inputPassword)
+  const { form, inputs } = createFormWithInputs([
+    ['text', 'User Name'],
+    ['password', '******']
+  ])
+  const [inputUserName, inputPassword] = inputs
 
   const buttonsDiv = document.createElement('div')
   buttonsDiv.className = 'buttons'
 
-  const loginButton = Button(form, 'Login', 'primary', 'medium')
+  const loginButton = Button(form, 'Login', 'secundary', 's')
   loginButton.type = 'button'
-
-  const registerText = document.createElement('p')
-  registerText.textContent = '¿No estás registrado? Regístrate aquí'
-  registerText.className = 'register-link'
-
-  registerText.style.cursor = 'pointer'
-  registerText.style.textDecoration = 'underline'
-
   buttonsDiv.append(loginButton)
-  container.append(form, buttonsDiv, registerText)
+
+  if (!token) {
+    const registerText = document.createElement('p')
+    registerText.textContent = '¿No estás registrado? Regístrate aquí'
+    registerText.className = 'register-link'
+    registerText.addEventListener('click', () => {
+      renderRegisterForm(main)
+    })
+    container.appendChild(registerText)
+  }
+
+  container.append(form, buttonsDiv)
   main.append(container)
 
   loginButton.addEventListener('click', () => {
     submitLogin(inputUserName.value.trim(), inputPassword.value, form)
-  })
-
-  registerText.addEventListener('click', () => {
-    renderRegisterForm(main)
   })
 }
 
@@ -108,25 +118,20 @@ const renderRegisterForm = (main) => {
   const container = document.createElement('div')
   container.id = 'login'
 
-  const form = document.createElement('form')
-  const inputUserName = document.createElement('input')
-  const inputEmail = document.createElement('input')
-  const inputPassword = document.createElement('input')
-
-  inputUserName.placeholder = 'User Name'
-  inputEmail.placeholder = 'Email'
-  inputPassword.type = 'password'
-  inputPassword.placeholder = '******'
-
-  form.append(inputUserName, inputEmail, inputPassword)
+  const { form, inputs } = createFormWithInputs([
+    ['text', 'User Name'],
+    ['text', 'Email'],
+    ['password', '******']
+  ])
+  const [inputUserName, inputEmail, inputPassword] = inputs
 
   const buttonsDiv = document.createElement('div')
   buttonsDiv.className = 'buttons'
 
   const registerButton = Button(null, 'Register', 'secondary', 'medium')
   registerButton.type = 'button'
-
   buttonsDiv.append(registerButton)
+
   container.append(form, buttonsDiv)
   main.append(container)
 

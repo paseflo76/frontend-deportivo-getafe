@@ -12,3 +12,4 @@ export const Button = (nodoPadre, texto, importance, size, type = 'button') => {
   if (nodoPadre) nodoPadre.append(button)
   return button
 }
+ 

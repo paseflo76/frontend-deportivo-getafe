@@ -1,1 +1,26 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
 
+.home-title {
+  font-size: 2rem;
+  color: var(--colorText);
+  margin-top: 1rem;
+}
+
+.home-description {
+  font-size: 1.1rem;
+  color: var(--colorText2);
+  max-width: 600px;
+  text-align: center;
+}
+
+.lista-eventos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}

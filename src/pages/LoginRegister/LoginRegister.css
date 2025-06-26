@@ -22,10 +22,19 @@
   background-color: var(--colorText2);
   cursor: pointer;
 }
-#login p {
-  color: white;
-  cursor: pointer;
+.buttons {
+  display: flex;
+  justify-content: center;
+  padding-top: 5px;
+}
+
+.register-link {
+  color: var(--colorText);
   font-size: 20px;
+  border-radius: 10px;
+  border: 2px solid black;
+  cursor: pointer;
+  background-color: var(--body);
 }
 .pError {
   color: red;
