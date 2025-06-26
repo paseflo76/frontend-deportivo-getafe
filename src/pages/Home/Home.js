@@ -1,14 +1,13 @@
 import './Home.css'
-
-import { CardEvento } from '../../components/CardEvento/CardEvento'
 import { getEventos } from '../../utils/eventos/eventos'
+import { printEventos } from '../../components/cardEvent/cardEvent'
 
 export const Home = async () => {
   const main = document.querySelector('main')
   main.innerHTML = ''
 
   const container = document.createElement('div')
-  container.className = 'Home-container'
+  container.className = 'home-container'
 
   const titulo = document.createElement('h1')
   titulo.textContent = 'Eventos del Club Deportivo Getafe'
@@ -24,10 +23,8 @@ export const Home = async () => {
   const listaEventos = document.createElement('div')
   listaEventos.className = 'lista-eventos'
 
-  eventos.forEach((evento) => {
-    const card = CardEvento(evento)
-    listaEventos.appendChild(card)
-  })
+  const cards = printEventos(eventos)
+  listaEventos.appendChild(cards)
 
   container.append(titulo, descripcion, listaEventos)
   main.appendChild(container)

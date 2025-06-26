@@ -14,13 +14,10 @@ export const cardEvent = async () => {
   printEventos(eventos, main)
 }
 
-export const printEventos = (eventos, ePadre) => {
-  ePadre.innerHTML = ''
+export const printEventos = (eventos) => {
+  const fragment = document.createDocumentFragment()
 
   for (const evento of eventos) {
-    const divEventos = document.createElement('div')
-    divEventos.id = 'Eventos'
-
     const divEvento = document.createElement('div')
     divEvento.className = 'evento'
 
@@ -40,9 +37,10 @@ export const printEventos = (eventos, ePadre) => {
     btnAsist.addEventListener('click', () => menuAsist(evento._id, divEvento))
 
     divEvento.append(tipo, imgEvent, titulo, fecha, lugar, btnAsist)
-    divEventos.appendChild(divEvento)
-    ePadre.appendChild(divEventos)
+    fragment.appendChild(divEvento)
   }
+
+  return fragment
 }
 
 const menuAsist = (eventoId, divEvento) => {
