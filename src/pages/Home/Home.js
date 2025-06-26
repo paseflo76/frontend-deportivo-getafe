@@ -1,6 +1,7 @@
 import './Home.css'
-import { getEventos } from '../../utils/eventos/eventos'
+
 import { printEventos } from '../../components/cardEvent/cardEvent'
+import { getEventos } from '../../utils/eventos/eventos'
 
 export const Home = async () => {
   const main = document.querySelector('main')
@@ -18,13 +19,11 @@ export const Home = async () => {
     'Consulta aquí los próximos eventos del club y confirma tu asistencia.'
   descripcion.className = 'home-description'
 
-  const eventos = await getEventos()
-
   const listaEventos = document.createElement('div')
   listaEventos.className = 'lista-eventos'
 
-  const cards = printEventos(eventos)
-  listaEventos.appendChild(cards)
+  const eventos = await getEventos()
+  printEventos(eventos, listaEventos)
 
   container.append(titulo, descripcion, listaEventos)
   main.appendChild(container)

@@ -5,7 +5,6 @@ import { loader } from '../../utils/loader/loader'
 import { API_BASE, apiCatch } from '../../utils/fetch/fech'
 import { Button } from '../../components/button/button'
 
-// utilidades comunes
 const createInput = (type = 'text', placeholder = '') => {
   const input = document.createElement('input')
   input.type = type
@@ -128,7 +127,7 @@ const renderRegisterForm = (main) => {
   const buttonsDiv = document.createElement('div')
   buttonsDiv.className = 'buttons'
 
-  const registerButton = Button(null, 'Register', 'secondary', 'medium')
+  const registerButton = Button(null, 'Register', 'secondary', 's')
   registerButton.type = 'button'
   buttonsDiv.append(registerButton)
 

@@ -1,4 +1,4 @@
-import { apiCatch } from '../api'
+import { apiCatch } from '../fetch/fech'
 
 export const getEventos = async () => {
   try {
