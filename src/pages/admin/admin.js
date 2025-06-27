@@ -3,7 +3,7 @@ import { apiCatch } from '../../utils/fetch/fech'
 import { Button } from '../../components/button/button'
 import { loader } from '../../utils/loader/loader'
 
-export const admin = async () => {
+export const Admin = async () => {
   const main = document.querySelector('main')
   const body = document.querySelector('body')
   if (!body) return console.error('body no encontrado')
@@ -73,7 +73,7 @@ const crearFormularioEvento = async () => {
     const token = localStorage.getItem('token')
     try {
       await apiCatch('/api/v2/eventos', 'POST', formData, token)
-      await admin()
+      await Admin()
     } catch (err) {
       console.error(err)
     } finally {
@@ -213,7 +213,7 @@ export const editarEvento = async (evento) => {
         )
       }
       container.remove()
-      await admin()
+      await Admin()
     } catch (error) {
       console.error(error)
     }
