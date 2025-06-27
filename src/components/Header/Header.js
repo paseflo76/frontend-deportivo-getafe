@@ -48,18 +48,17 @@ export const Header = () => {
   divDecoracion.className = 'decoration'
 
   const imgPortero = document.createElement('img')
-  const imgJudador1 = document.createElement('img')
-  const imgJudador2 = document.createElement('img')
+  const imgJugador1 = document.createElement('img')
+  const imgJugador2 = document.createElement('img')
   imgPortero.src = 'assets/portero.png'
   imgPortero.alt = 'portero'
-  imgJudador1.src = 'assets/jugador-de-futbol1.png'
-  imgJudador1.alt = 'jugador futbol'
-  imgJudador2.src = 'assets/jugador-de-futbol2.png'
-  imgJudador2.alt = 'jugador futbol2'
+  imgJugador1.src = 'assets/jugador-de-futbol1.png'
+  imgJugador1.alt = 'jugador futbol'
+  imgJugador2.src = 'assets/jugador-de-futbol2.png'
+  imgJugador2.alt = 'jugador futbol2'
 
-  imgPortero.alt = 'portero'
-  divDecoracion.appendChild(imgJudador1)
-  divDecoracion.appendChild(imgJudador2)
+  divDecoracion.appendChild(imgJugador1)
+  divDecoracion.appendChild(imgJugador2)
   divDecoracion.appendChild(imgPortero)
 
   const token = localStorage.getItem('token')
