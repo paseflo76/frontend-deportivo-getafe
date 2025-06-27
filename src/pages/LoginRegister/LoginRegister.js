@@ -22,6 +22,8 @@ const createFormWithInputs = (placeholders) => {
 export const LoginRegister = async () => {
   const main = document.querySelector('main')
   main.innerHTML = ''
+  const old = document.querySelector('#login')
+  if (old) old.remove()
 
   const token = localStorage.getItem('token')
   if (token) {
@@ -113,7 +115,9 @@ const submitLogin = async (userName, password, form) => {
 }
 
 const renderRegisterForm = (main) => {
-  main.innerHTML = ''
+  const prev = document.querySelector('#login')
+  if (prev) prev.remove()
+
   const container = document.createElement('div')
   container.id = 'login'
 
