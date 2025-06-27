@@ -1,4 +1,9 @@
-// Añade control estricto para crear <main> si no existe
+import './perfil.css'
+
+import { navigate } from '../../main'
+import { Button } from '../../components/button/button'
+import { apiCatch } from '../../utils/fetch/fech'
+
 export const Perfil = async () => {
   let main = document.querySelector('main')
   if (!main) {
