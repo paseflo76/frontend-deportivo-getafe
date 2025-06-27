@@ -5,11 +5,13 @@ import { Admin } from './pages/admin/admin'
 import { Home } from './pages/Home/Home'
 import { LoginRegister } from './pages/LoginRegister/LoginRegister'
 import { Footer } from './components/footer/footer'
+import { Perfil } from './pages/perfil/perfil'
 
 const routes = {
   home: Home,
   login: LoginRegister,
-  admin: Admin
+  admin: Admin,
+  perfil: Perfil
 }
 
 export const navigate = async (path) => {
