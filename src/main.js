@@ -17,6 +17,9 @@ const routes = {
 export const navigate = async (path) => {
   document.querySelectorAll('.modal-edicion')?.forEach((el) => el.remove())
 
+  const main = document.querySelector('main')
+  if (main) main.innerHTML = '' // Limpiar main antes de renderizar la nueva vista
+
   const token = localStorage.getItem('token')
 
   if (!token && path !== 'login') {
