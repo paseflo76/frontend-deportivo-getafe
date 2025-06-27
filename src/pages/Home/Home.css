@@ -6,21 +6,26 @@
 }
 
 .home-title {
-  font-size: 10px;
+  font-size: 35pxpx;
   color: var(--colorText);
-  margin-top: 1rem;
+  background-color: var(--body);
+  padding: 10px;
+  border-radius: 10px;
+  border-radius: 10px;
 }
 
 .home-description {
-  font-size: 10px;
-  color: var(--colorText2);
+  font-size: 17px;
+  color: var(--colorText);
   max-width: 600px;
   text-align: center;
+  background-color: var(--body);
+  border-radius: 10px;
 }
 
 .lista-eventos {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
+  gap: 10px;
 }

@@ -14,7 +14,7 @@ export const cardEvent = async () => {
   printEventos(eventos, main)
 }
 
-export const printEventos = (eventos) => {
+export const printEventos = (eventos, contenedor) => {
   const fragment = document.createDocumentFragment()
 
   for (const evento of eventos) {
@@ -40,7 +40,7 @@ export const printEventos = (eventos) => {
     fragment.appendChild(divEvento)
   }
 
-  return fragment
+  contenedor.appendChild(fragment)
 }
 
 const menuAsist = (eventoId, divEvento) => {
