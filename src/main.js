@@ -1,4 +1,5 @@
 // src/main.js
+// main.js
 import './style.css'
 import { loader } from './utils/loader/loader'
 import { Header } from './components/Header/Header'
@@ -32,11 +33,16 @@ export const navigate = async (path) => {
   const view = routes[path]
   if (view) {
     loader(true)
-    await view()
-    location.hash = `#${path}`
-    Header()
-    Footer()
-    loader(false)
+    try {
+      await view()
+      location.hash = `#${path}`
+      Header()
+      Footer()
+    } catch (e) {
+      console.error(e)
+    } finally {
+      loader(false)
+    }
   }
 }
 

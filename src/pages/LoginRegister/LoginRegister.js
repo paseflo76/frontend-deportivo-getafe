@@ -1,4 +1,4 @@
-// src/pages/LoginRegister/LoginRegister.js
+// pages/LoginRegister/LoginRegister.js
 import './LoginRegister.css'
 import { navigate } from '../../main'
 import { Header } from '../../components/Header/Header'
@@ -71,6 +71,7 @@ export const LoginRegister = async () => {
   loginButton.addEventListener('click', () => {
     submitLogin(inputUserName.value.trim(), inputPassword.value, form)
   })
+  return
 }
 
 const showError = (form, message) => {

@@ -1,4 +1,5 @@
 // src/pages/perfil/perfil.js
+// pages/perfil/perfil.js
 import './perfil.css'
 import { navigate } from '../../main'
 import { Button } from '../../components/button/button'
@@ -93,4 +94,5 @@ export const Perfil = async () => {
 
   container.append(title, avatar, formAvatar, info, btnEliminar)
   main.appendChild(container)
+  return
 }
