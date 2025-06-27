@@ -1,13 +1,10 @@
-import './perfil.css'
-
-import { navigate } from '../../main'
-import { Button } from '../../components/button/button'
-import { apiCatch } from '../../utils/fetch/fech'
-
+// Añade control estricto para crear <main> si no existe
 export const Perfil = async () => {
-  const main = document.querySelector('main')
-  if (!main) return
-
+  let main = document.querySelector('main')
+  if (!main) {
+    main = document.createElement('main')
+    document.body.appendChild(main)
+  }
   main.innerHTML = ''
 
   const token = localStorage.getItem('token')
