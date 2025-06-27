@@ -1,11 +1,18 @@
-import './perfil.css'
+iimport './perfil.css'
 import { apiCatch } from '../../utils/fetch/fech'
 import { navigate } from '../../main'
 import { Button } from '../../components/button/button'
 
-export const Perfil = () => {
+export const Perfil = async () => {
   const main = document.querySelector('main')
   main.innerHTML = ''
+
+  const token = localStorage.getItem('token')
+  const userId = localStorage.getItem('userId')
+  if (!token || !userId) {
+    navigate('login')
+    return
+  }
 
   const container = document.createElement('section')
   container.className = 'perfil-container'
@@ -14,16 +21,72 @@ export const Perfil = () => {
   title.textContent = 'Perfil de usuario'
   title.className = 'perfil-title'
 
+  // Obtener datos usuario
+  const user = await apiCatch(`/api/v2/users/${userId}`, 'GET', null, token)
+  if (!user) {
+    container.textContent = 'Error al cargar perfil'
+    main.appendChild(container)
+    return
+  }
+
+  const avatar = document.createElement('img')
+  avatar.className = 'perfil-avatar'
+  avatar.src = user.avatar ? user.avatar : '/default-avatar.png'
+  avatar.alt = 'Avatar de usuario'
+
+  const formAvatar = document.createElement('form')
+  formAvatar.enctype = 'multipart/form-data'
+
+  const inputFile = document.createElement('input')
+  inputFile.type = 'file'
+  inputFile.name = 'avatar'
+  inputFile.accept = 'image/*'
+
+  const btnUpload = Button(null, 'Cambiar Avatar', 'primary', 's')
+  btnUpload.type = 'submit'
+
+  formAvatar.append(inputFile, btnUpload)
+
+  formAvatar.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    if (!inputFile.files[0]) return
+    const formData = new FormData()
+    formData.append('avatar', inputFile.files[0])
+
+    const res = await apiCatch(
+      `/api/v2/users/${userId}/avatar`,
+      'POST',
+      formData,
+      token,
+      true
+    )
+    if (res && res.avatar) {
+      avatar.src = res.avatar
+    }
+  })
+
+  // Mostrar info usuario
+  const info = document.createElement('div')
+  info.className = 'perfil-info'
+
+  const userName = document.createElement('p')
+  userName.textContent = `Usuario: ${user.userName}`
+
+  const email = document.createElement('p')
+  email.textContent = `Email: ${user.email}`
+
+  // Botón eliminar cuenta
   const btnEliminar = Button(null, 'Eliminar cuenta', 'secondary', 's')
   btnEliminar.classList.add('perfil-btn')
   btnEliminar.addEventListener('click', async () => {
-    const token = localStorage.getItem('token')
-    const userId = localStorage.getItem('userId')
     await apiCatch(`/api/v2/users/${userId}`, 'DELETE', null, token)
     localStorage.removeItem('token')
+    localStorage.removeItem('userId')
     navigate('home')
   })
 
-  container.append(title, btnEliminar)
+  info.append(userName, email)
+
+  container.append(title, avatar, formAvatar, info, btnEliminar)
   main.appendChild(container)
 }
