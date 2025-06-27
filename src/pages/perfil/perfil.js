@@ -6,6 +6,8 @@ import { apiCatch } from '../../utils/fetch/fech'
 
 export const Perfil = async () => {
   const main = document.querySelector('main')
+  if (!main) return
+
   main.innerHTML = ''
 
   const token = localStorage.getItem('token')
@@ -22,7 +24,6 @@ export const Perfil = async () => {
   title.textContent = 'Perfil de usuario'
   title.className = 'perfil-title'
 
-  // Obtener datos usuario
   const user = await apiCatch(`/api/v2/users/${userId}`, 'GET', null, token)
   if (!user) {
     container.textContent = 'Error al cargar perfil'
@@ -66,7 +67,6 @@ export const Perfil = async () => {
     }
   })
 
-  // Mostrar info usuario
   const info = document.createElement('div')
   info.className = 'perfil-info'
 
@@ -76,7 +76,6 @@ export const Perfil = async () => {
   const email = document.createElement('p')
   email.textContent = `Email: ${user.email}`
 
-  // Botón eliminar cuenta
   const btnEliminar = Button(null, 'Eliminar cuenta', 'secondary', 's')
   btnEliminar.classList.add('perfil-btn')
   btnEliminar.addEventListener('click', async () => {
