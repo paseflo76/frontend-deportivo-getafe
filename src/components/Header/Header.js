@@ -2,6 +2,7 @@ import { navigate } from '../../main'
 import { Admin } from '../../pages/admin/admin'
 import { Home } from '../../pages/Home/Home'
 import { LoginRegister } from '../../pages/LoginRegister/LoginRegister'
+import { Perfil } from '../../pages/perfil/perfil'
 
 import './Header.css'
 
@@ -67,7 +68,8 @@ export const Header = () => {
   const routes = [
     { texto: 'Home', path: 'home', function: Home },
     { texto: 'Editar', path: 'admin', function: Admin },
-    { texto: 'Login', path: 'login', function: LoginRegister }
+    { texto: 'Login', path: 'login', function: LoginRegister },
+    { texto: 'Perfil', path: 'perfil', function: Perfil }
   ]
 
   if (user?.rol !== 'admin') {
