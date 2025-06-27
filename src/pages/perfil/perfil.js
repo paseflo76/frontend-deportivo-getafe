@@ -1,7 +1,8 @@
 import './perfil.css'
-import { apiCatch } from '../../utils/fetch/fech'
+
 import { navigate } from '../../main'
 import { Button } from '../../components/button/button'
+import { apiCatch } from '../../utils/fetch/fech'
 
 export const Perfil = async () => {
   const main = document.querySelector('main')
