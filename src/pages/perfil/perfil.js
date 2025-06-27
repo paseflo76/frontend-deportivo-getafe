@@ -1,7 +1,7 @@
 import { apiCatch } from '../../utils/fetch/fech'
 import { navigate } from '../../main'
 
-import './perfilgit.css'
+import './perfil.css'
 import { Button } from '../../components/button/button'
 
 export const Perfil = () => {
