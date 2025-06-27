@@ -1,6 +1,8 @@
 import { apiCatch } from '../../utils/fetch/fech'
 import { navigate } from '../../main'
-import './perfil.css'
+
+import './perfilgit.css'
+import { Button } from '../../components/button/button'
 
 export const Perfil = () => {
   const main = document.querySelector('main')
@@ -10,17 +12,15 @@ export const Perfil = () => {
   const title = document.createElement('h2')
   title.textContent = 'Perfil de usuario'
 
-  const btnEliminar = document.createElement('button')
-  btnEliminar.textContent = 'Eliminar cuenta'
+  const btnEliminar = Button(container, 'Eliminar cuenta', 'secondary', 's')
   btnEliminar.addEventListener('click', async () => {
     const token = localStorage.getItem('token')
-    const user = JSON.parse(localStorage.getItem('user'))
-    await apiCatch(`/api/v2/users/${user._id}`, 'DELETE', null, token)
+    const userId = localStorage.getItem('userId') // asegúrate de guardar esto al iniciar sesión
+    await apiCatch(`/api/v2/users/${userId}`, 'DELETE', null, token)
     localStorage.removeItem('token')
-    localStorage.removeItem('user')
     navigate('home')
   })
 
-  container.append(title, btnEliminar)
+  container.appendChild(title)
   main.appendChild(container)
 }
