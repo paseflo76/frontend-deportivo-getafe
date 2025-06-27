@@ -97,7 +97,7 @@ const submitLogin = async (userName, password, form) => {
       password
     })
     localStorage.setItem('token', data.token)
-    localStorage.setItem('userId', data.userId)
+    localStorage.setItem('userId', data.user._id)
     await navigate('home')
     Header()
   } catch (err) {
@@ -159,7 +159,7 @@ const submitRegister = async (userName, email, password, form) => {
       password
     })
     localStorage.setItem('token', data.token)
-    localStorage.setItem('userId', data.userId)
+    localStorage.setItem('userId', data.user._id)
     await navigate('home')
     Header()
   } catch (err) {
