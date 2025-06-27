@@ -2,7 +2,7 @@ import './LoginRegister.css'
 import { navigate } from '../../main'
 import { Header } from '../../components/Header/Header'
 import { loader } from '../../utils/loader/loader'
-import { API_BASE, apiCatch } from '../../utils/fetch/fech'
+import { apiCatch } from '../../utils/fetch/fech'
 import { Button } from '../../components/button/button'
 
 const createInput = (type = 'text', placeholder = '') => {
@@ -28,16 +28,10 @@ export const LoginRegister = async () => {
   const token = localStorage.getItem('token')
   if (token) {
     try {
-      const res = await fetch(`${API_BASE}/api/v2/users/validate`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      if (res.ok) {
-        await navigate('home')
-        Header()
-        return
-      } else {
-        localStorage.removeItem('token')
-      }
+      await apiCatch('/api/v2/users/validate', 'GET', null, token)
+      await navigate('home')
+      Header()
+      return
     } catch {
       localStorage.removeItem('token')
     }
