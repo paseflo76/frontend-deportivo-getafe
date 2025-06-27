@@ -1,5 +1,5 @@
+// src/pages/perfil/perfil.js
 import './perfil.css'
-
 import { navigate } from '../../main'
 import { Button } from '../../components/button/button'
 import { apiCatch } from '../../utils/fetch/fech'
@@ -14,6 +14,7 @@ export const Perfil = async () => {
 
   const token = localStorage.getItem('token')
   const userId = localStorage.getItem('userId')
+
   if (!token || !userId) {
     navigate('login')
     return
@@ -44,6 +45,7 @@ export const Perfil = async () => {
   const inputFile = document.createElement('input')
   inputFile.type = 'file'
   inputFile.name = 'avatar'
+  inputFile.id = 'avatar'
   inputFile.accept = 'image/*'
 
   const btnUpload = Button(null, 'Cambiar Avatar', 'primary', 's')

@@ -1,3 +1,4 @@
+// src/main.js
 import './style.css'
 import { loader } from './utils/loader/loader'
 import { Header } from './components/Header/Header'
@@ -21,8 +22,9 @@ export const navigate = async (path) => {
   if (main) main.innerHTML = '' // Limpiar main antes de renderizar la nueva vista
 
   const token = localStorage.getItem('token')
+  const userId = localStorage.getItem('userId')
 
-  if (!token && path !== 'login') {
+  if ((!token || !userId) && path !== 'login') {
     path = 'login'
     location.hash = '#login'
   }
@@ -52,7 +54,8 @@ const Main = () => {
 window.addEventListener('load', async () => {
   Main()
   const token = localStorage.getItem('token')
-  if (!token) {
+  const userId = localStorage.getItem('userId')
+  if (!token || !userId) {
     await navigate('login')
   } else {
     await navigate('home')

@@ -1,3 +1,4 @@
+// src/pages/LoginRegister/LoginRegister.js
 import './LoginRegister.css'
 import { navigate } from '../../main'
 import { Header } from '../../components/Header/Header'
@@ -34,6 +35,7 @@ export const LoginRegister = async () => {
       return
     } catch {
       localStorage.removeItem('token')
+      localStorage.removeItem('userId')
     }
   }
 
@@ -95,6 +97,7 @@ const submitLogin = async (userName, password, form) => {
       password
     })
     localStorage.setItem('token', data.token)
+    localStorage.setItem('userId', data.userId)
     await navigate('home')
     Header()
   } catch (err) {
@@ -156,6 +159,7 @@ const submitRegister = async (userName, email, password, form) => {
       password
     })
     localStorage.setItem('token', data.token)
+    localStorage.setItem('userId', data.userId)
     await navigate('home')
     Header()
   } catch (err) {
