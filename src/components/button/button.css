@@ -13,7 +13,7 @@
 }
 
 .secondary {
-  background-color: var(--color-background);
+  background-color: var(--background);
   color: var(--primary);
   border-radius: 40px;
 }

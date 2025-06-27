@@ -9,6 +9,7 @@
 .perfil-title {
   font-size: 32px;
   margin-bottom: 32px;
+  background-color: var(--background);
 }
 
 .perfil-btn {

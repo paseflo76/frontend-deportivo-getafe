@@ -53,7 +53,7 @@ export const Perfil = async () => {
   inputFile.id = 'avatar'
   inputFile.accept = 'image/*'
 
-  const btnUpload = Button(null, 'Cambiar Avatar', 'primary', 's')
+  const btnUpload = Button(null, 'Cambiar Avatar', 'secundary', 's')
   btnUpload.type = 'submit'
 
   formAvatar.append(inputFile, btnUpload)
