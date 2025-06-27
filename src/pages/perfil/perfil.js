@@ -1,5 +1,6 @@
 import { apiCatch } from '../../utils/fetch/fech'
 import { navigate } from '../../main'
+import './perfil.css'
 
 export const Perfil = () => {
   const main = document.querySelector('main')
