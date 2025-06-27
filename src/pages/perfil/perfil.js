@@ -16,7 +16,9 @@ export const Perfil = async () => {
   const token = localStorage.getItem('token')
   const userId = localStorage.getItem('userId')
 
-  if (!token || !userId) {
+  if (!token || !userId || userId === 'undefined') {
+    localStorage.removeItem('token')
+    localStorage.removeItem('userId')
     navigate('login')
     return
   }
@@ -28,8 +30,10 @@ export const Perfil = async () => {
   title.textContent = 'Perfil de usuario'
   title.className = 'perfil-title'
 
-  const user = await apiCatch(`/api/v2/users/${userId}`, 'GET', null, token)
-  if (!user) {
+  let user
+  try {
+    user = await apiCatch(`/api/v2/users/${userId}`, 'GET', null, token)
+  } catch (err) {
     container.textContent = 'Error al cargar perfil'
     main.appendChild(container)
     return
@@ -94,5 +98,4 @@ export const Perfil = async () => {
 
   container.append(title, avatar, formAvatar, info, btnEliminar)
   main.appendChild(container)
-  return
 }
