@@ -29,3 +29,20 @@
   justify-content: center;
   gap: 10px;
 }
+
+@media (max-width: 720px) {
+  .home-title {
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .home-description {
+    font-size: 15px;
+  }
+
+  .lista-eventos {
+    flex-direction: column;
+    align-items: center;
+  }
+}

@@ -104,6 +104,10 @@ div .asist-list {
     margin-bottom: 160px;
   }
 
+  .asistentes {
+    margin-top: 20px;
+  }
+
   div > .asist-options {
     display: flex;
     gap: 5px;

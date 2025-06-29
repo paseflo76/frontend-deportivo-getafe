@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   margin-top: 64px;
-  background-color: var(--heading);
+  background-color: var(--perfil);
 }
 
 .perfil-title {
