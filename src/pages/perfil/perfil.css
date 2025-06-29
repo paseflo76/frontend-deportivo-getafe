@@ -4,16 +4,18 @@
   align-items: center;
   margin-top: 64px;
   background-color: var(--perfil);
+  border-radius: 10px;
 }
 
 .perfil-title {
   font-size: 32px;
   margin-bottom: 32px;
-  background-color: var(--heading);
+  background-color: var(--perfil);
 }
 
 .perfil-btn {
   margin-top: 16px;
+  background-color: var(--perfil);
 }
 
 .perfil-avatar {
@@ -23,3 +25,19 @@
   width: 150px;
 }
 
+@media screen and (max-width: 720px) {
+  .perfil-container {
+    transform: scale(0.9);
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .perfil-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .perfil-title {
+    font-size: 20px;
+  }
+}
