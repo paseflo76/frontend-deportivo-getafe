@@ -57,8 +57,9 @@ main {
 }
 @media (max-width: 720px) {
   body {
+    background-image: url('/assets/imagen-movil.png');
     background-size: contain;
-    background-position: top;
+    background-position: top left;
     background-repeat: repeat;
   }
   main {
@@ -70,14 +71,5 @@ main {
     justify-content: center;
     flex-wrap: wrap;
     gap: 0;
-  }
-}
-
-@media (max-width: 720px) {
-  body {
-    background-image: url('/assets/imagen-movil.png');
-    background-repeat: repeat;
-    background-size: 100px;
-    background-position: top left;
   }
 }
