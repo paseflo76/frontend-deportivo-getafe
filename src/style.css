@@ -58,7 +58,7 @@ main {
 @media (max-width: 720px) {
   body {
     background-image: url('/assets/imagen-movil.png');
-    background-size: contain;
+
     background-position: top left;
     background-repeat: repeat;
   }
