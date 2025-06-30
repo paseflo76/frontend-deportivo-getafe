@@ -9,7 +9,7 @@
   font-size: 14px;
   color: var(--colorText3);
   border: 1px solid white;
-  box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.75);
+  box-shadow: none;
   transition: box-shadow 0.3s ease;
 }
 
