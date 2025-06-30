@@ -72,3 +72,12 @@ main {
     gap: 0;
   }
 }
+
+@media (max-width: 720px) {
+  body {
+    background-image: url('/assets/imagen-movil.png');
+    background-repeat: repeat;
+    background-size: 100px;
+    background-position: top left;
+  }
+}
