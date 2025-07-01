@@ -1,43 +1,53 @@
 .perfil-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-top: 64px;
-  background-color: var(--perfil);
-  border-radius: 10px;
+  gap: 20px;
 }
 
 .perfil-title {
-  font-size: 32px;
-  margin-bottom: 32px;
-  background-color: var(--perfil);
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
-.perfil-btn {
-  margin-top: 16px;
-  background-color: var(--perfil);
+.perfil-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
 }
 
 .perfil-avatar {
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 16px;
-  width: 150px;
+  border: 2px solid #ccc;
 }
 
-@media screen and (max-width: 720px) {
-  .perfil-container {
-    transform: scale(0.9);
-    padding: 10px;
-    border-radius: 10px;
-  }
+.perfil-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-  .perfil-avatar {
-    width: 100px;
-    height: 100px;
-  }
+.perfil-info p {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
 
-  .perfil-title {
-    font-size: 20px;
-  }
+.perfil-btn {
+  margin-top: 15px;
+  align-self: center;
 }
