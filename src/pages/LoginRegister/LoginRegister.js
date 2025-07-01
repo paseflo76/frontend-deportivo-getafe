@@ -52,7 +52,7 @@ export const LoginRegister = async () => {
   buttonsDiv.className = 'buttons'
 
   const loginButton = Button(form, 'Login', 'secondary', 's')
-  loginButton.type = 'button'
+  loginButton.type = 'submit'
   buttonsDiv.append(loginButton)
 
   if (!token) {
@@ -65,13 +65,13 @@ export const LoginRegister = async () => {
     container.appendChild(registerText)
   }
 
-  container.append(form, buttonsDiv)
-  main.append(container)
-
-  loginButton.addEventListener('click', () => {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault()
     submitLogin(inputUserName.value.trim(), inputPassword.value, form)
   })
-  return
+
+  container.append(form, buttonsDiv)
+  main.append(container)
 }
 
 const showError = (form, message) => {
@@ -130,13 +130,11 @@ const renderRegisterForm = (main) => {
   buttonsDiv.className = 'buttons'
 
   const registerButton = Button(null, 'Register', 'secondary', 's')
-  registerButton.type = 'button'
+  registerButton.type = 'submit'
   buttonsDiv.append(registerButton)
 
-  container.append(form, buttonsDiv)
-  main.append(container)
-
-  registerButton.addEventListener('click', () => {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault()
     submitRegister(
       inputUserName.value.trim(),
       inputEmail.value.trim(),
@@ -144,6 +142,9 @@ const renderRegisterForm = (main) => {
       form
     )
   })
+
+  container.append(form, buttonsDiv)
+  main.append(container)
 }
 
 const submitRegister = async (userName, email, password, form) => {
