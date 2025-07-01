@@ -41,6 +41,80 @@ export const Perfil = async () => {
   }
 
   if (isAdmin) {
+    // Perfil propio del admin
+    let user
+    try {
+      user = await apiCatch(`/api/v2/users/${userId}`, 'GET', null, token)
+    } catch {
+      container.textContent = 'Error al cargar perfil'
+      main.appendChild(container)
+      return
+    }
+
+    const title = document.createElement('h2')
+    title.textContent = 'Mi Perfil'
+    title.className = 'perfil-title'
+
+    const avatar = document.createElement('img')
+    avatar.className = 'perfil-avatar'
+    avatar.src = user.avatar || '/default-avatar.png'
+    avatar.alt = 'Avatar de usuario'
+
+    const formAvatar = document.createElement('form')
+    formAvatar.enctype = 'multipart/form-data'
+
+    const inputFile = document.createElement('input')
+    inputFile.type = 'file'
+    inputFile.name = 'avatar'
+    inputFile.id = 'avatar'
+    inputFile.accept = 'image/*'
+
+    const btnUpload = Button(null, 'Cambiar Avatar', 'secundary', 's')
+    btnUpload.type = 'submit'
+
+    formAvatar.append(inputFile, btnUpload)
+
+    formAvatar.addEventListener('submit', async (e) => {
+      e.preventDefault()
+      if (!inputFile.files[0]) return
+      const formData = new FormData()
+      formData.append('avatar', inputFile.files[0])
+
+      const res = await apiCatch(
+        `/api/v2/users/${userId}/avatar`,
+        'POST',
+        formData,
+        token,
+        true
+      )
+      if (res && res.avatar) {
+        avatar.src = res.avatar
+      }
+    })
+
+    const info = document.createElement('div')
+    info.className = 'perfil-info'
+
+    const userName = document.createElement('p')
+    userName.textContent = `Usuario: ${user.userName}`
+
+    const email = document.createElement('p')
+    email.textContent = `Email: ${user.email}`
+
+    const btnEliminar = Button(null, 'Eliminar cuenta', 'secondary', 's')
+    btnEliminar.classList.add('perfil-btn')
+    btnEliminar.addEventListener('click', async () => {
+      await apiCatch(`/api/v2/users/${userId}`, 'DELETE', null, token)
+      localStorage.removeItem('token')
+      localStorage.removeItem('userId')
+      navigate('home')
+    })
+
+    info.append(userName, email)
+
+    container.append(title, avatar, formAvatar, info, btnEliminar)
+
+    // Lista de todos los usuarios
     let users
     try {
       users = await apiCatch('/api/v2/users', 'GET', null, token)
@@ -50,7 +124,14 @@ export const Perfil = async () => {
       return
     }
 
+    const allUsersTitle = document.createElement('h2')
+    allUsersTitle.textContent = 'Todos los usuarios'
+    allUsersTitle.className = 'perfil-title'
+    container.appendChild(allUsersTitle)
+
     users.forEach((user) => {
+      if (user._id === userId) return
+
       const userBox = document.createElement('div')
       userBox.className = 'perfil-box'
 
@@ -75,6 +156,7 @@ export const Perfil = async () => {
       container.appendChild(userBox)
     })
   } else {
+    // Perfil usuario normal
     let user
     try {
       user = await apiCatch(`/api/v2/users/${userId}`, 'GET', null, token)
