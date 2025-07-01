@@ -32,16 +32,17 @@
 
 @media (max-width: 720px) {
   .home-title {
-    font-size: 20px;
+    font-size: 15px;
     display: flex;
     justify-content: center;
-    width: 365px;
+    width: 285px;
+    margin-left: 20px;
   }
 
   .home-description {
-    font-size: 15px;
-    width: 360px;
-    margin-left: 15px;
+    font-size: 12px;
+    width: 330px;
+    margin-left: 5px;
   }
 
   .lista-eventos {
