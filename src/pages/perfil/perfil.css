@@ -23,9 +23,9 @@
   align-items: center;
   gap: 15px;
   padding: 15px;
-  background: #fff;
   border-radius: 6px;
   width: 70%;
+  border: solid 2px;
 }
 
 .perfil-avatar {
@@ -55,7 +55,7 @@
 
 @media (max-width: 720px) {
   .perfil-container {
-    width: 90%;
+    width: 80%;
     padding: 15px;
   }
 
@@ -67,6 +67,7 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    width: 50%;
   }
 
   .perfil-avatar {
