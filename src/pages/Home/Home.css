@@ -35,13 +35,13 @@
     font-size: 20px;
     display: flex;
     justify-content: center;
-    width: 370px;
+    width: 365px;
   }
 
   .home-description {
     font-size: 15px;
-    width: 370px;
-    margin-left: 11px;
+    width: 360px;
+    margin-left: 15px;
   }
 
   .lista-eventos {
