@@ -1,12 +1,13 @@
 .perfil-container {
   max-width: 900px;
-  margin: 20px auto;
+  margin-top: 50px;
   padding: 20px;
-  background: #f9f9f9;
+  background: var(--perfil);
   border-radius: 6px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 20px;
 }
 
@@ -24,7 +25,7 @@
   padding: 15px;
   background: #fff;
   border-radius: 6px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  width: 70%;
 }
 
 .perfil-avatar {
@@ -50,4 +51,30 @@
 .perfil-btn {
   margin-top: 15px;
   align-self: center;
+}
+
+@media (max-width: 720px) {
+  .perfil-container {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .perfil-title {
+    font-size: 1.5rem;
+  }
+
+  .perfil-box {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .perfil-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .perfil-info p {
+    font-size: 0.9rem;
+  }
 }
