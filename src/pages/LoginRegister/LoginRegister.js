@@ -48,12 +48,14 @@ export const LoginRegister = async () => {
   ])
   const [inputUserName, inputPassword] = inputs
 
-  const buttonsDiv = document.createElement('div')
-  buttonsDiv.className = 'buttons'
-
-  const loginButton = Button(form, 'Login', 'secondary', 's')
+  const loginButton = Button(null, 'Login', 'secondary', 's')
   loginButton.type = 'submit'
-  buttonsDiv.append(loginButton)
+  form.appendChild(loginButton)
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    submitLogin(inputUserName.value.trim(), inputPassword.value, form)
+  })
 
   if (!token) {
     const registerText = document.createElement('p')
@@ -65,12 +67,7 @@ export const LoginRegister = async () => {
     container.appendChild(registerText)
   }
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault()
-    submitLogin(inputUserName.value.trim(), inputPassword.value, form)
-  })
-
-  container.append(form, buttonsDiv)
+  container.append(form)
   main.append(container)
 }
 
@@ -126,12 +123,9 @@ const renderRegisterForm = (main) => {
   ])
   const [inputUserName, inputEmail, inputPassword] = inputs
 
-  const buttonsDiv = document.createElement('div')
-  buttonsDiv.className = 'buttons'
-
   const registerButton = Button(null, 'Register', 'secondary', 's')
   registerButton.type = 'submit'
-  buttonsDiv.append(registerButton)
+  form.appendChild(registerButton)
 
   form.addEventListener('submit', (e) => {
     e.preventDefault()
@@ -143,7 +137,7 @@ const renderRegisterForm = (main) => {
     )
   })
 
-  container.append(form, buttonsDiv)
+  container.append(form)
   main.append(container)
 }
 
