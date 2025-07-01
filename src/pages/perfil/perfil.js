@@ -21,19 +21,35 @@ export const Perfil = async () => {
     return
   }
 
-  const validate = await apiCatch('/api/v2/users/validate', 'GET', null, token)
-  const isAdmin = validate.user.rol === 'admin'
-
   const container = document.createElement('section')
   container.className = 'perfil-container'
 
-  const title = document.createElement('h2')
-  title.textContent = isAdmin ? 'Usuarios registrados' : 'Perfil de usuario'
-  title.className = 'perfil-title'
-  container.appendChild(title)
+  let isAdmin = false
+  try {
+    const validateRes = await apiCatch(
+      '/api/v2/users/validate',
+      'GET',
+      null,
+      token
+    )
+    isAdmin = validateRes.user.rol === 'admin'
+  } catch {
+    localStorage.removeItem('token')
+    localStorage.removeItem('userId')
+    navigate('login')
+    return
+  }
 
   if (isAdmin) {
-    const users = await apiCatch('/api/v2/users', 'GET', null, token)
+    let users
+    try {
+      users = await apiCatch('/api/v2/users', 'GET', null, token)
+    } catch {
+      container.textContent = 'Error al cargar usuarios'
+      main.appendChild(container)
+      return
+    }
+
     users.forEach((user) => {
       const userBox = document.createElement('div')
       userBox.className = 'perfil-box'
@@ -44,10 +60,13 @@ export const Perfil = async () => {
 
       const info = document.createElement('div')
       info.className = 'perfil-info'
+
       const name = document.createElement('p')
       name.textContent = `Usuario: ${user.userName}`
+
       const email = document.createElement('p')
       email.textContent = `Email: ${user.email}`
+
       const rol = document.createElement('p')
       rol.textContent = `Rol: ${user.rol}`
 
@@ -56,21 +75,36 @@ export const Perfil = async () => {
       container.appendChild(userBox)
     })
   } else {
-    const user = await apiCatch(`/api/v2/users/${userId}`, 'GET', null, token)
+    let user
+    try {
+      user = await apiCatch(`/api/v2/users/${userId}`, 'GET', null, token)
+    } catch {
+      container.textContent = 'Error al cargar perfil'
+      main.appendChild(container)
+      return
+    }
+
+    const title = document.createElement('h2')
+    title.textContent = 'Perfil de usuario'
+    title.className = 'perfil-title'
 
     const avatar = document.createElement('img')
     avatar.className = 'perfil-avatar'
     avatar.src = user.avatar || '/default-avatar.png'
+    avatar.alt = 'Avatar de usuario'
 
     const formAvatar = document.createElement('form')
     formAvatar.enctype = 'multipart/form-data'
+
     const inputFile = document.createElement('input')
     inputFile.type = 'file'
     inputFile.name = 'avatar'
     inputFile.id = 'avatar'
     inputFile.accept = 'image/*'
-    const btnUpload = Button(null, 'Cambiar Avatar', 'secondary', 's')
+
+    const btnUpload = Button(null, 'Cambiar Avatar', 'secundary', 's')
     btnUpload.type = 'submit'
+
     formAvatar.append(inputFile, btnUpload)
 
     formAvatar.addEventListener('submit', async (e) => {
@@ -78,6 +112,7 @@ export const Perfil = async () => {
       if (!inputFile.files[0]) return
       const formData = new FormData()
       formData.append('avatar', inputFile.files[0])
+
       const res = await apiCatch(
         `/api/v2/users/${userId}/avatar`,
         'POST',
@@ -85,13 +120,17 @@ export const Perfil = async () => {
         token,
         true
       )
-      if (res && res.avatar) avatar.src = res.avatar
+      if (res && res.avatar) {
+        avatar.src = res.avatar
+      }
     })
 
     const info = document.createElement('div')
     info.className = 'perfil-info'
+
     const userName = document.createElement('p')
     userName.textContent = `Usuario: ${user.userName}`
+
     const email = document.createElement('p')
     email.textContent = `Email: ${user.email}`
 
@@ -105,6 +144,7 @@ export const Perfil = async () => {
     })
 
     info.append(userName, email)
+
     container.append(title, avatar, formAvatar, info, btnEliminar)
   }
 
