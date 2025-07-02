@@ -7,11 +7,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
   gap: 5px;
   cursor: pointer;
-  border-radius: 5px;
-  padding: 5px;
 }
 
 #admin-panel input {
