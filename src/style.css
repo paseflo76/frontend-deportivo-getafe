@@ -58,8 +58,6 @@ main {
 @media (max-width: 720px) {
   body {
     background-image: url('/assets/imagen-movil2.png');
-    background-position: top left;
-    background-repeat: repeat;
   }
   main {
     flex: 1;
