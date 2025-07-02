@@ -154,6 +154,11 @@ const submitRegister = async (userName, email, password, form) => {
       email,
       password
     })
+
+    if (!data || !data.token || !data.user) {
+      throw new Error('Registro fallido')
+    }
+
     localStorage.setItem('token', data.token)
     localStorage.setItem('userId', data.user._id)
     await navigate('home')
@@ -161,7 +166,7 @@ const submitRegister = async (userName, email, password, form) => {
   } catch (err) {
     if (err.status === 400) {
       const msg = err.body?.message || 'Error'
-      if (msg === 'User already exists') {
+      if (msg === 'Nombre de usuario ya existe') {
         showError(form, 'El usuario ya existe')
       } else {
         showError(form, msg)
