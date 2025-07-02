@@ -4,21 +4,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  background-color: var(--colorcard);
   border-radius: 10px;
   font-size: 14px;
   color: var(--colorText3);
   border: 1px solid white;
   box-shadow: none;
   transition: box-shadow 0.3s ease;
-  background: radial-gradient(
-    circle,
-    #4cae4f,
-    #80c684,
-    #aed581,
-    #dce773,
-    #fff175
-  );
 }
 
 .evento:hover {
@@ -117,6 +109,16 @@
     width: 210px;
     margin-bottom: 160px;
     margin-right: 110px;
+    background: radial-gradient(
+      circle,
+      #4cae4f,
+      #80c684,
+      #aed581,
+      #dce773,
+      #fff175
+    );
+    border: solid 2px var(--primary);
+    color: var(--primary);
   }
 
   .asistentes {

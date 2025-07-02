@@ -7,9 +7,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 20px;
+
   gap: 5px;
   cursor: pointer;
+  border-radius: 5px;
+  padding: 5px;
 }
 
 #admin-panel input {
@@ -36,8 +38,8 @@
 }
 
 .admin-evento {
-  width: 240px;
-  height: 270px;
+  width: 200px;
+  height: 260px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -96,4 +98,19 @@
 
 .modal-edicion button[type='button'] {
   border: none;
+}
+
+@media (max-width: 720px) {
+  .admin-evento {
+    background: radial-gradient(
+      circle,
+      #4cae4f,
+      #80c684,
+      #aed581,
+      #dce773,
+      #fff175
+    );
+    border: solid 2px var(--primary);
+    color: var(--primary);
+  }
 }
