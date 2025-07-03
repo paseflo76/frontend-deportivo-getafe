@@ -1,4 +1,4 @@
-// pages/LoginRegister/LoginRegister.js
+
 import './LoginRegister.css'
 import { navigate } from '../../main'
 import { Header } from '../../components/Header/Header'
