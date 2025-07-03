@@ -10,14 +10,14 @@
   align-items: center;
   z-index: 9999;
 }
-.loader-gif {
+.loader gif {
   width: 20vw;
   max-width: 80px;
   height: auto;
 }
 
 @media (max-width: 720px) {
-  .loader-gif {
+  .loader gif {
     width: 30vw;
     max-width: 60px;
   }
