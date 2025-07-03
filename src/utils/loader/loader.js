@@ -8,7 +8,7 @@ export const loader = (show = true) => {
     if (!loader) {
       loader = document.createElement('div')
       loader.id = loaderId
-      loader.innerHTML = `<img src="/assets/balon7.gif" alt="" />`
+      loader.innerHTML = `<img src="/assets/ciculo-carga.gif" alt="" />`
       document.body.appendChild(loader)
     }
   } else {
