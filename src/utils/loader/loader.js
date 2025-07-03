@@ -8,7 +8,13 @@ export const loader = (show = true) => {
     if (!loader) {
       loader = document.createElement('div')
       loader.id = loaderId
-      loader.innerHTML = `<img src="/assets/ciculo-carga.gif" alt="" class="loader-gif" />`
+
+      const img = document.createElement('img')
+      img.src = '/assets/ciculo-carga.gif'
+      img.alt = ''
+      img.className = 'loader-gif'
+
+      loader.appendChild(img)
       document.body.appendChild(loader)
     }
   } else {
