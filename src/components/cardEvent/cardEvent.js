@@ -57,7 +57,7 @@ const menuAsist = (eventoId, divEvento) => {
   if (existente) existente.remove()
 
   const modal = document.createElement('div')
-  modal.className = 'asist-list modal-confirmacion' // agregar clase modal-confirmacion
+  modal.className = 'asist-list modal-confirmacion'
 
   const opciones = document.createElement('div')
   opciones.className = 'asist-options'
@@ -98,7 +98,7 @@ const envAsistencia = async (eventoId, estado) => {
   await apiCatch(
     `/api/v2/eventos/${eventoId}/asistencia`,
     'PATCH',
-    { estado },
+    { asistencia: estado }, // cambiar 'estado' por el campo que espera la API
     token
   )
 }
