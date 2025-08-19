@@ -117,21 +117,33 @@ const mostrarAsistentes = async (eventoId, asistContainer) => {
   const contenedor = asistContainer.querySelector('.asistentes')
   contenedor.innerHTML = ''
 
-  const esPartido = evento.tipo.toLowerCase() === 'partido'
-
-  const categorias = esPartido
-    ? {
-        'Va a entrenar 👍': [],
-        'En duda ❓': [],
-        'No puede ❌': [],
-        'Va a la cena 🍽️': []
-      }
-    : {
-        'Va a entrenar 👍': [],
-        'En duda ❓': [],
-        'No puede ❌': [],
-        'Va a la cena 🍽️': []
-      }
+  const categorias = (() => {
+    switch (evento.tipo.toLowerCase()) {
+      case 'partido':
+        return {
+          'Va al partido 👍': [],
+          'En duda ❓': [],
+          'No puede ❌': []
+        }
+      case 'entrenamiento':
+        return {
+          'Va a entrenar 👍': [],
+          'En duda ❓': [],
+          'No puede ❌': []
+        }
+      case 'cena':
+        return {
+          'Va a la cena 🍽️': [],
+          'En duda ❓': [],
+          'No puede ❌': []
+        }
+      default:
+        return {
+          'En duda ❓': [],
+          'No puede ❌': []
+        }
+    }
+  })()
 
   evento.asistentes.forEach((a) => {
     const nombre = a.user?.userName || 'Usuario'
