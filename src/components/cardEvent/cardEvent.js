@@ -41,7 +41,7 @@ export const printEventos = (eventos, contenedor) => {
 
     btnAsist.addEventListener('click', () => {
       removeExistingModals()
-      menuAsist(evento._id, divEvento)
+      menuAsist(evento._id, divEvento, evento.tipo)
     })
 
     divEvento.append(tipo, imgEvent, titulo, fecha, lugar, btnAsist)
@@ -51,7 +51,7 @@ export const printEventos = (eventos, contenedor) => {
   contenedor.appendChild(fragment)
 }
 
-const menuAsist = (eventoId, divEvento) => {
+const menuAsist = (eventoId, divEvento, tipo) => {
   const existente = divEvento.querySelector('.asist-list')
   if (existente) existente.remove()
 
@@ -69,15 +69,14 @@ const menuAsist = (eventoId, divEvento) => {
 
   apiCatch('/api/v2/eventos').then((eventos) => {
     const evento = eventos.find((e) => e._id === eventoId)
-    const esPartido = evento.tipo.toLowerCase() === 'partido'
 
     const estados = (() => {
-      switch (evento.tipo.toLowerCase()) {
+      switch (tipo.toLowerCase()) {
         case 'partido':
           return ['Va al partido 👍', 'En duda ❓', 'No puede ❌']
         case 'entrenamiento':
           return ['Va a entrenar 👍', 'En duda ❓', 'No puede ❌']
-        case 'cena':
+        case 'cena de equipo':
           return ['Va a la cena 🍽️', 'En duda ❓', 'No puede ❌']
         default:
           return ['En duda ❓', 'No puede ❌']
@@ -117,40 +116,26 @@ const mostrarAsistentes = async (eventoId, asistContainer) => {
   const contenedor = asistContainer.querySelector('.asistentes')
   contenedor.innerHTML = ''
 
-  const categorias = (() => {
+  const estados = (() => {
     switch (evento.tipo.toLowerCase()) {
       case 'partido':
-        return {
-          'Va al partido 👍': [],
-          'En duda ❓': [],
-          'No puede ❌': []
-        }
+        return ['Va al partido 👍', 'En duda ❓', 'No puede ❌']
       case 'entrenamiento':
-        return {
-          'Va a entrenar 👍': [],
-          'En duda ❓': [],
-          'No puede ❌': []
-        }
-      case 'cena':
-        return {
-          'Va a la cena 🍽️': [],
-          'En duda ❓': [],
-          'No puede ❌': []
-        }
+        return ['Va a entrenar 👍', 'En duda ❓', 'No puede ❌']
+      case 'cena de equipo':
+        return ['Va a la cena 🍽️', 'En duda ❓', 'No puede ❌']
       default:
-        return {
-          'En duda ❓': [],
-          'No puede ❌': []
-        }
+        return ['En duda ❓', 'No puede ❌']
     }
   })()
+
+  const categorias = {}
+  estados.forEach((e) => (categorias[e] = []))
 
   evento.asistentes.forEach((a) => {
     const nombre = a.user?.userName || 'Usuario'
     const estado = a.estado
-    if (categorias[estado]) {
-      categorias[estado].push(nombre)
-    }
+    if (categorias[estado]) categorias[estado].push(nombre)
   })
 
   for (const estado in categorias) {
