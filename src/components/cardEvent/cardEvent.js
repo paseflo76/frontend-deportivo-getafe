@@ -71,9 +71,18 @@ const menuAsist = (eventoId, divEvento) => {
     const evento = eventos.find((e) => e._id === eventoId)
     const esPartido = evento.tipo.toLowerCase() === 'partido'
 
-    const estados = esPartido
-      ? ['Va a entrenar 👍', 'En duda ❓', 'No puede ❌', 'Va a la cena 🍽️']
-      : ['Va a entrenar 👍', 'En duda ❓', 'No puede ❌', 'Va a la cena 🍽️']
+    const estados = (() => {
+      switch (evento.tipo.toLowerCase()) {
+        case 'partido':
+          return ['Va al partido 👍', 'En duda ❓', 'No puede ❌']
+        case 'entrenamiento':
+          return ['Va a entrenar 👍', 'En duda ❓', 'No puede ❌']
+        case 'cena':
+          return ['Va a la cena 🍽️', 'En duda ❓', 'No puede ❌']
+        default:
+          return ['En duda ❓', 'No puede ❌']
+      }
+    })()
 
     estados.forEach((estado) => {
       const btn = Button(opciones, estado, 'secundary', 's')
