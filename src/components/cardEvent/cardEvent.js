@@ -52,7 +52,6 @@ export const printEventos = (eventos, contenedor) => {
 }
 
 const menuAsist = (eventoId, divEvento) => {
-  // eliminar modal previo dentro del mismo div
   const existente = divEvento.querySelector('.asist-list')
   if (existente) existente.remove()
 
@@ -73,13 +72,21 @@ const menuAsist = (eventoId, divEvento) => {
     const esPartido = evento.tipo.toLowerCase() === 'partido'
 
     const estados = esPartido
-      ? ['Sí va a jugar 👍', 'En duda ❓', 'No puede ❌']
-      : ['Va a entrenar 👍', 'En duda ❓', 'No puede ❌']
+      ? [
+          { label: 'Sí va a jugar 👍', value: 'si' },
+          { label: 'En duda ❓', value: 'duda' },
+          { label: 'No puede ❌', value: 'no' }
+        ]
+      : [
+          { label: 'Va a entrenar 👍', value: 'si' },
+          { label: 'En duda ❓', value: 'duda' },
+          { label: 'No puede ❌', value: 'no' }
+        ]
 
-    estados.forEach((estado) => {
-      const btn = Button(opciones, estado, 'secundary', 's')
+    estados.forEach(({ label, value }) => {
+      const btn = Button(opciones, label, 'secundary', 's')
       btn.addEventListener('click', async () => {
-        await envAsistencia(eventoId, estado)
+        await envAsistencia(eventoId, value)
         await mostrarAsistentes(eventoId, modal)
       })
       opciones.appendChild(btn)
@@ -98,7 +105,7 @@ const envAsistencia = async (eventoId, estado) => {
   await apiCatch(
     `/api/v2/eventos/${eventoId}/asistencia`,
     'PATCH',
-    { asistencia: estado }, // cambiar 'estado' por el campo que espera la API
+    { asistencia: estado },
     token
   )
 }
