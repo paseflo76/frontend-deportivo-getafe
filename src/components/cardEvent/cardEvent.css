@@ -78,6 +78,7 @@
   background-color: var(--body);
   border-radius: 10px;
   padding: 4px;
+  margin-top: 60px;
   margin-left: 350px;
   margin-bottom: 400px;
   margin-right: 35px;
@@ -122,7 +123,8 @@
   }
 
   .asistentes {
-    margin-top: 20px;
+    margin-top: 50px;
+    margin-right: 10px;
   }
 
   .asist-options {
