@@ -46,3 +46,19 @@ div.buttons {
   color: red;
   font-size: 20px;
 }
+
+#flash-banner {
+  width: 100%;
+  padding: 12px;
+  text-align: center;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#flash-banner.info {
+  background-color: #fffae6;
+  border: 1px solid #f0c36d;
+  color: #8a6d3b;
+}

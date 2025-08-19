@@ -1,5 +1,3 @@
-// src/main.js
-// main.js
 import './style.css'
 import { loader } from './utils/loader/loader'
 import { Header } from './components/Header/Header'
@@ -20,12 +18,21 @@ export const navigate = async (path) => {
   document.querySelectorAll('.modal-edicion')?.forEach((el) => el.remove())
 
   const main = document.querySelector('main')
-  if (main) main.innerHTML = '' // Limpiar main antes de renderizar la nueva vista
+  if (main) main.innerHTML = ''
 
   const token = localStorage.getItem('token')
   const userId = localStorage.getItem('userId')
 
   if ((!token || !userId) && path !== 'login') {
+    try {
+      sessionStorage.setItem(
+        'flash',
+        JSON.stringify({
+          type: 'info',
+          text: 'Necesitas iniciar sesión para continuar.'
+        })
+      )
+    } catch {}
     path = 'login'
     location.hash = '#login'
   }
@@ -62,6 +69,15 @@ window.addEventListener('load', async () => {
   const token = localStorage.getItem('token')
   const userId = localStorage.getItem('userId')
   if (!token || !userId) {
+    try {
+      sessionStorage.setItem(
+        'flash',
+        JSON.stringify({
+          type: 'info',
+          text: 'Necesitas iniciar sesión para continuar.'
+        })
+      )
+    } catch {}
     await navigate('login')
   } else {
     await navigate('home')
@@ -70,5 +86,21 @@ window.addEventListener('load', async () => {
 
 window.addEventListener('hashchange', async () => {
   const path = location.hash.replace('#', '')
+  const token = localStorage.getItem('token')
+  const userId = localStorage.getItem('userId')
+  const publicRoutes = ['login']
+  if ((!token || !userId) && !publicRoutes.includes(path)) {
+    try {
+      sessionStorage.setItem(
+        'flash',
+        JSON.stringify({
+          type: 'info',
+          text: 'Necesitas iniciar sesión para continuar.'
+        })
+      )
+    } catch {}
+    await navigate('login')
+    return
+  }
   await navigate(path)
 })

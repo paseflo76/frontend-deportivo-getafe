@@ -1,4 +1,3 @@
-
 import './LoginRegister.css'
 import { navigate } from '../../main'
 import { Header } from '../../components/Header/Header'
@@ -18,6 +17,24 @@ const createFormWithInputs = (placeholders) => {
   const inputs = placeholders.map(([type, text]) => createInput(type, text))
   inputs.forEach((i) => form.append(i))
   return { form, inputs }
+}
+
+// --- NUEVO: banner flash para avisar que requiere login ---
+const renderFlashBanner = (parent) => {
+  try {
+    const raw = sessionStorage.getItem('flash')
+    if (!raw) return
+    const { type = 'info', text = 'Necesitas iniciar sesión para continuar.' } =
+      JSON.parse(raw) || {}
+    const banner = document.createElement('div')
+    banner.id = 'flash-banner'
+    banner.className = `flash ${type}`
+    banner.textContent = text
+    parent.prepend(banner)
+  } catch {}
+  try {
+    sessionStorage.removeItem('flash')
+  } catch {}
 }
 
 export const LoginRegister = async () => {
@@ -41,6 +58,9 @@ export const LoginRegister = async () => {
 
   const container = document.createElement('div')
   container.id = 'login'
+
+  // --- mostrar aviso si viene de redirección ---
+  renderFlashBanner(container)
 
   const { form, inputs } = createFormWithInputs([
     ['text', 'User Name'],
@@ -116,10 +136,13 @@ const renderRegisterForm = (main) => {
   const container = document.createElement('div')
   container.id = 'login'
 
+  // --- mostrar aviso si se quisiera usar también aquí ---
+  renderFlashBanner(container)
+
   const { form, inputs } = createFormWithInputs([
-    ['text', 'User Name'],
+    ['text', 'User Name (sin puntos)'],
     ['text', 'Email'],
-    ['password', '******']
+    ['password', 'Contraseña (mínimo 6 caracteres)']
   ])
   const [inputUserName, inputEmail, inputPassword] = inputs
 
@@ -144,6 +167,16 @@ const renderRegisterForm = (main) => {
 const submitRegister = async (userName, email, password, form) => {
   if (!userName || !email || !password) {
     showError(form, 'Por favor completa todos los campos.')
+    return
+  }
+
+  if (userName.includes('.')) {
+    showError(form, 'El nombre de usuario no puede contener puntos.')
+    return
+  }
+
+  if (password.length < 6) {
+    showError(form, 'La contraseña debe tener al menos 6 caracteres.')
     return
   }
 
