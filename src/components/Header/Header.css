@@ -63,6 +63,12 @@ nav > a {
   .nav.show {
     width: 100px;
     max-height: 500px;
+    border-radius: 5px;
+    border: solid 2px var(--primary);
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    margin-right: 10px;
   }
   .menu-icon img {
     width: 35px;
