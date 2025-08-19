@@ -52,11 +52,12 @@ export const printEventos = (eventos, contenedor) => {
 }
 
 const menuAsist = (eventoId, divEvento) => {
+  // eliminar modal previo dentro del mismo div
   const existente = divEvento.querySelector('.asist-list')
   if (existente) existente.remove()
 
   const modal = document.createElement('div')
-  modal.className = 'asist-list'
+  modal.className = 'asist-list modal-confirmacion' // agregar clase modal-confirmacion
 
   const opciones = document.createElement('div')
   opciones.className = 'asist-options'
