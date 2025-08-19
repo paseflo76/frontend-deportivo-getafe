@@ -72,21 +72,13 @@ const menuAsist = (eventoId, divEvento) => {
     const esPartido = evento.tipo.toLowerCase() === 'partido'
 
     const estados = esPartido
-      ? [
-          { label: 'Sí va a jugar 👍', value: 'si' },
-          { label: 'En duda ❓', value: 'duda' },
-          { label: 'No puede ❌', value: 'no' }
-        ]
-      : [
-          { label: 'Va a entrenar 👍', value: 'si' },
-          { label: 'En duda ❓', value: 'duda' },
-          { label: 'No puede ❌', value: 'no' }
-        ]
+      ? ['Va a entrenar 👍', 'En duda ❓', 'No puede ❌', 'Va a la cena 🍽️']
+      : ['Va a entrenar 👍', 'En duda ❓', 'No puede ❌', 'Va a la cena 🍽️']
 
-    estados.forEach(({ label, value }) => {
-      const btn = Button(opciones, label, 'secundary', 's')
+    estados.forEach((estado) => {
+      const btn = Button(opciones, estado, 'secundary', 's')
       btn.addEventListener('click', async () => {
-        await envAsistencia(eventoId, value)
+        await envAsistencia(eventoId, estado)
         await mostrarAsistentes(eventoId, modal)
       })
       opciones.appendChild(btn)
@@ -105,7 +97,7 @@ const envAsistencia = async (eventoId, estado) => {
   await apiCatch(
     `/api/v2/eventos/${eventoId}/asistencia`,
     'PATCH',
-    { asistencia: estado },
+    { estado },
     token
   )
 }
@@ -120,14 +112,16 @@ const mostrarAsistentes = async (eventoId, asistContainer) => {
 
   const categorias = esPartido
     ? {
-        'Sí va a jugar 👍': [],
+        'Va a entrenar 👍': [],
         'En duda ❓': [],
-        'No puede ❌': []
+        'No puede ❌': [],
+        'Va a la cena 🍽️': []
       }
     : {
         'Va a entrenar 👍': [],
         'En duda ❓': [],
-        'No puede ❌': []
+        'No puede ❌': [],
+        'Va a la cena 🍽️': []
       }
 
   evento.asistentes.forEach((a) => {
