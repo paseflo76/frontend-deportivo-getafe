@@ -17,6 +17,11 @@ export const cardEvent = async () => {
 export const printEventos = (eventos, contenedor) => {
   const fragment = document.createDocumentFragment()
 
+  const removeExistingModals = () => {
+    const modals = document.querySelectorAll('.modal-confirmacion')
+    modals.forEach((modal) => modal.remove())
+  }
+
   for (const evento of eventos) {
     const divEvento = document.createElement('div')
     divEvento.className = 'evento'
@@ -34,7 +39,10 @@ export const printEventos = (eventos, contenedor) => {
     fecha.textContent = evento.fecha
     lugar.textContent = evento.lugar
 
-    btnAsist.addEventListener('click', () => menuAsist(evento._id, divEvento))
+    btnAsist.addEventListener('click', () => {
+      removeExistingModals()
+      menuAsist(evento._id, divEvento)
+    })
 
     divEvento.append(tipo, imgEvent, titulo, fecha, lugar, btnAsist)
     fragment.appendChild(divEvento)
