@@ -6,12 +6,16 @@ import { Home } from './pages/Home/Home'
 import { LoginRegister } from './pages/LoginRegister/LoginRegister'
 import { Footer } from './components/footer/footer'
 import { Perfil } from './pages/perfil/perfil'
+import { Clasificacion } from './pages/clasificacion/clasificacion'
+import { Jornadas } from './pages/Jornadas/Jornadas'
 
 const routes = {
   home: Home,
   login: LoginRegister,
   admin: Admin,
-  perfil: Perfil
+  perfil: Perfil,
+  Clasificacion: Clasificacion,
+  Jornadas: Jornadas
 }
 
 export const navigate = async (path) => {
