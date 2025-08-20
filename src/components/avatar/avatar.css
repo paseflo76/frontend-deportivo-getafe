@@ -1,0 +1,28 @@
+.avatar-wrapper {
+  position: relative;
+  width: 96px;
+  height: 96px;
+}
+
+.avatar-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #ccc;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
