@@ -1,6 +1,6 @@
 import { navigate } from '../../main'
 import { Admin } from '../../pages/admin/admin'
-import { Clasificacion } from '../../pages/clasificacion/Clasificacion'
+import { Clasificacion } from '../../pages/clasificacion/clasificacion'
 import { Home } from '../../pages/Home/Home'
 import { Jornadas } from '../../pages/Jornadas/Jornadas'
 import { LoginRegister } from '../../pages/LoginRegister/LoginRegister'
@@ -9,7 +9,7 @@ import { Perfil } from '../../pages/perfil/perfil'
 import './Header.css'
 
 const parseJwt = (token) => {
-  if (!token) return null
+  if (!token) return nullo
   try {
     return JSON.parse(atob(token.split('.')[1]))
   } catch {
