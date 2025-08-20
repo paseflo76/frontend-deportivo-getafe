@@ -1,4 +1,4 @@
-import { apiCatch } from './api.js'
+import { apiCatch } from '../fetch/fech.js'
 
 export async function renderClasificacion(containerId) {
   const data = await apiCatch('/v2/Match/classification')
