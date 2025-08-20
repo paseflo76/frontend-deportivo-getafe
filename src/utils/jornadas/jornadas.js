@@ -10,7 +10,7 @@ export async function renderJornadas(containerId) {
   data.forEach((m) => {
     if (m.jornada !== current) {
       current = m.jornada
-      const h3 = document.createElement('h3')
+      const h3 = document.createElement('h2')
       h3.textContent = `Jornada ${current}`
       container.appendChild(h3)
     }
