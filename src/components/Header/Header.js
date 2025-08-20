@@ -1,6 +1,8 @@
 import { navigate } from '../../main'
 import { Admin } from '../../pages/admin/admin'
+import { Clasificacion } from '../../pages/clasificacion/Clasificacion'
 import { Home } from '../../pages/Home/Home'
+import { Jornadas } from '../../pages/Jornadas/Jornadas'
 import { LoginRegister } from '../../pages/LoginRegister/LoginRegister'
 import { Perfil } from '../../pages/perfil/perfil'
 
@@ -66,6 +68,8 @@ export const Header = () => {
 
   const routes = [
     { texto: 'Home', path: 'home', function: Home },
+    { texto: 'Clasificación', path: 'Clasificacion', function: Clasificacion },
+    { texto: 'Jornadas', path: 'jornadas', function: Jornadas },
     { texto: 'Editar', path: 'admin', function: Admin },
     { texto: 'Login', path: 'login', function: LoginRegister },
     { texto: 'Perfil', path: 'perfil', function: Perfil }

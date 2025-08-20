@@ -1,0 +1,27 @@
+.tabla-clasificacion {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-family: Arial, sans-serif;
+}
+
+.tabla-clasificacion th,
+.tabla-clasificacion td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.tabla-clasificacion th {
+  background-color: #004080;
+  color: white;
+  font-weight: bold;
+}
+
+.tabla-clasificacion tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.tabla-clasificacion tr:hover {
+  background-color: #d1e0ff;
+}

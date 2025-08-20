@@ -1,0 +1,18 @@
+.jornada-container h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #004080;
+}
+
+.jornada-container div {
+  padding: 6px 10px;
+  margin-bottom: 4px;
+  background-color: #f9f9f9;
+  border-left: 4px solid #004080;
+  font-family: Arial, sans-serif;
+}
+
+.jornada-container div:nth-child(even) {
+  background-color: #eef2f7;
+}
