@@ -19,7 +19,11 @@ const DeleteButton = (userId, token) => {
 }
 
 export const Perfil = async () => {
-  const main = document.getElementById('main-content')
+  let main = document.querySelector('main')
+  if (!main) {
+    main = document.createElement('main')
+    document.body.appendChild(main)
+  }
   main.innerHTML = ''
 
   const token = localStorage.getItem('token')

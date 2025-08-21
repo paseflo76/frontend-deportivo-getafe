@@ -3,7 +3,7 @@ import { printEventos } from '../../components/cardEvent/cardEvent'
 import { getEventos } from '../../utils/eventos/eventos'
 
 export const Home = async () => {
-  const main = document.querySelector('main-content')
+  const main = document.querySelector('main')
   main.innerHTML = ''
 
   const container = document.createElement('div')

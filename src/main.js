@@ -61,7 +61,7 @@ const Main = () => {
   const app = document.querySelector('#app')
   app.innerHTML = `
     <header></header>
-    <main id="main-content"></main>
+    <main></main>
     <footer></footer>
   `
   Header()
