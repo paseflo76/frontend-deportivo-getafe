@@ -1,10 +1,9 @@
+// utils/clasificacion.js/clasificacion.js
 import { apiCatch } from '../fetch/fech.js'
 
-export async function renderClasificacion() {
-  const data = await apiCatch('/v2/Match/classification')
-
-  const container = document.querySelector('main div')
+export async function renderClasificacion(container) {
   container.innerHTML = ''
+  const data = await apiCatch('/v2/Match/classification')
 
   const table = document.createElement('table')
   table.className = 'tabla-clasificacion'
@@ -34,6 +33,5 @@ export async function renderClasificacion() {
     tbody.appendChild(tr)
   })
   table.appendChild(tbody)
-
   container.appendChild(table)
 }

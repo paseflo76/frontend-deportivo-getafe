@@ -1,8 +1,10 @@
+// pages/jornadas/jornadas.js
 import { renderJornadas } from '../../utils/jornadas/jornadas'
 import './jornadas.css'
 
-export const Jornadas = () => {
+export const Jornadas = async () => {
   const main = document.querySelector('main')
-  container.innerHTML = `<div id="jornadas"></div>`
-  renderJornadas('jornadas')
+  main.innerHTML = `<div id="jornadas"></div>`
+  const container = document.querySelector('main div')
+  await renderJornadas(container)
 }
