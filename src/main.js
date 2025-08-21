@@ -14,8 +14,8 @@ const routes = {
   login: LoginRegister,
   admin: Admin,
   perfil: Perfil,
-  Clasificacion: Clasificacion,
-  Jornadas: Jornadas
+  clasificacion: Clasificacion,
+  jornadas: Jornadas
 }
 
 export const navigate = async (path) => {
@@ -61,7 +61,7 @@ const Main = () => {
   const app = document.querySelector('#app')
   app.innerHTML = `
     <header></header>
-    <main></main>
+    <main id="main-content"></main>
     <footer></footer>
   `
   Header()

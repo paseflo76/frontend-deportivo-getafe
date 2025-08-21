@@ -9,7 +9,7 @@ import { Perfil } from '../../pages/perfil/perfil'
 import './Header.css'
 
 const parseJwt = (token) => {
-  if (!token) return nullo
+  if (!token) return null
   try {
     return JSON.parse(atob(token.split('.')[1]))
   } catch {
@@ -68,7 +68,7 @@ export const Header = () => {
 
   const routes = [
     { texto: 'Home', path: 'home', function: Home },
-    { texto: 'Clasificación', path: 'Clasificacion', function: Clasificacion },
+    { texto: 'Clasificación', path: 'clasificacion', function: Clasificacion },
     { texto: 'Jornadas', path: 'jornadas', function: Jornadas },
     { texto: 'Editar', path: 'admin', function: Admin },
     { texto: 'Login', path: 'login', function: LoginRegister },
