@@ -21,7 +21,7 @@ const routes = {
 export const navigate = async (path) => {
   document.querySelectorAll('.modal-edicion')?.forEach((el) => el.remove())
 
-  const main = document.querySelector('main')
+  const main = document.querySelector('main-content')
   if (main) main.innerHTML = ''
 
   const token = localStorage.getItem('token')
