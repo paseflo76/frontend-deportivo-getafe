@@ -1,6 +1,6 @@
 import { apiCatch } from '../fetch/fech.js'
 
-export async function renderClasificacion(containerId) {
+export async function renderClasificacion() {
   const data = await apiCatch('/v2/Match/classification')
 
   const container = document.getElementById(containerId)

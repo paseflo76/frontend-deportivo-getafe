@@ -1,6 +1,6 @@
 import { apiCatch } from '../fetch/fech'
 
-export async function renderJornadas(containerId) {
+export async function renderJornadas() {
   const data = await apiCatch('/v2/Match/matches')
 
   const container = document.getElementById(containerId)
