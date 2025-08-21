@@ -38,7 +38,7 @@ const renderFlashBanner = (parent) => {
 }
 
 export const LoginRegister = async () => {
-  const main = document.querySelector('main')
+  const main = document.querySelector('main-content')
   main.innerHTML = ''
   const old = document.querySelector('#login')
   if (old) old.remove()
