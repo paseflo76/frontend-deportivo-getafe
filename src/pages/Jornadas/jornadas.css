@@ -1,18 +1,23 @@
-.jornada-container h3 {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  font-size: 1.2rem;
-  color: #004080;
-}
+/* jornadas.css */
 
-.jornada-container div {
-  padding: 6px 10px;
-  margin-bottom: 4px;
-  background-color: #f9f9f9;
-  border-left: 4px solid #004080;
+#jornadas {
+  width: 100%;
   font-family: Arial, sans-serif;
 }
 
-.jornada-container div:nth-child(even) {
-  background-color: #eef2f7;
+#jornadas h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 0.3rem;
+}
+
+#jornadas div {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

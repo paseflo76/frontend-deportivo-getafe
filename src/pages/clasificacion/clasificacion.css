@@ -1,27 +1,28 @@
+/* clasificacion.css */
+
 .tabla-clasificacion {
   width: 100%;
   border-collapse: collapse;
-  margin: 20px 0;
+  margin: 1rem 0;
   font-family: Arial, sans-serif;
 }
 
 .tabla-clasificacion th,
 .tabla-clasificacion td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
   text-align: center;
 }
 
 .tabla-clasificacion th {
-  background-color: #004080;
-  color: white;
+  background-color: #f4f4f4;
   font-weight: bold;
 }
 
 .tabla-clasificacion tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #fafafa;
 }
 
 .tabla-clasificacion tr:hover {
-  background-color: #d1e0ff;
+  background-color: #f1f1f1;
 }
