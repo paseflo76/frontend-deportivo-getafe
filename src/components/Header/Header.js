@@ -76,7 +76,8 @@ export const Header = () => {
   ]
 
   if (user?.rol !== 'admin') {
-    routes.splice(1, 1)
+    const index = routes.findIndex((r) => r.texto === 'Editar')
+    if (index !== -1) routes.splice(index, 1)
   }
 
   for (const route of routes) {
