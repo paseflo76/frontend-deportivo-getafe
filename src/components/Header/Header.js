@@ -69,7 +69,7 @@ export const Header = () => {
   const routes = [
     { texto: 'Home', path: 'home', function: Home },
     { texto: 'Clasificación', path: 'clasificacion', function: Clasificacion },
-    { texto: 'Jornadas', path: 'jornadas', function: Jornadas },
+    { texto: 'Calendario', path: 'jornadas', function: Jornadas },
     { texto: 'Editar', path: 'admin', function: Admin },
     { texto: 'Login', path: 'login', function: LoginRegister },
     { texto: 'Perfil', path: 'perfil', function: Perfil }
