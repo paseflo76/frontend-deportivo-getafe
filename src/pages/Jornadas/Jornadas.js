@@ -5,6 +5,5 @@ import './jornadas.css'
 export const Jornadas = async () => {
   const main = document.querySelector('main')
   main.innerHTML = `<div id="jornadas"></div>`
-  const container = document.querySelector('main div')
-  await renderJornadas(container)
+  await renderJornadas('jornadas') // pasar id como string
 }
