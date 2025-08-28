@@ -1,1 +1,33 @@
+#clasificacion {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
 
+.tabla-clasificacion {
+  border-collapse: collapse;
+  width: 80%;
+  max-width: 800px;
+  font-family: sans-serif;
+  font-size: 14px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabla-clasificacion thead {
+  background: #004080;
+  color: white;
+}
+
+.tabla-clasificacion th,
+.tabla-clasificacion td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabla-clasificacion tr:nth-child(even) {
+  background: #f9f9f9;
+}
