@@ -3,7 +3,7 @@ import { apiCatch } from '../fetch/fech.js'
 
 export async function renderClasificacion(container) {
   container.innerHTML = ''
-  const data = await apiCatch('/v2/classification')
+  const data = await apiCatch('/v2/match/classification')
 
   const table = document.createElement('table')
   table.className = 'tabla-clasificacion'

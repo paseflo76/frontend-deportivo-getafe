@@ -6,6 +6,8 @@
   return img
 }
  */
+
+import './avatar.css'
 export const Avatar = ({ src, alt }) => {
   const wrapper = document.createElement('div')
   wrapper.className = 'avatar-wrapper'
