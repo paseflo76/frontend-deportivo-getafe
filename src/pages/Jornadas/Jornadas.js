@@ -4,7 +4,7 @@ import './jornadas.css'
 
 export const Jornadas = async () => {
   const main = document.querySelector('main')
-  main.innerHTML = ''
+  main.innerHTML = '' // limpiar contenido previo
 
   const div = document.createElement('div')
   div.id = 'jornadas'

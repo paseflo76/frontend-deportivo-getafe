@@ -1,10 +1,8 @@
-// utils/clasificacion.js/clasificacion.js
 import { apiCatch } from '../fetch/fech.js'
 
-export async function renderClasificacion(containerId) {
-  const container = document.getElementById(containerId)
+export async function renderClasificacion(container) {
+  // recibe elemento DOM
   container.innerHTML = ''
-
   let data = []
   try {
     data = await apiCatch('/api/v2/match/classification')
