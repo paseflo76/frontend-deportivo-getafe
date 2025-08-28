@@ -1,6 +1,6 @@
 // pages/jornadas/jornadas.js
 import { renderJornadas } from '../../utils/jornadas/jornadas'
-import './Jornadas.css'
+import './jornadas.css'
 
 export const Jornadas = async () => {
   const main = document.querySelector('main')
