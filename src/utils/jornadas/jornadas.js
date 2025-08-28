@@ -3,7 +3,7 @@ import { apiCatch } from '../fetch/fech.js'
 
 export async function renderJornadas(container) {
   container.innerHTML = ''
-  const data = await apiCatch('/v2/match/matches')
+  const data = await apiCatch('/api/v2/match/matches')
 
   let current = null
   const token = localStorage.getItem('token')
