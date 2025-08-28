@@ -4,6 +4,11 @@ import './jornadas.css'
 
 export const Jornadas = async () => {
   const main = document.querySelector('main')
-  main.innerHTML = `<div id="jornadas"></div>`
-  await renderJornadas('jornadas') // pasar id como string
+  main.innerHTML = ''
+
+  const div = document.createElement('div')
+  div.id = 'jornadas'
+  main.appendChild(div)
+
+  await renderJornadas(div) // pasar el elemento DOM
 }

@@ -3,6 +3,11 @@ import './clasificacion.css'
 
 export const Clasificacion = async () => {
   const main = document.querySelector('main')
-  main.innerHTML = `<div id="clasificacion"></div>`
-  await renderClasificacion('clasificacion') // pasar id como string
+  main.innerHTML = '' // limpiar contenido previo
+
+  const div = document.createElement('div')
+  div.id = 'clasificacion'
+  main.appendChild(div)
+
+  await renderClasificacion(div) // pasar el elemento DOM
 }
