@@ -1,9 +1,18 @@
 // utils/clasificacion.js/clasificacion.js
 import { apiCatch } from '../fetch/fech.js'
 
-export async function renderClasificacion(container) {
+export async function renderClasificacion(containerId) {
+  const container = document.getElementById(containerId)
   container.innerHTML = ''
-  const data = await apiCatch('/api/v2/match/classification')
+
+  let data = []
+  try {
+    data = await apiCatch('/api/v2/match/classification')
+  } catch (err) {
+    container.textContent = 'Error al cargar la clasificación'
+    console.error(err)
+    return
+  }
 
   const table = document.createElement('table')
   table.className = 'tabla-clasificacion'
