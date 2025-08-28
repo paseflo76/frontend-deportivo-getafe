@@ -8,6 +8,8 @@ export const apiCatch = async (
 ) => {
   const isFormData = data instanceof FormData
 
+  if (!token) token = localStorage.getItem('token')
+
   const headers = {}
   if (token) headers['Authorization'] = `Bearer ${token}`
   if (!isFormData) headers['Content-Type'] = 'application/json'
