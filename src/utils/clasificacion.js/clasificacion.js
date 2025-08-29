@@ -11,7 +11,7 @@ export async function renderClasificacion(container) {
   }
 
   // Opcional: obtener la jornada máxima para mostrar
-  let jornadaMax = await apiCatch('/api/v2/match/matches')
+  let jornadaMax = await apiCatch('/api/v2/league/classification')
   jornadaMax = Math.max(...jornadaMax.map((m) => m.jornada))
 
   const h2 = document.createElement('h2')
