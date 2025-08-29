@@ -4,7 +4,7 @@ export async function renderClasificacion(container) {
   container.innerHTML = ''
   let data = []
   try {
-    data = await apiCatch('/api/v2/league/classification') // URL corregida
+    data = await apiCatch('/api/v2/league/classification')
   } catch (err) {
     container.textContent = 'Error al cargar la clasificación'
     return
