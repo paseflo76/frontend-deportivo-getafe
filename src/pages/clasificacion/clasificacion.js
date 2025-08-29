@@ -1,5 +1,5 @@
-import { renderClasificacion } from '../../utils/clasificacion.js/clasificacion'
-import { renderJornadas } from '../../utils/jornadas/jornadas'
+import { renderClasificacion } from '../../utils/clasificacion.js/clasificacion.js'
+import { renderJornadas } from '../../utils/jornadas/jornadas.js'
 import './clasificacion.css'
 
 export const Clasificacion = async () => {
