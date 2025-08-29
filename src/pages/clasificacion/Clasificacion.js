@@ -1,4 +1,4 @@
-import { renderClasificacion } from '../../utils/clasificacion/clasificacion.js'
+import { renderClasificacion } from '../../utils/clasificacion.js/clasifi'
 import { renderJornadas } from '../../utils/jornadas/jornadas'
 import './clasificacion.css'
 
