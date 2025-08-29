@@ -5,7 +5,7 @@ export async function renderJornadas(container) {
 
   let data = []
   try {
-    data = await apiCatch('/api/v2/league/matches') // llamar al backend
+    data = await apiCatch('/api/v2/league/matches') // URL corregida
   } catch (err) {
     container.textContent = 'Error al cargar las jornadas'
     console.error(err)
@@ -17,7 +17,6 @@ export async function renderJornadas(container) {
     return
   }
 
-  // Ordenar por jornada y fecha por si no vienen ordenados
   data.sort((a, b) => {
     if (a.jornada !== b.jornada) return a.jornada - b.jornada
     return new Date(a.fecha) - new Date(b.fecha)

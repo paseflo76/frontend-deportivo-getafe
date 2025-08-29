@@ -4,15 +4,18 @@ export async function renderClasificacion(container) {
   container.innerHTML = ''
   let data = []
   try {
-    data = await apiCatch('/api/v2/league/classification')
+    data = await apiCatch('/api/v2/league/classification') // URL corregida
   } catch (err) {
     container.textContent = 'Error al cargar la clasificación'
     return
   }
 
-  // Opcional: obtener la jornada máxima para mostrar
-  let jornadaMax = await apiCatch('/api/v2/league/classification')
-  jornadaMax = Math.max(...jornadaMax.map((m) => m.jornada))
+  if (!data || data.length === 0) {
+    container.textContent = 'No hay datos de clasificación'
+    return
+  }
+
+  const jornadaMax = Math.max(...data.map((m) => m.jornada))
 
   const h2 = document.createElement('h2')
   h2.textContent = `Clasificación después de la Jornada ${jornadaMax}`
