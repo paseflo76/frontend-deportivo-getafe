@@ -74,7 +74,7 @@ export async function renderJornadas(container, divClasificacion = null) {
           // Re-render clasificación si se pasó el div
           if (divClasificacion) {
             const { renderClasificacion } = await import(
-              '../../utils/clasificacion.js/clasificacion.js'
+              '../../utils/clasificacion.js/Clasificacion.js'
             )
             await renderClasificacion(divClasificacion)
           }

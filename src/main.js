@@ -6,8 +6,8 @@ import { Home } from './pages/Home/Home'
 import { LoginRegister } from './pages/LoginRegister/LoginRegister'
 import { Footer } from './components/footer/footer'
 import { Perfil } from './pages/perfil/perfil'
-import { Clasificacion } from './pages/clasificacion/Clasificacion'
 import { Jornadas } from './pages/Jornadas/Jornadas'
+import { Clasificacion } from './pages/clasificacion/Clasificacion'
 
 const routes = {
   home: Home,
