@@ -8,7 +8,8 @@ import { Perfil } from '../../pages/perfil/perfil'
 
 import './Header.css'
 
-const parseJwt = (token) => {
+// exportamos parseJwt para usarlo en otros archivos
+export const parseJwt = (token) => {
   if (!token) return null
   try {
     return JSON.parse(atob(token.split('.')[1]))

@@ -1,6 +1,7 @@
 // pages/jornadas/jornadas.js
+import { parseJwt } from '../../components/Header/Header.js'
 import { apiCatch } from '../../utils/fetch/fech.js'
-import { parseJwt } from '../../components/Header/Header.js' // reutilizamos la función
+
 import './jornadas.css'
 
 export async function renderJornadas(container, divClasificacion = null) {
@@ -74,7 +75,7 @@ export async function renderJornadas(container, divClasificacion = null) {
           // Re-render clasificación si se pasó el div
           if (divClasificacion) {
             const { renderClasificacion } = await import(
-              '../../utils/clasificacion.js/clasificacion.js'
+              '../../utils/clasificacion.js/Clasificacion.js'
             )
             await renderClasificacion(divClasificacion)
           }
