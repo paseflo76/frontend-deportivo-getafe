@@ -1,32 +1,36 @@
 import { apiCatch } from '../fetch/fech.js'
 
 export async function renderClasificacion(container) {
-  // recibe elemento DOM
   container.innerHTML = ''
   let data = []
   try {
     data = await apiCatch('/api/v2/match/classification')
   } catch (err) {
     container.textContent = 'Error al cargar la clasificación'
-    console.error(err)
     return
   }
 
+  // Opcional: obtener la jornada máxima para mostrar
+  let jornadaMax = await apiCatch('/api/v2/match/matches')
+  jornadaMax = Math.max(...jornadaMax.map((m) => m.jornada))
+
+  const h2 = document.createElement('h2')
+  h2.textContent = `Clasificación después de la Jornada ${jornadaMax}`
+  container.appendChild(h2)
+
   const table = document.createElement('table')
   table.className = 'tabla-clasificacion'
-
-  const thead = document.createElement('thead')
-  thead.innerHTML = `
-    <tr>
-      <th>Equipo</th>
-      <th>Puntos</th>
-      <th>GF</th>
-      <th>GC</th>
-      <th>DIF</th>
-    </tr>
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>Equipo</th>
+        <th>Puntos</th>
+        <th>GF</th>
+        <th>GC</th>
+        <th>DIF</th>
+      </tr>
+    </thead>
   `
-  table.appendChild(thead)
-
   const tbody = document.createElement('tbody')
   data.forEach((e) => {
     const tr = document.createElement('tr')

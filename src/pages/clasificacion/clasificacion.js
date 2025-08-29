@@ -1,13 +1,24 @@
 import { renderClasificacion } from '../../utils/clasificacion.js/clasificacion'
+import { renderJornadas } from '../../utils/jornadas/jornadas'
 import './clasificacion.css'
 
 export const Clasificacion = async () => {
   const main = document.querySelector('main')
-  main.innerHTML = '' // limpiar contenido previo
+  main.innerHTML = ''
 
-  const div = document.createElement('div')
-  div.id = 'clasificacion'
-  main.appendChild(div)
+  // Contenedor para clasificación
+  const divClasificacion = document.createElement('div')
+  divClasificacion.id = 'clasificacion'
+  main.appendChild(divClasificacion)
 
-  await renderClasificacion(div) // pasar el elemento DOM
+  // Contenedor para jornadas (opcional, se puede quitar si solo quieres tabla)
+  const divJornadas = document.createElement('div')
+  divJornadas.id = 'jornadas-clasificacion'
+  main.appendChild(divJornadas)
+
+  // Renderizar clasificación
+  await renderClasificacion(divClasificacion)
+
+  // Renderizar jornadas debajo de la clasificación
+  await renderJornadas(divJornadas, divClasificacion) // pasamos divClasificacion para actualizar
 }
