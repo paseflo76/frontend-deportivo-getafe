@@ -18,14 +18,15 @@ export const Clasificacion = async () => {
   await renderJornadas(divJornadas, divClasificacion)
 } */
 
-import {
-  getResultados,
-  saveResultados,
-  getJornadaActual,
-  nextJornada
-} from '../../utils/data.js'
-import { calcularClasificacion } from './../utils/clasificacion.js/clasifi.js'
 import { parseJwt } from '../../components/Header/Header.js'
+import {
+  getJornadaActual,
+  getResultados,
+  nextJornada,
+  saveResultados
+} from '../../utils/data/data.js'
+import { calcularClasificacion } from './../utils/clasificacion.js/clasifi.js'
+import './clasificacion.css'
 
 export async function renderClasificacion(container) {
   container.innerHTML = ''
