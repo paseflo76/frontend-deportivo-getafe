@@ -25,7 +25,7 @@ import {
   nextJornada,
   saveResultados
 } from '../../utils/data/data.js'
-import { calcularClasificacion } from './../utils/clasificacion.js/clasifi.js'
+import { calcularClasificacion } from '../../utils/clasificacion.js/clasifi.js'
 import './clasificacion.css'
 
 export async function renderClasificacion(container) {
