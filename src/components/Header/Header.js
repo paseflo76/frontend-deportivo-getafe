@@ -55,7 +55,7 @@ export const Header = () => {
   const imgJugador2 = document.createElement('img')
   imgPortero.src = 'assets/portero.png'
   imgPortero.alt = 'portero'
-  imgJugador1.src = 'assets/jugador-de-futbol1.png'
+  imgJugador1.src = 'assets/jugador-de-futbol.gif'
   imgJugador1.alt = 'jugador futbol'
   imgJugador2.src = 'assets/jugador-de-futbol2.png'
   imgJugador2.alt = 'jugador futbol2'
