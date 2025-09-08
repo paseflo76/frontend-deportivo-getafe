@@ -24,7 +24,7 @@ import {
   getJornadaActual,
   nextJornada
 } from '../../utils/data.js'
-import { calcularClasificacion } from '../../utils/clasificacion.js'
+import { calcularClasificacion } from './../utils/clasificacion.js/clasifi.js'
 import { parseJwt } from '../../components/Header/Header.js'
 
 export async function renderClasificacion(container) {

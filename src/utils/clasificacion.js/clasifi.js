@@ -49,7 +49,7 @@
   table.appendChild(tbody)
   container.appendChild(table)
 } */
-import { equipos, getResultados, getJornadaActual } from './data.js'
+import { equipos, getResultados, getJornadaActual } from '../../utils/data.js'
 
 export function calcularClasificacion() {
   const tabla = equipos.map((e) => ({
