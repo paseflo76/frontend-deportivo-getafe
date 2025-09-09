@@ -1,64 +1,64 @@
 /* contenedor principal del calendario */
 #calendario {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* dos columnas principales */
   gap: 20px;
   padding: 10px;
 }
 
-/* título de cada jornada */
-#calendario h2 {
-  font-size: 1.5rem;
-  margin: 10px 0;
-  font-weight: bold;
-  color: #222;
-}
-
-/* resaltar la jornada actual */
-.jornada-actual {
-  color: #fff;
-  background-color: #007bff;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-
-/* lista de partidos de la jornada */
+/* cada jornada como grid interno */
 .jornada-list {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  border: solid 2px black;
-  border-radius: 10px;
+  display: grid;
+  grid-template-rows: auto 1fr; /* título + partidos */
+  gap: 10px;
+}
+
+/* título de cada jornada */
+.jornada-list h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+  color: #222;
 }
 
 /* cada partido */
 .partido {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 10px;
   padding: 5px;
   border-bottom: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-/* marcador de cada partido */
+/* marcador */
 .partido .marcador {
   font-weight: bold;
+  text-align: center;
 }
 
 /* equipo local */
 .partido .local {
+  text-align: right;
   color: #007bff;
 }
 
 /* equipo visitante */
 .partido .visitante {
+  text-align: left;
   color: #dc3545;
 }
 
-/* destacar partido de la jornada actual */
+/* resaltar jornada actual */
+.jornada-actual {
+  background-color: #007bff;
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* resaltar partido de la jornada actual */
 .jornada-actual-partido {
   background-color: #e0f0ff;
-  border-radius: 5px;
-  padding: 5px;
 }
