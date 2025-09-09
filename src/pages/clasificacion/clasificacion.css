@@ -1,9 +1,11 @@
 .tabla-clasificacion {
-  width: 100%;
+  width: 90%;
   border-collapse: collapse;
   margin: 1rem 0;
   font-size: 0.9rem;
   text-align: center;
+  background-color: var(--perfil);
+  border-radius: 10px;
 }
 
 .tabla-clasificacion th,
@@ -15,10 +17,6 @@
 .tabla-clasificacion th {
   background-color: #f2f2f2;
   font-weight: bold;
-}
-
-.tabla-clasificacion tr:nth-child(even) {
-  background-color: #fafafa;
 }
 
 h2,

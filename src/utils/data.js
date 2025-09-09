@@ -237,6 +237,11 @@ export function getResultados() {
 
 export function saveResultados(data) {
   localStorage.setItem('resultados', JSON.stringify(data))
+  try {
+    window.dispatchEvent(new Event('resultadosUpdated'))
+  } catch (e) {
+    // si hay entorno sin window, fallo silencioso
+  }
 }
 
 export function getJornadaActual() {
@@ -246,4 +251,7 @@ export function getJornadaActual() {
 export function nextJornada() {
   const j = getJornadaActual()
   localStorage.setItem('jornadaActual', String(j + 1))
+  try {
+    window.dispatchEvent(new Event('resultadosUpdated'))
+  } catch (e) {}
 }
