@@ -1,49 +1,61 @@
-#jornadas {
-  padding: 20px;
-  font-family: sans-serif;
-  margin-bottom: 330px;
-  font-size: 20px;
-  border: solid 2px black;
-  background-color: var(--perfil);
-  border-radius: 15px;
+/* contenedor principal del calendario */
+#calendario {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
 }
 
-#jornadas h2 {
-  margin-top: 30px;
-  margin-bottom: 10px;
-  font-size: 18px;
-  color: #004080;
+/* título de cada jornada */
+#calendario h2 {
+  font-size: 1.5rem;
+  margin: 10px 0;
+  font-weight: bold;
+  color: #222;
 }
 
-#jornadas div {
-  margin: 6px 0;
-  padding: 8px;
-  background: #fff;
-  border-radius: 6px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+/* resaltar la jornada actual */
+.jornada-actual {
+  color: #fff;
+  background-color: #007bff;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+/* lista de partidos de la jornada */
+.jornada-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* cada partido */
+.partido {
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
 }
 
-/* Inputs y botón para admin */
-#jornadas input[type='number'] {
-  width: 40px;
-  padding: 4px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  text-align: center;
+/* marcador de cada partido */
+.partido .marcador {
+  font-weight: bold;
 }
 
-#jornadas button {
-  padding: 4px 10px;
-  border: none;
-  border-radius: 4px;
-  background: #004080;
-  color: white;
-  cursor: pointer;
+/* equipo local */
+.partido .local {
+  color: #007bff;
 }
 
-#jornadas button:hover {
-  background: #0066cc;
+/* equipo visitante */
+.partido .visitante {
+  color: #dc3545;
+}
+
+/* destacar partido de la jornada actual */
+.jornada-actual-partido {
+  background-color: #e0f0ff;
+  border-radius: 5px;
+  padding: 5px;
 }
