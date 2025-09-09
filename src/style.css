@@ -38,6 +38,15 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
+body.jornadas {
+  background-image: none; /* quitar imagen */
+  background-color: var(--colorcard); /* el color que quieras */
+}
+
+body.jornadas main {
+  justify-content: flex-start; /* evitar centrar el calendario */
+  align-items: flex-start;
+}
 
 #app {
   display: flex;
