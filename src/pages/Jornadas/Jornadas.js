@@ -4,7 +4,7 @@ import {
   getJornadaActual
 } from '../../utils/data.js'
 
-export async function Calendario() {
+export const Jornadas = async () => {
   const main = document.querySelector('main')
   if (!main) return
   main.innerHTML = ''
@@ -15,7 +15,7 @@ export async function Calendario() {
 
   renderCalendario(container)
 
-  // evito listeners duplicados entre navegaciones
+  // Evitar listeners duplicados entre navegaciones
   if (window._calendarioListener) {
     window.removeEventListener('resultadosUpdated', window._calendarioListener)
     window._calendarioListener = null
