@@ -17,16 +17,14 @@ export const Clasificacion = async () => {
   await renderClasificacion(divClasificacion)
   await renderJornadas(divJornadas, divClasificacion)
 } */
-
-import { parseJwt } from '../../components/Header/Header.js'
 import {
-  getJornadaActual,
   getResultados,
-  nextJornada,
-  saveResultados
-} from '../../utils/data/data.js'
-import { calcularClasificacion } from '../../utils/clasificacion.js/clasifi.js'
-import './clasificacion.css'
+  saveResultados,
+  getJornadaActual,
+  nextJornada
+} from '../../utils/data.js'
+import { calcularClasificacion } from '../../utils/clasifica.js'
+import { parseJwt } from '../../components/Header/Header.js'
 
 export async function renderClasificacion(container) {
   container.innerHTML = ''
@@ -114,4 +112,9 @@ export async function renderClasificacion(container) {
     })
     container.appendChild(btn)
   }
+}
+
+// export nombrado para que Header.js pueda importarlo
+export function Clasificacion(container) {
+  return renderClasificacion(container)
 }
