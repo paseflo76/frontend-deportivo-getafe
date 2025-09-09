@@ -29,9 +29,22 @@ import { parseJwt } from '../../components/Header/Header.js'
 
 export const Clasificacion = async () => {
   const main = document.querySelector('main')
+  console.log('main encontrado:', main)
+  if (!main) return
   main.innerHTML = ''
 
+  const resultados = getResultados()
+  console.log('resultados:', resultados)
+
+  const jornada = getJornadaActual()
+  console.log('jornada actual:', jornada)
+
   const { tabla, jornadaMax } = calcularClasificacion()
+  console.log('tabla y jornadaMax:', tabla, jornadaMax)
+
+  const user = parseJwt(localStorage.getItem('token'))
+  console.log('usuario:', user)
+
   const h2 = document.createElement('h2')
   h2.textContent = `Clasificación después de la Jornada ${jornadaMax}`
   main.appendChild(h2)
@@ -60,17 +73,16 @@ export const Clasificacion = async () => {
   table.appendChild(tbody)
   main.appendChild(table)
 
-  // Mostrar partidos de la jornada actual con inputs si admin
-  const resultados = getResultados()
-  const jornada = getJornadaActual()
-  const user = parseJwt(localStorage.getItem('token'))
-
   const h3 = document.createElement('h3')
   h3.textContent = `Resultados Jornada ${jornada}`
   main.appendChild(h3)
 
+  const jornadaResultados = resultados[jornada - 1] || []
+  console.log('jornadaResultados:', jornadaResultados)
+
   let completos = true
-  resultados[jornada - 1].forEach((m, i) => {
+  jornadaResultados.forEach((m, i) => {
+    console.log('partido:', m)
     if (!m.local) return
     const div = document.createElement('div')
 
