@@ -1,6 +1,7 @@
 import { navigate } from '../../main'
 import { Admin } from '../../pages/admin/admin'
 import { Clasificacion } from '../../pages/clasificacion/Clasificacion'
+
 import { Home } from '../../pages/Home/Home'
 import { Jornadas } from '../../pages/Jornadas/Jornadas'
 import { LoginRegister } from '../../pages/LoginRegister/LoginRegister'
