@@ -8,6 +8,7 @@ export const Jornadas = async () => {
   const main = document.querySelector('main')
   if (!main) return
   main.innerHTML = ''
+  main.classList.add('jornadas')
 
   const container = document.createElement('div')
   container.id = 'calendario'
