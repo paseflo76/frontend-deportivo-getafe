@@ -17,6 +17,7 @@ export const Clasificacion = async () => {
   await renderClasificacion(divClasificacion)
   await renderJornadas(divJornadas, divClasificacion)
 } */
+import './clasificacion.css'
 import {
   getResultados,
   saveResultados,
@@ -26,13 +27,14 @@ import {
 import { calcularClasificacion } from '../../utils/clasifica.js'
 import { parseJwt } from '../../components/Header/Header.js'
 
-export async function renderClasificacion(container) {
-  container.innerHTML = ''
+export const Clasificacion = async () => {
+  const main = document.querySelector('main')
+  main.innerHTML = ''
 
   const { tabla, jornadaMax } = calcularClasificacion()
   const h2 = document.createElement('h2')
   h2.textContent = `Clasificación después de la Jornada ${jornadaMax}`
-  container.appendChild(h2)
+  main.appendChild(h2)
 
   const table = document.createElement('table')
   table.className = 'tabla-clasificacion'
@@ -56,7 +58,7 @@ export async function renderClasificacion(container) {
     tbody.appendChild(tr)
   })
   table.appendChild(tbody)
-  container.appendChild(table)
+  main.appendChild(table)
 
   // Mostrar partidos de la jornada actual con inputs si admin
   const resultados = getResultados()
@@ -65,7 +67,7 @@ export async function renderClasificacion(container) {
 
   const h3 = document.createElement('h3')
   h3.textContent = `Resultados Jornada ${jornada}`
-  container.appendChild(h3)
+  main.appendChild(h3)
 
   let completos = true
   resultados[jornada - 1].forEach((m, i) => {
@@ -100,7 +102,7 @@ export async function renderClasificacion(container) {
     }
 
     if (m.golesLocal == null || m.golesVisitante == null) completos = false
-    container.appendChild(div)
+    main.appendChild(div)
   })
 
   if (user?.rol === 'admin' && completos) {
@@ -108,13 +110,8 @@ export async function renderClasificacion(container) {
     btn.textContent = 'Siguiente Jornada'
     btn.addEventListener('click', () => {
       nextJornada()
-      renderClasificacion(container)
+      Clasificacion()
     })
-    container.appendChild(btn)
+    main.appendChild(btn)
   }
-}
-
-// export nombrado para que Header.js pueda importarlo
-export function Clasificacion(container) {
-  return renderClasificacion(container)
 }
