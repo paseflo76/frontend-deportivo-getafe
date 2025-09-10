@@ -6,8 +6,9 @@ import { Home } from './pages/Home/Home'
 import { LoginRegister } from './pages/LoginRegister/LoginRegister'
 import { Footer } from './components/footer/footer'
 import { Perfil } from './pages/perfil/perfil'
-import { Jornadas } from './pages/Jornadas/Jornadas'
+import { Calendario } from './pages/Jornadas/Jornadas'
 import { Clasificacion } from './pages/clasificacion/Clasificacion'
+import { initResultados } from './utils/data.js'
 
 const routes = {
   home: Home,
@@ -15,7 +16,7 @@ const routes = {
   admin: Admin,
   perfil: Perfil,
   clasificacion: Clasificacion,
-  jornadas: Jornadas
+  jornadas: Calendario
 }
 
 export const navigate = async (path) => {
@@ -69,6 +70,9 @@ const Main = () => {
 }
 
 window.addEventListener('load', async () => {
+  // inicializar estructura de resultados antes de renderizar nada
+  initResultados()
+
   Main()
   const token = localStorage.getItem('token')
   const userId = localStorage.getItem('userId')

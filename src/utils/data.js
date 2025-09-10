@@ -217,18 +217,18 @@ export const calendario = [
 
 // Inicializa resultados en localStorage
 export function initResultados() {
-  if (!localStorage.getItem('resultados')) {
-    const init = calendario.map((jornada) =>
-      jornada.map((m) => ({
-        local: m.local,
-        visitante: m.visitante,
-        golesLocal: null,
-        golesVisitante: null
-      }))
+  let data = JSON.parse(localStorage.getItem('resultados'))
+  if (!data || !Array.isArray(data) || data.length !== calendario.length) {
+    data = calendario.map((jornada) =>
+      jornada.map((partido) =>
+        partido.descansa
+          ? { ...partido }
+          : { ...partido, golesLocal: null, golesVisitante: null }
+      )
     )
-    localStorage.setItem('resultados', JSON.stringify(init))
-    localStorage.setItem('jornadaActual', '1')
+    localStorage.setItem('resultados', JSON.stringify(data))
   }
+  return data
 }
 
 export function getResultados() {
@@ -239,13 +239,11 @@ export function saveResultados(data) {
   localStorage.setItem('resultados', JSON.stringify(data))
   try {
     window.dispatchEvent(new Event('resultadosUpdated'))
-  } catch (e) {
-    // si hay entorno sin window, fallo silencioso
-  }
+  } catch {}
 }
 
 export function getJornadaActual() {
-  return Number(localStorage.getItem('jornadaActual') || '1')
+  return Number(localStorage.getItem('jornadaActual')) || 1
 }
 
 export function nextJornada() {
@@ -253,5 +251,5 @@ export function nextJornada() {
   localStorage.setItem('jornadaActual', String(j + 1))
   try {
     window.dispatchEvent(new Event('resultadosUpdated'))
-  } catch (e) {}
+  } catch {}
 }

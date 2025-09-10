@@ -17,89 +17,144 @@ export const Clasificacion = async () => {
   await renderClasificacion(divClasificacion)
   await renderJornadas(divJornadas, divClasificacion)
 } */
-import './clasificacion.css'
 import {
+  calendario,
   getResultados,
   saveResultados,
   getJornadaActual,
   nextJornada
 } from '../../utils/data.js'
-import { calcularClasificacion } from '../../utils/clasifica.js'
 import { parseJwt } from '../../components/Header/Header.js'
 
-export const Clasificacion = async () => {
+export async function Clasificacion() {
   const main = document.querySelector('main')
-  console.log('main encontrado:', main)
   if (!main) return
   main.innerHTML = ''
 
+  const container = document.createElement('div')
+  container.id = 'clasificacion'
+  main.appendChild(container)
+
+  renderClasificacion(container)
+
+  // limpiar listeners duplicados
+  if (window._clasificacionListener) {
+    window.removeEventListener(
+      'resultadosUpdated',
+      window._clasificacionListener
+    )
+    window._clasificacionListener = null
+  }
+
+  const handler = () => renderClasificacion(container)
+  window._clasificacionListener = handler
+  window.addEventListener('resultadosUpdated', handler)
+}
+
+function renderClasificacion(container) {
+  container.innerHTML = ''
+
   const resultados = getResultados()
-  console.log('resultados:', resultados)
-
   const jornada = getJornadaActual()
-  console.log('jornada actual:', jornada)
 
-  const { tabla, jornadaMax } = calcularClasificacion()
-  console.log('tabla y jornadaMax:', tabla, jornadaMax)
+  // calcular clasificación
+  const equipos = {}
+  resultados.forEach((jornada) => {
+    jornada.forEach((m) => {
+      if (m.descansa) return
+      const { local, visitante, golesLocal, golesVisitante } = m
+      if (!equipos[local])
+        equipos[local] = { equipo: local, puntos: 0, gf: 0, gc: 0 }
+      if (!equipos[visitante])
+        equipos[visitante] = { equipo: visitante, puntos: 0, gf: 0, gc: 0 }
+      if (golesLocal == null || golesVisitante == null) return
 
-  const user = parseJwt(localStorage.getItem('token'))
-  console.log('usuario:', user)
+      equipos[local].gf += golesLocal
+      equipos[local].gc += golesVisitante
+      equipos[visitante].gf += golesVisitante
+      equipos[visitante].gc += golesLocal
+
+      if (golesLocal > golesVisitante) equipos[local].puntos += 3
+      else if (golesLocal < golesVisitante) equipos[visitante].puntos += 3
+      else {
+        equipos[local].puntos++
+        equipos[visitante].puntos++
+      }
+    })
+  })
 
   const h2 = document.createElement('h2')
-  h2.textContent = `Clasificación después de la Jornada ${jornadaMax}`
-  main.appendChild(h2)
+  h2.textContent = `Clasificación tras jornada ${jornada - 1}`
+  container.appendChild(h2)
 
   const table = document.createElement('table')
   table.className = 'tabla-clasificacion'
   table.innerHTML = `
     <thead>
       <tr>
-        <th>Equipo</th><th>Puntos</th><th>GF</th><th>GC</th><th>DIF</th>
+        <th>Equipo</th>
+        <th>Puntos</th>
+        <th>GF</th>
+        <th>GC</th>
+        <th>DIF</th>
       </tr>
     </thead>
   `
   const tbody = document.createElement('tbody')
-  tabla.forEach((e) => {
-    const tr = document.createElement('tr')
-    tr.innerHTML = `
-      <td>${e.equipo}</td>
-      <td>${e.puntos}</td>
-      <td>${e.gf}</td>
-      <td>${e.gc}</td>
-      <td>${e.dif}</td>
-    `
-    tbody.appendChild(tr)
-  })
+  Object.values(equipos)
+    .sort(
+      (a, b) =>
+        b.puntos - a.puntos || b.gf - b.gc - (a.gf - a.gc) || b.gf - a.gf
+    )
+    .forEach((e) => {
+      const tr = document.createElement('tr')
+      tr.innerHTML = `
+        <td>${e.equipo}</td>
+        <td>${e.puntos}</td>
+        <td>${e.gf}</td>
+        <td>${e.gc}</td>
+        <td>${e.gf - e.gc}</td>
+      `
+      tbody.appendChild(tr)
+    })
   table.appendChild(tbody)
-  main.appendChild(table)
+  container.appendChild(table)
 
-  const h3 = document.createElement('h3')
-  h3.textContent = `Resultados Jornada ${jornada}`
-  main.appendChild(h3)
+  // partidos de la jornada actual
+  const jornadaDiv = document.createElement('div')
+  jornadaDiv.className = 'jornada-actual'
+  container.appendChild(jornadaDiv)
 
-  const jornadaResultados = resultados[jornada - 1] || []
-  console.log('jornadaResultados:', jornadaResultados)
+  const user = parseJwt(localStorage.getItem('token'))
+  const jornadaResultados = calendario[jornada - 1].map((m, i) => {
+    const guardado =
+      (resultados[jornada - 1] && resultados[jornada - 1][i]) || {}
+    return { ...m, ...guardado }
+  })
 
   let completos = true
   jornadaResultados.forEach((m, i) => {
-    console.log('partido:', m)
-    if (!m.local) return
     const div = document.createElement('div')
+    div.className = 'partido'
 
-    if (user?.rol === 'admin') {
+    if (m.descansa) {
+      div.textContent = `Descansa: ${m.descansa}`
+    } else if (user?.rol === 'admin') {
       const inputL = document.createElement('input')
-      const inputV = document.createElement('input')
-      inputL.type = inputV.type = 'number'
-      inputL.min = inputV.min = 0
+      inputL.type = 'number'
       inputL.value = m.golesLocal ?? ''
-      inputV.value = m.golesVisitante ?? ''
-
+      inputL.min = 0
       inputL.addEventListener('change', () => {
-        m.golesLocal = Number(inputL.value)
+        resultados[jornada - 1][i].golesLocal = Number(inputL.value)
         saveResultados(resultados)
       })
+
+      const inputV = document.createElement('input')
+      inputV.type = 'number'
+      inputV.value = m.golesVisitante ?? ''
+      inputV.min = 0
       inputV.addEventListener('change', () => {
-        m.golesVisitante = Number(inputV.value)
+        resultados[jornada - 1][i].golesVisitante = Number(inputV.value)
         saveResultados(resultados)
       })
 
@@ -114,7 +169,7 @@ export const Clasificacion = async () => {
     }
 
     if (m.golesLocal == null || m.golesVisitante == null) completos = false
-    main.appendChild(div)
+    jornadaDiv.appendChild(div)
   })
 
   if (user?.rol === 'admin' && completos) {
@@ -122,8 +177,8 @@ export const Clasificacion = async () => {
     btn.textContent = 'Siguiente Jornada'
     btn.addEventListener('click', () => {
       nextJornada()
-      Clasificacion()
+      renderClasificacion(container)
     })
-    main.appendChild(btn)
+    jornadaDiv.appendChild(btn)
   }
 }

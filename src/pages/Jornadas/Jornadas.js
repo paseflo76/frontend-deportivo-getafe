@@ -4,7 +4,7 @@ import {
   getJornadaActual
 } from '../../utils/data.js'
 
-export const Jornadas = async () => {
+export async function Calendario() {
   const main = document.querySelector('main')
   if (!main) return
   main.innerHTML = ''
@@ -15,7 +15,6 @@ export const Jornadas = async () => {
 
   renderCalendario(container)
 
-  // Evitar listeners duplicados entre navegaciones
   if (window._calendarioListener) {
     window.removeEventListener('resultadosUpdated', window._calendarioListener)
     window._calendarioListener = null
@@ -35,13 +34,13 @@ export function renderCalendario(container) {
   calendario.forEach((jornada, jIndex) => {
     const jNumber = jIndex + 1
 
-    const list = document.createElement('div')
-    list.className = 'jornada-list'
-
     const h2 = document.createElement('h2')
     h2.textContent = `Jornada ${jNumber}`
     if (jNumber === jornadaActual) h2.classList.add('jornada-actual')
-    list.appendChild(h2)
+    container.appendChild(h2)
+
+    const list = document.createElement('div')
+    list.className = 'jornada-list'
 
     jornada.forEach((partido, pIndex) => {
       const matchDiv = document.createElement('div')
@@ -54,24 +53,7 @@ export function renderCalendario(container) {
         const golesL = res.golesLocal ?? '-'
         const golesV = res.golesVisitante ?? '-'
 
-        const localSpan = document.createElement('span')
-        localSpan.className = 'local'
-        localSpan.textContent = partido.local
-
-        const scoreSpan = document.createElement('span')
-        scoreSpan.className = 'marcador'
-        scoreSpan.textContent = `${golesL} - ${golesV}`
-
-        const visitanteSpan = document.createElement('span')
-        visitanteSpan.className = 'visitante'
-        visitanteSpan.textContent = partido.visitante
-
-        matchDiv.appendChild(localSpan)
-        matchDiv.appendChild(document.createTextNode(' '))
-        matchDiv.appendChild(scoreSpan)
-        matchDiv.appendChild(document.createTextNode(' '))
-        matchDiv.appendChild(visitanteSpan)
-
+        matchDiv.textContent = `${partido.local} ${golesL} - ${golesV} ${partido.visitante}`
         if (jNumber === jornadaActual)
           matchDiv.classList.add('jornada-actual-partido')
       }
