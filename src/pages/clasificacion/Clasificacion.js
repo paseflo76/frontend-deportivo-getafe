@@ -153,6 +153,9 @@ function renderClasificacion(container) {
       inputV.value = m.golesVisitante ?? ''
       inputV.min = 0
 
+      const botonesDiv = document.createElement('div')
+      botonesDiv.className = 'botones-partido'
+
       const btnGuardar = document.createElement('button')
       btnGuardar.textContent = 'Guardar'
       btnGuardar.addEventListener('click', () => {
@@ -173,13 +176,20 @@ function renderClasificacion(container) {
         renderClasificacion(container)
       })
 
-      div.appendChild(document.createTextNode(m.local + ' '))
+      botonesDiv.appendChild(btnGuardar)
+      botonesDiv.appendChild(btnBorrar)
+
+      div.appendChild(
+        document.createTextNode(
+          `${m.local} ${m.golesLocal ?? ''} - ${m.golesVisitante ?? ''} ${
+            m.visitante
+          } `
+        )
+      )
       div.appendChild(inputL)
       div.appendChild(document.createTextNode(' vs '))
       div.appendChild(inputV)
-      div.appendChild(document.createTextNode(' ' + m.visitante + ' '))
-      div.appendChild(btnGuardar)
-      div.appendChild(btnBorrar)
+      div.appendChild(botonesDiv)
     } else {
       div.textContent = `${m.local} ${m.golesLocal ?? '-'} - ${
         m.golesVisitante ?? '-'
@@ -198,22 +208,5 @@ function renderClasificacion(container) {
       renderClasificacion(container)
     })
     partidosWrapper.appendChild(btnSiguiente)
-  }
-
-  if (user?.rol === 'admin') {
-    const btnBorrarTodo = document.createElement('button')
-    btnBorrarTodo.textContent = 'Borrar Todos los Resultados'
-    btnBorrarTodo.addEventListener('click', () => {
-      const nuevosResultados = calendario.map((j) =>
-        j.map((m) =>
-          m.descansa
-            ? { ...m }
-            : { ...m, golesLocal: null, golesVisitante: null }
-        )
-      )
-      saveResultados(nuevosResultados)
-      renderClasificacion(container)
-    })
-    partidosWrapper.appendChild(btnBorrarTodo)
   }
 }
