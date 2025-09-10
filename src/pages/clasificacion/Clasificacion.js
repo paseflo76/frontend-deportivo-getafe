@@ -221,39 +221,3 @@ function renderClasificacion(container) {
     partidosWrapper.appendChild(navDiv)
   }
 }
-
-// Funciones de resultados y jornada
-export function getResultados() {
-  return JSON.parse(localStorage.getItem('resultados')) || []
-}
-
-export function saveResultados(data) {
-  localStorage.setItem('resultados', JSON.stringify(data))
-  try {
-    window.dispatchEvent(new Event('resultadosUpdated'))
-  } catch {}
-}
-
-export function getJornadaActual() {
-  return Number(localStorage.getItem('jornadaActual')) || 1
-}
-
-export function nextJornada() {
-  const j = getJornadaActual()
-  if (j < calendario.length) {
-    localStorage.setItem('jornadaActual', String(j + 1))
-    try {
-      window.dispatchEvent(new Event('resultadosUpdated'))
-    } catch {}
-  }
-}
-
-export function prevJornada() {
-  const j = getJornadaActual()
-  if (j > 1) {
-    localStorage.setItem('jornadaActual', String(j - 1))
-    try {
-      window.dispatchEvent(new Event('resultadosUpdated'))
-    } catch {}
-  }
-}
