@@ -255,3 +255,13 @@ export function nextJornada() {
     window.dispatchEvent(new Event('resultadosUpdated'))
   } catch (e) {}
 }
+
+export function prevJornada() {
+  const j = getJornadaActual()
+  if (j > 1) {
+    localStorage.setItem('jornadaActual', String(j - 1))
+    try {
+      window.dispatchEvent(new Event('resultadosUpdated'))
+    } catch {}
+  }
+}
