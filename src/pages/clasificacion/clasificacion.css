@@ -1,11 +1,13 @@
 #clasificacion {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   background-color: #0000ffbf;
   width: 90%;
   border: solid 2px black;
   border-radius: 15px;
+  margin-top: 50px;
 }
 
 .partidos-wrapper {
@@ -14,6 +16,7 @@
   font-size: 15px;
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   gap: 10px;
 }
 

@@ -1,22 +1,3 @@
-/* import { renderClasificacion } from '../../utils/clasificacion.js/clasifi'
-import { renderJornadas } from '../../utils/jornadas/jornadas.js'
-import './clasificacion.css'
-
-export const Clasificacion = async () => {
-  const main = document.querySelector('main')
-  main.innerHTML = ''
-
-  const divClasificacion = document.createElement('div')
-  divClasificacion.id = 'clasificacion'
-  main.appendChild(divClasificacion)
-
-  const divJornadas = document.createElement('div')
-  divJornadas.id = 'jornadas-clasificacion'
-  main.appendChild(divJornadas)
-
-  await renderClasificacion(divClasificacion)
-  await renderJornadas(divJornadas, divClasificacion)
-} */
 import './clasificacion.css'
 
 import {
@@ -144,15 +125,36 @@ function renderClasificacion(container) {
     if (m.descansa) {
       div.textContent = `Descansa: ${m.descansa}`
     } else if (user?.rol === 'admin') {
+      const contenidoDiv = document.createElement('div')
+      contenidoDiv.className = 'contenido-partido'
+
+      const spanLocal = document.createElement('span')
+      spanLocal.className = 'equipo-local'
+      spanLocal.textContent = m.local
+
       const inputL = document.createElement('input')
       inputL.type = 'number'
       inputL.value = m.golesLocal ?? ''
       inputL.min = 0
 
+      const spanGuion = document.createElement('span')
+      spanGuion.className = 'guion'
+      spanGuion.textContent = '-'
+
       const inputV = document.createElement('input')
       inputV.type = 'number'
       inputV.value = m.golesVisitante ?? ''
       inputV.min = 0
+
+      const spanVisitante = document.createElement('span')
+      spanVisitante.className = 'equipo-visitante'
+      spanVisitante.textContent = m.visitante
+
+      contenidoDiv.appendChild(spanLocal)
+      contenidoDiv.appendChild(inputL)
+      contenidoDiv.appendChild(spanGuion)
+      contenidoDiv.appendChild(inputV)
+      contenidoDiv.appendChild(spanVisitante)
 
       const botonesDiv = document.createElement('div')
       botonesDiv.className = 'botones-partido'
@@ -180,23 +182,7 @@ function renderClasificacion(container) {
       botonesDiv.appendChild(btnGuardar)
       botonesDiv.appendChild(btnBorrar)
 
-      const spanLocal = document.createElement('span')
-      spanLocal.className = 'equipo-local'
-      spanLocal.textContent = m.local
-
-      const spanVisitante = document.createElement('span')
-      spanVisitante.className = 'equipo-visitante'
-      spanVisitante.textContent = m.visitante
-
-      const spanGuion = document.createElement('span')
-      spanGuion.className = 'guion'
-      spanGuion.textContent = '-'
-
-      div.appendChild(spanLocal)
-      div.appendChild(inputL)
-      div.appendChild(spanGuion)
-      div.appendChild(inputV)
-      div.appendChild(spanVisitante)
+      div.appendChild(contenidoDiv)
       div.appendChild(botonesDiv)
     } else {
       div.textContent = `${m.local} ${m.golesLocal ?? '-'} - ${
