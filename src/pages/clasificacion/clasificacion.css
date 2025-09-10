@@ -13,8 +13,18 @@
   font-size: 15px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; /* centra horizontalmente los divs .partido */
+  justify-content: center; /* centra verticalmente el contenido si hay altura definida */
   gap: 10px;
+  min-height: 100%; /* asegúrate de que ocupe todo el alto disponible */
+}
+.partido {
+  display: flex;
+  flex-direction: column; /* si quieres que los elementos internos estén uno sobre otro */
+  align-items: center; /* centra horizontalmente dentro del div */
+  justify-content: center; /* centra verticalmente dentro del div */
+  width: 100%;
+  min-height: 50px; /* o la altura que quieras para que se note el centrado vertical */
 }
 
 .partidos-wrapper .partido input {
