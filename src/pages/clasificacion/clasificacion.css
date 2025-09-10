@@ -18,11 +18,33 @@
 }
 
 .partidos-wrapper input {
-  width: 15px;
+  width: 25px;
   border-radius: 5px;
   text-align: center;
 }
 
 .tabla-wrapper h2 {
   margin-left: 140px;
+}
+
+.botones-partido {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 5px;
+}
+@media (max-width: 768px) {
+  #clasificacion {
+    width: 100%;
+    font-size: 12px;
+  }
+  .partidos-wrapper {
+    font-size: 12px;
+  }
+  .tabla-wrapper h2 {
+    margin-left: 60px;
+    font-size: 20px;
+  }
+  .partidos-wrapper {
+    width: 100%;
+  }
 }

@@ -24,7 +24,8 @@ import {
   getResultados,
   saveResultados,
   getJornadaActual,
-  nextJornada
+  nextJornada,
+  prevJornada
 } from '../../utils/data.js'
 import { parseJwt } from '../../components/Header/Header.js'
 
@@ -196,13 +197,27 @@ function renderClasificacion(container) {
   })
 
   if (user?.rol === 'admin') {
+    const navDiv = document.createElement('div')
+    navDiv.className = 'navegacion-jornada'
+
+    const btnAnterior = document.createElement('button')
+    btnAnterior.textContent = 'Anterior Jornada'
+    btnAnterior.disabled = jornada <= 1
+    btnAnterior.addEventListener('click', () => {
+      prevJornada()
+      renderClasificacion(container)
+    })
+
     const btnSiguiente = document.createElement('button')
     btnSiguiente.textContent = 'Siguiente Jornada'
-    btnSiguiente.disabled = !completos
+    btnSiguiente.disabled = jornada >= calendario.length
     btnSiguiente.addEventListener('click', () => {
       nextJornada()
       renderClasificacion(container)
     })
-    partidosWrapper.appendChild(btnSiguiente)
+
+    navDiv.appendChild(btnAnterior)
+    navDiv.appendChild(btnSiguiente)
+    partidosWrapper.appendChild(navDiv)
   }
 }
