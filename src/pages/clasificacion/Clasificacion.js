@@ -17,6 +17,8 @@ export const Clasificacion = async () => {
   await renderClasificacion(divClasificacion)
   await renderJornadas(divJornadas, divClasificacion)
 } */
+import './clasificacion.css'
+
 import {
   calendario,
   getResultados,
