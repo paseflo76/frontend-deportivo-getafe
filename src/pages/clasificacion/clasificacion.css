@@ -8,6 +8,7 @@
   border: solid 2px black;
   border-radius: 15px;
   margin-top: 50px;
+  padding-bottom: 10px;
 }
 .tabla-clasificacion {
   background-color: #00aaff;
@@ -95,10 +96,12 @@
   #clasificacion {
     width: 90%;
     font-size: 12px;
+    display: flex;
+    align-items: center;
   }
   .partidos-wrapper {
     font-size: 12px;
-    width: 90%;
+    width: 80%;
   }
   .tabla-wrapper h2 {
     margin-left: 60px;

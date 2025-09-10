@@ -17,32 +17,12 @@
   border-radius: 10px;
 }
 
-/* marcador */
-
-/* equipo local */
-.partido .local {
-  text-align: right;
-  color: #007bff;
-}
-
-/* equipo visitante */
-.partido .visitante {
-  text-align: left;
-  color: #dc3545;
-}
-
-/* resaltar jornada actual */
 .jornada-actual {
   background-color: #007bff;
   color: #fff;
   padding: 3px 8px;
   border-radius: 5px;
   text-align: center;
-}
-
-/* resaltar partido de la jornada actual */
-.jornada-actual-partido {
-  background-color: #e0f0ff;
 }
 
 @media (max-width: 768px) {
