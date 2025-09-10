@@ -17,7 +17,7 @@
   gap: 10px;
 }
 
-.partidos-wrapper input {
+.partidos-wrapper .partido input {
   width: 25px;
   border-radius: 5px;
   text-align: center;

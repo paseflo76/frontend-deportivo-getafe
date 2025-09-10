@@ -60,8 +60,8 @@ function renderClasificacion(container) {
   const jornada = getJornadaActual()
 
   const equipos = {}
-  resultados.forEach((jornada) => {
-    jornada.forEach((m) => {
+  resultados.forEach((j) => {
+    j.forEach((m) => {
       if (m.descansa) return
       const { local, visitante, golesLocal, golesVisitante } = m
       if (!equipos[local])
@@ -219,5 +219,41 @@ function renderClasificacion(container) {
     navDiv.appendChild(btnAnterior)
     navDiv.appendChild(btnSiguiente)
     partidosWrapper.appendChild(navDiv)
+  }
+}
+
+// Funciones de resultados y jornada
+export function getResultados() {
+  return JSON.parse(localStorage.getItem('resultados')) || []
+}
+
+export function saveResultados(data) {
+  localStorage.setItem('resultados', JSON.stringify(data))
+  try {
+    window.dispatchEvent(new Event('resultadosUpdated'))
+  } catch {}
+}
+
+export function getJornadaActual() {
+  return Number(localStorage.getItem('jornadaActual')) || 1
+}
+
+export function nextJornada() {
+  const j = getJornadaActual()
+  if (j < calendario.length) {
+    localStorage.setItem('jornadaActual', String(j + 1))
+    try {
+      window.dispatchEvent(new Event('resultadosUpdated'))
+    } catch {}
+  }
+}
+
+export function prevJornada() {
+  const j = getJornadaActual()
+  if (j > 1) {
+    localStorage.setItem('jornadaActual', String(j - 1))
+    try {
+      window.dispatchEvent(new Event('resultadosUpdated'))
+    } catch {}
   }
 }
