@@ -179,16 +179,11 @@ function renderClasificacion(container) {
       botonesDiv.appendChild(btnGuardar)
       botonesDiv.appendChild(btnBorrar)
 
-      div.appendChild(
-        document.createTextNode(
-          `${m.local} ${m.golesLocal ?? ''} - ${m.golesVisitante ?? ''} ${
-            m.visitante
-          } `
-        )
-      )
+      div.appendChild(document.createTextNode(`${m.local} `))
       div.appendChild(inputL)
-      div.appendChild(document.createTextNode(' vs '))
+      div.appendChild(document.createTextNode(' - '))
       div.appendChild(inputV)
+      div.appendChild(document.createTextNode(` ${m.visitante}`))
       div.appendChild(botonesDiv)
     } else {
       div.textContent = `${m.local} ${m.golesLocal ?? '-'} - ${
@@ -200,9 +195,10 @@ function renderClasificacion(container) {
     partidosWrapper.appendChild(div)
   })
 
-  if (user?.rol === 'admin' && completos) {
+  if (user?.rol === 'admin') {
     const btnSiguiente = document.createElement('button')
     btnSiguiente.textContent = 'Siguiente Jornada'
+    btnSiguiente.disabled = !completos
     btnSiguiente.addEventListener('click', () => {
       nextJornada()
       renderClasificacion(container)
