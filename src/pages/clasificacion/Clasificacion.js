@@ -180,11 +180,23 @@ function renderClasificacion(container) {
       botonesDiv.appendChild(btnGuardar)
       botonesDiv.appendChild(btnBorrar)
 
-      div.appendChild(document.createTextNode(`${m.local} `))
+      const spanLocal = document.createElement('span')
+      spanLocal.className = 'equipo-local'
+      spanLocal.textContent = m.local
+
+      const spanVisitante = document.createElement('span')
+      spanVisitante.className = 'equipo-visitante'
+      spanVisitante.textContent = m.visitante
+
+      const spanGuion = document.createElement('span')
+      spanGuion.className = 'guion'
+      spanGuion.textContent = '-'
+
+      div.appendChild(spanLocal)
       div.appendChild(inputL)
-      div.appendChild(document.createTextNode(' - '))
+      div.appendChild(spanGuion)
       div.appendChild(inputV)
-      div.appendChild(document.createTextNode(` ${m.visitante}`))
+      div.appendChild(spanVisitante)
       div.appendChild(botonesDiv)
     } else {
       div.textContent = `${m.local} ${m.golesLocal ?? '-'} - ${
