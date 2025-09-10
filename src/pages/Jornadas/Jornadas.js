@@ -1,3 +1,5 @@
+import './jornadas.css'
+
 import {
   calendario,
   getResultados,

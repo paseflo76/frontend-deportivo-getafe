@@ -39,7 +39,6 @@ export async function Clasificacion() {
 
   renderClasificacion(container)
 
-  // limpiar listeners duplicados
   if (window._clasificacionListener) {
     window.removeEventListener(
       'resultadosUpdated',
@@ -59,7 +58,6 @@ function renderClasificacion(container) {
   const resultados = getResultados()
   const jornada = getJornadaActual()
 
-  // calcular clasificación
   const equipos = {}
   resultados.forEach((jornada) => {
     jornada.forEach((m) => {
@@ -85,7 +83,6 @@ function renderClasificacion(container) {
     })
   })
 
-  // wrapper tabla
   const tablaWrapper = document.createElement('div')
   tablaWrapper.className = 'tabla-wrapper'
   container.appendChild(tablaWrapper)
@@ -127,7 +124,6 @@ function renderClasificacion(container) {
   table.appendChild(tbody)
   tablaWrapper.appendChild(table)
 
-  // wrapper partidos
   const partidosWrapper = document.createElement('div')
   partidosWrapper.className = 'partidos-wrapper'
   container.appendChild(partidosWrapper)
@@ -165,7 +161,16 @@ function renderClasificacion(container) {
         resultados[jornada - 1][i].golesVisitante =
           inputV.value === '' ? null : Number(inputV.value)
         saveResultados(resultados)
-        renderClasificacion(container) // re-render inmediato
+        renderClasificacion(container)
+      })
+
+      const btnBorrar = document.createElement('button')
+      btnBorrar.textContent = 'Borrar'
+      btnBorrar.addEventListener('click', () => {
+        resultados[jornada - 1][i].golesLocal = null
+        resultados[jornada - 1][i].golesVisitante = null
+        saveResultados(resultados)
+        renderClasificacion(container)
       })
 
       div.appendChild(document.createTextNode(m.local + ' '))
@@ -174,6 +179,7 @@ function renderClasificacion(container) {
       div.appendChild(inputV)
       div.appendChild(document.createTextNode(' ' + m.visitante + ' '))
       div.appendChild(btnGuardar)
+      div.appendChild(btnBorrar)
     } else {
       div.textContent = `${m.local} ${m.golesLocal ?? '-'} - ${
         m.golesVisitante ?? '-'
@@ -185,12 +191,29 @@ function renderClasificacion(container) {
   })
 
   if (user?.rol === 'admin' && completos) {
-    const btn = document.createElement('button')
-    btn.textContent = 'Siguiente Jornada'
-    btn.addEventListener('click', () => {
+    const btnSiguiente = document.createElement('button')
+    btnSiguiente.textContent = 'Siguiente Jornada'
+    btnSiguiente.addEventListener('click', () => {
       nextJornada()
       renderClasificacion(container)
     })
-    partidosWrapper.appendChild(btn)
+    partidosWrapper.appendChild(btnSiguiente)
+  }
+
+  if (user?.rol === 'admin') {
+    const btnBorrarTodo = document.createElement('button')
+    btnBorrarTodo.textContent = 'Borrar Todos los Resultados'
+    btnBorrarTodo.addEventListener('click', () => {
+      const nuevosResultados = calendario.map((j) =>
+        j.map((m) =>
+          m.descansa
+            ? { ...m }
+            : { ...m, golesLocal: null, golesVisitante: null }
+        )
+      )
+      saveResultados(nuevosResultados)
+      renderClasificacion(container)
+    })
+    partidosWrapper.appendChild(btnBorrarTodo)
   }
 }
