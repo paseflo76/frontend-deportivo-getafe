@@ -34,13 +34,13 @@ export function renderCalendario(container) {
   calendario.forEach((jornada, jIndex) => {
     const jNumber = jIndex + 1
 
+    const list = document.createElement('div')
+    list.className = 'jornada-list'
+
     const h2 = document.createElement('h2')
     h2.textContent = `Jornada ${jNumber}`
     if (jNumber === jornadaActual) h2.classList.add('jornada-actual')
-    container.appendChild(h2)
-
-    const list = document.createElement('div')
-    list.className = 'jornada-list'
+    list.appendChild(h2)
 
     jornada.forEach((partido, pIndex) => {
       const matchDiv = document.createElement('div')

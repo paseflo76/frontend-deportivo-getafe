@@ -83,9 +83,14 @@ function renderClasificacion(container) {
     })
   })
 
+  // wrapper tabla
+  const tablaWrapper = document.createElement('div')
+  tablaWrapper.className = 'tabla-wrapper'
+  container.appendChild(tablaWrapper)
+
   const h2 = document.createElement('h2')
-  h2.textContent = `Clasificación tras jornada ${jornada - 1}`
-  container.appendChild(h2)
+  h2.textContent = `Jornada ${jornada}`
+  tablaWrapper.appendChild(h2)
 
   const table = document.createElement('table')
   table.className = 'tabla-clasificacion'
@@ -118,12 +123,12 @@ function renderClasificacion(container) {
       tbody.appendChild(tr)
     })
   table.appendChild(tbody)
-  container.appendChild(table)
+  tablaWrapper.appendChild(table)
 
-  // partidos de la jornada actual
-  const jornadaDiv = document.createElement('div')
-  jornadaDiv.className = 'jornada-actual'
-  container.appendChild(jornadaDiv)
+  // wrapper partidos
+  const partidosWrapper = document.createElement('div')
+  partidosWrapper.className = 'partidos-wrapper'
+  container.appendChild(partidosWrapper)
 
   const user = parseJwt(localStorage.getItem('token'))
   const jornadaResultados = calendario[jornada - 1].map((m, i) => {
@@ -144,24 +149,29 @@ function renderClasificacion(container) {
       inputL.type = 'number'
       inputL.value = m.golesLocal ?? ''
       inputL.min = 0
-      inputL.addEventListener('change', () => {
-        resultados[jornada - 1][i].golesLocal = Number(inputL.value)
-        saveResultados(resultados)
-      })
 
       const inputV = document.createElement('input')
       inputV.type = 'number'
       inputV.value = m.golesVisitante ?? ''
       inputV.min = 0
-      inputV.addEventListener('change', () => {
-        resultados[jornada - 1][i].golesVisitante = Number(inputV.value)
+
+      const btnGuardar = document.createElement('button')
+      btnGuardar.textContent = 'Guardar'
+      btnGuardar.addEventListener('click', () => {
+        resultados[jornada - 1][i].golesLocal =
+          inputL.value === '' ? null : Number(inputL.value)
+        resultados[jornada - 1][i].golesVisitante =
+          inputV.value === '' ? null : Number(inputV.value)
         saveResultados(resultados)
+        renderClasificacion(container) // re-render inmediato
       })
 
-      div.textContent = `${m.local} vs ${m.visitante} `
+      div.appendChild(document.createTextNode(m.local + ' '))
       div.appendChild(inputL)
-      div.appendChild(document.createTextNode(' - '))
+      div.appendChild(document.createTextNode(' vs '))
       div.appendChild(inputV)
+      div.appendChild(document.createTextNode(' ' + m.visitante + ' '))
+      div.appendChild(btnGuardar)
     } else {
       div.textContent = `${m.local} ${m.golesLocal ?? '-'} - ${
         m.golesVisitante ?? '-'
@@ -169,7 +179,7 @@ function renderClasificacion(container) {
     }
 
     if (m.golesLocal == null || m.golesVisitante == null) completos = false
-    jornadaDiv.appendChild(div)
+    partidosWrapper.appendChild(div)
   })
 
   if (user?.rol === 'admin' && completos) {
@@ -179,6 +189,6 @@ function renderClasificacion(container) {
       nextJornada()
       renderClasificacion(container)
     })
-    jornadaDiv.appendChild(btn)
+    partidosWrapper.appendChild(btn)
   }
 }
