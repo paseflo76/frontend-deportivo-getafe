@@ -45,10 +45,15 @@ function renderClasificacion(container) {
     j.forEach((m) => {
       if (m.descansa) return
       const { local, visitante, golesLocal, golesVisitante } = m
-      if (!equipos[local])
-        equipos[local] = { equipo: local, puntos: 0, gf: 0, gc: 0 }
-      if (!equipos[visitante])
-        equipos[visitante] = { equipo: visitante, puntos: 0, gf: 0, gc: 0 }
+      if (local) {
+        if (!equipos[local])
+          equipos[local] = { equipo: local, puntos: 0, gf: 0, gc: 0 }
+      }
+      if (visitante) {
+        if (!equipos[visitante])
+          equipos[visitante] = { equipo: visitante, puntos: 0, gf: 0, gc: 0 }
+      }
+
       if (golesLocal == null || golesVisitante == null) return
 
       equipos[local].gf += golesLocal
