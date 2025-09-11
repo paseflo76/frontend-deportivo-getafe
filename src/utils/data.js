@@ -177,7 +177,7 @@ export const calendario = [
   // Jornada 17
   [
     { fecha: '22-02-26' },
-    { local: 'DEPORIVO GETAFE', visitante: 'REAL CAMPO REAL' },
+    { local: 'DEPORTIVO GETAFE', visitante: 'REAL CAMPO REAL' },
     { local: 'CELTIC DE ESPARTA', visitante: 'VILLABETIS' },
     { local: 'ARSENAL GETAFE', visitante: 'BRAVO GETAFE' },
     { local: 'SAN FRANCIS FC', visitante: 'CERVEZAS CLUB' },
