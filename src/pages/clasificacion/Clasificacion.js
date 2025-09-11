@@ -38,6 +38,7 @@ function renderClasificacion(container) {
 
   const resultados = getResultados()
   const jornada = getJornadaActual()
+  const user = parseJwt(localStorage.getItem('token'))
 
   const equipos = {}
 
@@ -70,6 +71,7 @@ function renderClasificacion(container) {
     })
   })
 
+  // Tabla de clasificación
   const tablaWrapper = document.createElement('div')
   tablaWrapper.className = 'tabla-wrapper'
   container.appendChild(tablaWrapper)
@@ -81,44 +83,45 @@ function renderClasificacion(container) {
   const table = document.createElement('table')
   table.className = 'tabla-clasificacion'
   table.innerHTML = `
-  <thead>
-    <tr>
-      <th>Pos</th>
-      <th>Equipo</th>
-      <th>Puntos</th>
-      <th>GF</th>
-      <th>GC</th>
-      <th>DIF</th>
-    </tr>
-  </thead>
-`
+    <thead>
+      <tr>
+        <th>Pos</th>
+        <th>Equipo</th>
+        <th>Puntos</th>
+        <th>GF</th>
+        <th>GC</th>
+        <th>DIF</th>
+      </tr>
+    </thead>
+  `
   const tbody = document.createElement('tbody')
   Object.values(equipos)
+    .filter((e) => e.equipo)
     .sort(
       (a, b) =>
         b.puntos - a.puntos || b.gf - b.gc - (a.gf - a.gc) || b.gf - a.gf
     )
     .forEach((e, index) => {
       const tr = document.createElement('tr')
-      if (index === 0) tr.classList.add('primero') // primer puesto resaltado
+      if (index === 0) tr.classList.add('primero')
       tr.innerHTML = `
-      <td>${index + 1}</td>
-      <td>${e.equipo}</td>
-      <td>${e.puntos}</td>
-      <td>${e.gf}</td>
-      <td>${e.gc}</td>
-      <td>${e.gf - e.gc}</td>
-    `
+        <td>${index + 1}</td>
+        <td>${e.equipo}</td>
+        <td>${e.puntos}</td>
+        <td>${e.gf}</td>
+        <td>${e.gc}</td>
+        <td>${e.gf - e.gc}</td>
+      `
       tbody.appendChild(tr)
     })
   table.appendChild(tbody)
   tablaWrapper.appendChild(table)
 
+  // Partidos de la jornada
   const partidosWrapper = document.createElement('div')
   partidosWrapper.className = 'partidos-wrapper'
   container.appendChild(partidosWrapper)
 
-  const user = parseJwt(localStorage.getItem('token'))
   const jornadaArray = calendario[jornada - 1] || []
   const resultadosJornada = resultados[jornada - 1] || []
 
@@ -129,9 +132,11 @@ function renderClasificacion(container) {
     if (m.descansa) {
       div.textContent = `Descansa: ${m.descansa}`
     } else {
+      // Buscar resultado coincidente
       const guardado = resultadosJornada.find(
         (r) => r.local === m.local && r.visitante === m.visitante
-      ) || { golesLocal: null, golesVisitante: null }
+      )
+      if (!guardado) return // evita partido vacío
 
       const partido = { ...m, ...guardado }
 
@@ -173,10 +178,9 @@ function renderClasificacion(container) {
         const btnGuardar = document.createElement('button')
         btnGuardar.textContent = 'Guardar'
         btnGuardar.addEventListener('click', () => {
-          const idx = resultadosJornada.indexOf(guardado)
-          resultados[jornada - 1][idx].golesLocal =
+          guardado.golesLocal =
             inputL.value === '' ? null : Number(inputL.value)
-          resultados[jornada - 1][idx].golesVisitante =
+          guardado.golesVisitante =
             inputV.value === '' ? null : Number(inputV.value)
           saveResultados(resultados)
           renderClasificacion(container)
@@ -185,9 +189,8 @@ function renderClasificacion(container) {
         const btnBorrar = document.createElement('button')
         btnBorrar.textContent = 'Borrar'
         btnBorrar.addEventListener('click', () => {
-          const idx = resultadosJornada.indexOf(guardado)
-          resultados[jornada - 1][idx].golesLocal = null
-          resultados[jornada - 1][idx].golesVisitante = null
+          guardado.golesLocal = null
+          guardado.golesVisitante = null
           saveResultados(resultados)
           renderClasificacion(container)
         })
@@ -206,6 +209,7 @@ function renderClasificacion(container) {
     partidosWrapper.appendChild(div)
   })
 
+  // Navegación jornada
   const navDiv = document.createElement('div')
   navDiv.className = 'navegacion-jornada'
 
