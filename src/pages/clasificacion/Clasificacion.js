@@ -117,8 +117,6 @@ function renderClasificacion(container) {
 
   let resultadoIndex = 0
   jornadaArray.forEach((m) => {
-    if (m.fecha) return
-
     const div = document.createElement('div')
     div.className = 'partido'
 
