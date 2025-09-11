@@ -96,7 +96,7 @@ function renderClasificacion(container) {
     )
     .forEach((e, index) => {
       const tr = document.createElement('tr')
-      if (index === 0) tr.classList.add('primero') // resalta el primero
+      if (index === 0) tr.classList.add('primero')
       tr.innerHTML = `
       <td>${index + 1}</td>
       <td>${e.equipo}</td>
@@ -126,7 +126,8 @@ function renderClasificacion(container) {
     if (m.descansa) {
       div.textContent = `Descansa: ${m.descansa}`
     } else {
-      const guardado = resultadosJornada[resultadoIndex] || {}
+      if (!resultadosJornada[resultadoIndex]) return
+      const guardado = resultadosJornada[resultadoIndex]
       const partido = { ...m, ...guardado }
       resultadoIndex++
 
