@@ -288,3 +288,11 @@ export function prevJornada() {
     } catch {}
   }
 }
+// En src/utils/data.js
+export function getJornadaActual() {
+  return Number(localStorage.getItem('jornadaActual') || 1)
+}
+
+export function setJornadaActual(jornada) {
+  localStorage.setItem('jornadaActual', jornada)
+}
