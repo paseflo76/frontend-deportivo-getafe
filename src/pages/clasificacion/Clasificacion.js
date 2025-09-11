@@ -19,7 +19,10 @@ export async function Clasificacion() {
   container.id = 'clasificacion'
   main.appendChild(container)
 
-  renderClasificacion(container)
+  const user = parseJwt(localStorage.getItem('token'))
+  let jornadaVista = getJornadaActual() // jornada que ve cada usuario
+
+  renderClasificacion(container, jornadaVista, user)
 
   if (window._clasificacionListener) {
     window.removeEventListener(
@@ -29,16 +32,15 @@ export async function Clasificacion() {
     window._clasificacionListener = null
   }
 
-  const handler = () => renderClasificacion(container)
+  const handler = () => renderClasificacion(container, jornadaVista, user)
   window._clasificacionListener = handler
   window.addEventListener('resultadosUpdated', handler)
 }
 
-function renderClasificacion(container) {
+function renderClasificacion(container, jornada, user) {
   container.innerHTML = ''
 
   const resultados = getResultados()
-  const jornada = getJornadaActual()
 
   const equipos = {}
   resultados.forEach((j) => {
@@ -115,9 +117,7 @@ function renderClasificacion(container) {
   partidosWrapper.className = 'partidos-wrapper'
   container.appendChild(partidosWrapper)
 
-  const user = parseJwt(localStorage.getItem('token'))
-
-  // ---------- MODIFICACIÓN AQUÍ ----------
+  // preparar resultados de la jornada
   const jornadaArray = calendario[jornada - 1] || []
   const resultadosJornada = resultados[jornada - 1] || []
   let resultadoIndex = 0
@@ -127,10 +127,11 @@ function renderClasificacion(container) {
     resultadoIndex++
     return { ...m, ...guardado }
   })
-  // ----------------------------------------
 
   let completos = true
   jornadaResultados.forEach((m, i) => {
+    if (m.fecha) return // ignorar cabecera fecha
+
     const div = document.createElement('div')
     div.className = 'partido'
 
@@ -179,7 +180,7 @@ function renderClasificacion(container) {
         resultados[jornada - 1][resultadoIndex - 1].golesVisitante =
           inputV.value === '' ? null : Number(inputV.value)
         saveResultados(resultados)
-        renderClasificacion(container)
+        renderClasificacion(container, jornada, user)
       })
 
       const btnBorrar = document.createElement('button')
@@ -188,7 +189,7 @@ function renderClasificacion(container) {
         resultados[jornada - 1][resultadoIndex - 1].golesLocal = null
         resultados[jornada - 1][resultadoIndex - 1].golesVisitante = null
         saveResultados(resultados)
-        renderClasificacion(container)
+        renderClasificacion(container, jornada, user)
       })
 
       botonesDiv.appendChild(btnGuardar)
@@ -196,7 +197,7 @@ function renderClasificacion(container) {
 
       div.appendChild(contenidoDiv)
       div.appendChild(botonesDiv)
-    } else if (!m.fecha) {
+    } else {
       div.textContent = `${m.local} ${m.golesLocal ?? '-'} - ${
         m.golesVisitante ?? '-'
       } ${m.visitante}`
@@ -206,28 +207,26 @@ function renderClasificacion(container) {
     partidosWrapper.appendChild(div)
   })
 
-  if (user?.rol === 'admin') {
-    const navDiv = document.createElement('div')
-    navDiv.className = 'navegacion-jornada'
+  const navDiv = document.createElement('div')
+  navDiv.className = 'navegacion-jornada'
 
-    const btnAnterior = document.createElement('button')
-    btnAnterior.textContent = 'Anterior Jornada'
-    btnAnterior.disabled = jornada <= 1
-    btnAnterior.addEventListener('click', () => {
-      prevJornada()
-      renderClasificacion(container)
-    })
+  const btnAnterior = document.createElement('button')
+  btnAnterior.textContent = 'Anterior Jornada'
+  btnAnterior.disabled = jornada <= 1
+  btnAnterior.addEventListener('click', () => {
+    jornada--
+    renderClasificacion(container, jornada, user)
+  })
 
-    const btnSiguiente = document.createElement('button')
-    btnSiguiente.textContent = 'Siguiente Jornada'
-    btnSiguiente.disabled = jornada >= calendario.length
-    btnSiguiente.addEventListener('click', () => {
-      nextJornada()
-      renderClasificacion(container)
-    })
+  const btnSiguiente = document.createElement('button')
+  btnSiguiente.textContent = 'Siguiente Jornada'
+  btnSiguiente.disabled = jornada >= calendario.length
+  btnSiguiente.addEventListener('click', () => {
+    jornada++
+    renderClasificacion(container, jornada, user)
+  })
 
-    navDiv.appendChild(btnAnterior)
-    navDiv.appendChild(btnSiguiente)
-    partidosWrapper.appendChild(navDiv)
-  }
+  navDiv.appendChild(btnAnterior)
+  navDiv.appendChild(btnSiguiente)
+  partidosWrapper.appendChild(navDiv)
 }
