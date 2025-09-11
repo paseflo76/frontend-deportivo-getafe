@@ -1,4 +1,4 @@
-import { apiCatch } from '../fetch/fech.js'
+/* import { apiCatch } from '../fetch/fech.js' */
 
 export async function renderJornadas(container) {
   container.innerHTML = '' // limpiar contenido previo

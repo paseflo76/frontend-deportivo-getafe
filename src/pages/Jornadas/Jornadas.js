@@ -35,7 +35,6 @@ export function renderCalendario(container) {
 
   calendario.forEach((jornada, jIndex) => {
     const jNumber = jIndex + 1
-
     const list = document.createElement('div')
     list.className = 'jornada-list'
 
@@ -44,20 +43,34 @@ export function renderCalendario(container) {
     if (jNumber === jornadaActual) h2.classList.add('jornada-actual')
     list.appendChild(h2)
 
-    jornada.forEach((partido, pIndex) => {
+    // mostrar fecha de la jornada (si existe)
+    const fechaJornada = jornada.find((m) => m.fecha)?.fecha
+    if (fechaJornada) {
+      const fechaEl = document.createElement('div')
+      fechaEl.className = 'fecha-jornada'
+      fechaEl.textContent = fechaJornada
+      list.appendChild(fechaEl)
+    }
+
+    const saved = resultados[jIndex] || []
+    let matchIndex = 0
+
+    jornada.forEach((partido) => {
+      if (partido.fecha) return // saltar cabecera fecha
+
       const matchDiv = document.createElement('div')
       matchDiv.className = 'partido'
 
-      if (partido?.descansa) {
+      if (partido.descansa) {
         matchDiv.textContent = `Descansa: ${partido.descansa}`
       } else {
-        const res = (resultados[jIndex] && resultados[jIndex][pIndex]) || {}
+        const res = saved[matchIndex] || {}
         const golesL = res.golesLocal ?? '-'
         const golesV = res.golesVisitante ?? '-'
-
         matchDiv.textContent = `${partido.local} ${golesL} - ${golesV} ${partido.visitante}`
         if (jNumber === jornadaActual)
           matchDiv.classList.add('jornada-actual-partido')
+        matchIndex++
       }
 
       list.appendChild(matchDiv)

@@ -15,7 +15,12 @@ export function calcularClasificacion() {
   for (let j = 0; j < jornadaMax; j++) {
     const jornadaResultados = resultados[j] || []
     jornadaResultados.forEach((m) => {
-      if (m.local && m.golesLocal != null && m.golesVisitante != null) {
+      if (
+        m.local &&
+        m.visitante &&
+        m.golesLocal != null &&
+        m.golesVisitante != null
+      ) {
         const local = tabla.find((t) => t.equipo === m.local)
         const visitante = tabla.find((t) => t.equipo === m.visitante)
 

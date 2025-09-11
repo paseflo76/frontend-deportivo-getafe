@@ -242,7 +242,7 @@ export function initResultados() {
     const init = calendario.map((jornada) => {
       const fechaJornada = jornada.find((m) => m.fecha)?.fecha || null
       return jornada
-        .filter((m) => !m.fecha && !m.descansa) // solo partidos
+        .filter((m) => !m.fecha && !m.descansa)
         .map((m) => ({
           fecha: fechaJornada,
           local: m.local,
@@ -264,9 +264,7 @@ export function saveResultados(data) {
   localStorage.setItem('resultados', JSON.stringify(data))
   try {
     window.dispatchEvent(new Event('resultadosUpdated'))
-  } catch (e) {
-    // si hay entorno sin window, fallo silencioso
-  }
+  } catch {}
 }
 
 export function getJornadaActual() {
@@ -278,7 +276,7 @@ export function nextJornada() {
   localStorage.setItem('jornadaActual', String(j + 1))
   try {
     window.dispatchEvent(new Event('resultadosUpdated'))
-  } catch (e) {}
+  } catch {}
 }
 
 export function prevJornada() {
