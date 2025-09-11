@@ -94,7 +94,6 @@ function renderClasificacion(container) {
 `
   const tbody = document.createElement('tbody')
   Object.values(equipos)
-    .filter((e) => e.equipo)
     .sort(
       (a, b) =>
         b.puntos - a.puntos || b.gf - b.gc - (a.gf - a.gc) || b.gf - a.gf
@@ -123,17 +122,17 @@ function renderClasificacion(container) {
   const jornadaArray = calendario[jornada - 1] || []
   const resultadosJornada = resultados[jornada - 1] || []
 
-  jornadaArray.forEach((m, idx) => {
+  jornadaArray.forEach((m) => {
     const div = document.createElement('div')
     div.className = 'partido'
 
     if (m.descansa) {
       div.textContent = `Descansa: ${m.descansa}`
     } else {
-      const guardado = resultadosJornada[idx] || {
-        golesLocal: null,
-        golesVisitante: null
-      }
+      const guardado = resultadosJornada.find(
+        (r) => r.local === m.local && r.visitante === m.visitante
+      ) || { golesLocal: null, golesVisitante: null }
+
       const partido = { ...m, ...guardado }
 
       if (user?.rol === 'admin') {
@@ -174,6 +173,7 @@ function renderClasificacion(container) {
         const btnGuardar = document.createElement('button')
         btnGuardar.textContent = 'Guardar'
         btnGuardar.addEventListener('click', () => {
+          const idx = resultadosJornada.indexOf(guardado)
           resultados[jornada - 1][idx].golesLocal =
             inputL.value === '' ? null : Number(inputL.value)
           resultados[jornada - 1][idx].golesVisitante =
@@ -185,6 +185,7 @@ function renderClasificacion(container) {
         const btnBorrar = document.createElement('button')
         btnBorrar.textContent = 'Borrar'
         btnBorrar.addEventListener('click', () => {
+          const idx = resultadosJornada.indexOf(guardado)
           resultados[jornada - 1][idx].golesLocal = null
           resultados[jornada - 1][idx].golesVisitante = null
           saveResultados(resultados)
