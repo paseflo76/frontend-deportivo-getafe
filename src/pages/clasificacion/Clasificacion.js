@@ -116,11 +116,18 @@ function renderClasificacion(container) {
   container.appendChild(partidosWrapper)
 
   const user = parseJwt(localStorage.getItem('token'))
-  const jornadaResultados = calendario[jornada - 1].map((m, i) => {
-    const guardado =
-      (resultados[jornada - 1] && resultados[jornada - 1][i]) || {}
+
+  // ---------- MODIFICACIÓN AQUÍ ----------
+  const jornadaArray = calendario[jornada - 1] || []
+  const resultadosJornada = resultados[jornada - 1] || []
+  let resultadoIndex = 0
+  const jornadaResultados = jornadaArray.map((m) => {
+    if (m.descansa || m.fecha) return m
+    const guardado = resultadosJornada[resultadoIndex] || {}
+    resultadoIndex++
     return { ...m, ...guardado }
   })
+  // ----------------------------------------
 
   let completos = true
   jornadaResultados.forEach((m, i) => {
@@ -167,9 +174,9 @@ function renderClasificacion(container) {
       const btnGuardar = document.createElement('button')
       btnGuardar.textContent = 'Guardar'
       btnGuardar.addEventListener('click', () => {
-        resultados[jornada - 1][i].golesLocal =
+        resultados[jornada - 1][resultadoIndex - 1].golesLocal =
           inputL.value === '' ? null : Number(inputL.value)
-        resultados[jornada - 1][i].golesVisitante =
+        resultados[jornada - 1][resultadoIndex - 1].golesVisitante =
           inputV.value === '' ? null : Number(inputV.value)
         saveResultados(resultados)
         renderClasificacion(container)
@@ -178,8 +185,8 @@ function renderClasificacion(container) {
       const btnBorrar = document.createElement('button')
       btnBorrar.textContent = 'Borrar'
       btnBorrar.addEventListener('click', () => {
-        resultados[jornada - 1][i].golesLocal = null
-        resultados[jornada - 1][i].golesVisitante = null
+        resultados[jornada - 1][resultadoIndex - 1].golesLocal = null
+        resultados[jornada - 1][resultadoIndex - 1].golesVisitante = null
         saveResultados(resultados)
         renderClasificacion(container)
       })
@@ -189,7 +196,7 @@ function renderClasificacion(container) {
 
       div.appendChild(contenidoDiv)
       div.appendChild(botonesDiv)
-    } else {
+    } else if (!m.fecha) {
       div.textContent = `${m.local} ${m.golesLocal ?? '-'} - ${
         m.golesVisitante ?? '-'
       } ${m.visitante}`
