@@ -40,16 +40,21 @@ function renderClasificacion(container) {
   const jornada = getJornadaActual()
 
   const equipos = {}
+
+  // Crear todos los equipos a partir del calendario
+  calendario.flat().forEach((m) => {
+    if (m.descansa) return
+    if (m.local && !equipos[m.local])
+      equipos[m.local] = { equipo: m.local, puntos: 0, gf: 0, gc: 0 }
+    if (m.visitante && !equipos[m.visitante])
+      equipos[m.visitante] = { equipo: m.visitante, puntos: 0, gf: 0, gc: 0 }
+  })
+
+  // Sumar resultados existentes
   resultados.forEach((j) => {
     j.forEach((m) => {
       if (m.descansa) return
       const { local, visitante, golesLocal, golesVisitante } = m
-
-      if (!equipos[local])
-        equipos[local] = { equipo: local, puntos: 0, gf: 0, gc: 0 }
-      if (!equipos[visitante])
-        equipos[visitante] = { equipo: visitante, puntos: 0, gf: 0, gc: 0 }
-
       if (golesLocal != null && golesVisitante != null) {
         equipos[local].gf += golesLocal
         equipos[local].gc += golesVisitante
@@ -96,7 +101,7 @@ function renderClasificacion(container) {
     )
     .forEach((e, index) => {
       const tr = document.createElement('tr')
-      if (index === 0) tr.classList.add('primero')
+      if (index === 0) tr.classList.add('primero') // primer puesto resaltado
       tr.innerHTML = `
       <td>${index + 1}</td>
       <td>${e.equipo}</td>
@@ -126,7 +131,6 @@ function renderClasificacion(container) {
     if (m.descansa) {
       div.textContent = `Descansa: ${m.descansa}`
     } else {
-      if (!resultadosJornada[resultadoIndex]) return
       const guardado = resultadosJornada[resultadoIndex]
       const partido = { ...m, ...guardado }
       resultadoIndex++
