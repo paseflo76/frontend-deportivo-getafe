@@ -3,7 +3,7 @@ export const equipos = [
   'ARSENAL GETAFE',
   'BRAVO GETAFE',
   'CELTIC DE ESPARTA',
-  'CERVEZA CLUB',
+  'CERVEZAS CLUB',
   'DEPORTIVO GETAFE',
   'G  EMPRESAS AIRBUS',
   'LOS BRASAS',
@@ -17,201 +17,222 @@ export const equipos = [
 export const calendario = [
   // Jornada 1
   [
+    { fecha: '28-09-25' },
     { local: 'ARSENAL GETAFE', visitante: 'CELTIC DE ESPARTA' },
     { local: 'SAN FRANCIS FC', visitante: 'DEPORTIVO GETAFE' },
     { local: 'OLIMPIC DE UCRANIA', visitante: 'LOS BRASAS' },
     { local: 'G  EMPRESAS AIRBUS', visitante: 'REAL CAMPO REAL' },
-    { local: 'CERVEZA CLUB', visitante: 'VILLABETIS' },
+    { local: 'CERVEZAS CLUB', visitante: 'VILLABETIS' },
     { descansa: 'BRAVO GETAFE' }
   ],
   // Jornada 2
   [
-    { local: 'ARSENAL GETAFE', visitante: 'SAN FRANCIS FC' },
-    { local: 'DEPORTIVO GETAFE', visitante: 'G  EMPRESAS AIRBUS' },
-    { local: 'CELTIC DE ESPARTA', visitante: 'CERVEZA CLUB' },
-    { local: 'BRAVO GETAFE', visitante: 'OLIMPIC DE UCRANIA' },
-    { local: 'LOS BRASAS', visitante: 'VILLABETIS' },
-    { descansa: 'REAL CAMPO REAL' }
+    { fecha: '05-10-25' },
+    { local: 'VILLABETIS', visitante: 'G  EMPRESAS AIRBUS' },
+    { local: 'DEPORTIVO GETAFE', visitante: 'ARSENAL GETAFE' },
+    { local: 'BRAVO GETAFE', visitante: 'CERVEZAS CLUB' },
+    { local: 'REAL CAMPO REAL', visitante: 'OLIMPIC DE UCRANIA' },
+    { local: 'LOS BRASAS', visitante: 'SAN FRANCIS FC' },
+    { descansa: 'CELTIC DE ESPARTA' }
   ],
   // Jornada 3
   [
-    { local: 'ARSENAL GETAFE', visitante: 'BRAVO GETAFE' },
-    { local: 'SAN FRANCIS FC', visitante: 'CELTIC DE ESPARTA' },
-    { local: 'CERVEZA CLUB', visitante: 'REAL CAMPO REAL' },
+    { fecha: '19-10-25' },
+    { local: 'CELTIC DE ESPARTA', visitante: 'DEPORTIVO GETAFE' },
+    { local: 'ARSENAL GETAFE', visitante: 'LOS BRASAS' },
+    { local: 'SAN FRANCIS FC', visitante: 'REAL CAMPO REAL' },
     { local: 'OLIMPIC DE UCRANIA', visitante: 'VILLABETIS' },
-    { local: 'G  EMPRESAS AIRBUS', visitante: 'LOS BRASAS' },
-    { descansa: 'DEPORTIVO GETAFE' }
+    { local: 'G  EMPRESAS AIRBUS', visitante: 'BRAVO GETAFE' },
+    { descansa: 'CERVEZAS CLUB' }
   ],
   // Jornada 4
   [
-    { local: 'ARSENAL GETAFE', visitante: 'DEPORTIVO GETAFE' },
-    { local: 'REAL CAMPO REAL', visitante: 'SAN FRANCIS FC' },
-    { local: 'CELTIC DE ESPARTA', visitante: 'OLIMPIC DE UCRANIA' },
-    { local: 'BRAVO GETAFE', visitante: 'CERVEZA CLUB' },
-    { local: 'LOS BRASAS', visitante: 'VILLABETIS' },
-    { descansa: 'G  EMPRESAS AIRBUS' }
+    { fecha: '26-10-25' },
+    { local: 'LOS BRASAS', visitante: 'CELTIC DE ESPARTA' },
+    { local: 'REAL CAMPO REAL', visitante: 'ARSENAL GETAFE' },
+    { local: 'VILLABETIS', visitante: 'SAN FRANCIS FC' },
+    { local: 'BRAVO GETAFE', visitante: 'OLIMPIC DE UCRANIA' },
+    { local: 'CERVEZAS CLUB', visitante: 'G  EMPRESAS AIRBUS' },
+    { descansa: 'DEPORTIVO GETAFE' }
   ],
   // Jornada 5
   [
-    { local: 'ARSENAL GETAFE', visitante: 'OLIMPIC DE UCRANIA' },
+    { fecha: '09-11-25' },
+    { local: 'DEPORTIVO GETAFE', visitante: 'LOS BRASAS' },
+    { local: 'CELTIC DE ESPARTA', visitante: 'REAL CAMPO REAL' },
+    { local: 'ARSENAL GETAFE', visitante: 'VILLABETIS' },
     { local: 'SAN FRANCIS FC', visitante: 'BRAVO GETAFE' },
-    { local: 'VILLABETIS', visitante: 'G  EMPRESAS AIRBUS' },
-    { local: 'CERVEZA CLUB', visitante: 'LOS BRASAS' },
-    { local: 'DEPORTIVO GETAFE', visitante: 'CELTIC DE ESPARTA' },
-    { descansa: 'REAL CAMPO REAL' }
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'CERVEZAS CLUB' },
+    { descansa: 'G  EMPRESAS AIRBUS' }
   ],
   // Jornada 6
   [
-    { local: 'ARSENAL GETAFE', visitante: 'CERVEZA CLUB' },
-    { local: 'G  EMPRESAS AIRBUS', visitante: 'SAN FRANCIS FC' },
-    { local: 'REAL CAMPO REAL', visitante: 'OLIMPIC DE UCRANIA' },
-    { local: 'CELTIC DE ESPARTA', visitante: 'VILLABETIS' },
-    { local: 'BRAVO GETAFE', visitante: 'LOS BRASAS' },
-    { descansa: 'DEPORTIVO GETAFE' }
+    { fecha: '16-11-25' },
+    { local: 'REAL CAMPO REAL', visitante: 'DEPORIVO GETAFE' },
+    { local: 'VILLABETIS', visitante: 'CELTIC DE ESPARTA' },
+    { local: 'BRAVO GETAFE', visitante: 'ARSENAL GETAFE' },
+    { local: 'CERVEZAS CLUB', visitante: 'SAN FRANCIS FC' },
+    { local: 'G  EMPRESAS AIRBUS', visitante: 'OLIMPIC DE UCRANIA' },
+    { descansa: 'LOS BRASAS' }
   ],
   // Jornada 7
   [
-    { local: 'ARSENAL GETAFE', visitante: 'REAL CAMPO REAL' },
-    { local: 'SAN FRANCIS FC', visitante: 'OLIMPIC DE UCRANIA' },
-    { local: 'LOS BRASAS', visitante: 'CELTIC DE ESPARTA' },
-    { local: 'VILLABETIS', visitante: 'DEPORTIVO GETAFE' },
-    { local: 'CERVEZA CLUB', visitante: 'G  EMPRESAS AIRBUS' },
-    { descansa: 'BRAVO GETAFE' }
+    { fecha: '23-11-25' },
+    { local: 'LOS BRASAS', visitante: 'REAL CAMPO REAL' },
+    { local: 'DEPORTIVO GETAFE', visitante: '' },
+    { local: 'CELTIC DE ESPARTA', visitante: 'BRAVO GETAFE' },
+    { local: 'ARSENAL GETAFE', visitante: 'CERVEZAS CLUB' },
+    { local: '', visitante: 'G  EMPRESAS AIRBUS' },
+    { descansa: 'OLIMPIC DE UCRANIA' }
   ],
   // Jornada 8
   [
-    { local: 'ARSENAL GETAFE', visitante: 'LOS BRASAS' },
-    { local: 'DEPORTIVO GETAFE', visitante: 'REAL CAMPO REAL' },
-    { local: 'CELTIC DE ESPARTA', visitante: 'G  EMPRESAS AIRBUS' },
-    { local: 'BRAVO GETAFE', visitante: 'VILLABETIS' },
-    { local: 'OLIMPIC DE UCRANIA', visitante: 'CERVEZA CLUB' },
-    { descansa: 'SAN FRANCIS FC' }
+    { fecha: '30-11-25' },
+    { local: 'VILLABETIS', visitante: 'LOS BRASAS' },
+    { local: 'BRAVO GETAFE', visitante: 'DEPORTIVO GETAFE' },
+    { local: 'G  EMPRESAS AIRBUS', visitante: 'ARSENAL GETAFE' },
+    { local: 'CERVEZAS CLUB', visitante: 'CELTIC DE ESPARTA' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'SAN FRANCIS FC' },
+    { descansa: 'REAL CAMPO REAL' }
   ],
   // Jornada 9
   [
-    { local: 'ARSENAL GETAFE', visitante: 'VILLABETIS' },
-    { local: 'SAN FRANCIS FC', visitante: 'LOS BRASAS' },
-    { local: 'G  EMPRESAS AIRBUS', visitante: 'OLIMPIC DE UCRANIA' },
-    { local: 'REAL CAMPO REAL', visitante: 'CERVEZA CLUB' },
-    { local: 'CELTIC DE ESPARTA', visitante: 'BRAVO GETAFE' },
-    { descansa: 'DEPORTIVO GETAFE' }
+    { fecha: '14-12-25' },
+    { local: 'REAL CAMPO REAL', visitante: 'VILLABETIS' },
+    { local: 'LOS BRASAS', visitante: 'BRAVO GETAFE' },
+    { local: 'DEPORTIVO GETAFE', visitante: 'CERVEZAS CLUB' },
+    { local: 'CELTIC DE ESPARTA', visitante: 'G  EMPRESAS AIRBUS' },
+    { local: 'ARSENAL GETAFE', visitante: 'OLIMPIC DE UCRANIA' },
+    { descansa: 'SAN FRANCIS FC' }
   ],
   // Jornada 10
   [
-    { local: 'ARSENAL GETAFE', visitante: 'G  EMPRESAS AIRBUS' },
-    { local: 'SAN FRANCIS FC', visitante: 'CERVEZA CLUB' },
-    { local: 'OLIMPIC DE UCRANIA', visitante: 'DEPORTIVO GETAFE' },
-    { local: 'LOS BRASAS', visitante: 'REAL CAMPO REAL' },
-    { local: 'VILLABETIS', visitante: 'BRAVO GETAFE' },
-    { descansa: 'CELTIC DE ESPARTA' }
+    { fecha: '21-12-25' },
+    { local: 'BRAVO GETAFE', visitante: 'REAL CAMPO REAL' },
+    { local: 'CERVEZAS CLUB', visitante: 'LOS BRASAS' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'CELTIC DE ESPARTA' },
+    { local: 'G  EMPRESAS AIRBUS', visitante: 'DEPORTIVO GETAFE' },
+    { local: 'SAN FRANCIS FC', visitante: 'ARSENAL GETAFE' },
+    { descansa: 'VILLABETIS' }
   ],
   // Jornada 11
   [
-    { local: 'ARSENAL GETAFE', visitante: 'SAN FRANCIS FC' },
-    { local: 'CELTIC DE ESPARTA', visitante: 'REAL CAMPO REAL' },
-    { local: 'BRAVO GETAFE', visitante: 'DEPORTIVO GETAFE' },
-    { local: 'CERVEZA CLUB', visitante: 'OLIMPIC DE UCRANIA' },
-    { local: 'VILLABETIS', visitante: 'LOS BRASAS' },
-    { descansa: 'G  EMPRESAS AIRBUS' }
+    { fecha: '11-01-26' },
+    { local: 'VILLABETIS', visitante: 'BRAVO GETAFE' },
+    { local: 'REAL CAMPO REAL', visitante: 'CERVEZAS CLUB' },
+    { local: 'LOS BRASAS', visitante: 'G  EMPRESAS AIRBUS' },
+    { local: 'DEPORTIVO GETAFE', visitante: 'OLIMPIC DE UCRANIA' },
+    { local: 'CELTIC DE ESPARTA', visitante: 'SAN FRANCIS FC' },
+    { descansa: 'ARSENAL GETAFE' }
   ],
   // Jornada 12
   [
+    { fecha: '18-01-26' },
     { local: 'CELTIC DE ESPARTA', visitante: 'ARSENAL GETAFE' },
     { local: 'DEPORTIVO GETAFE', visitante: 'SAN FRANCIS FC' },
     { local: 'LOS BRASAS', visitante: 'OLIMPIC DE UCRANIA' },
     { local: 'REAL CAMPO REAL', visitante: 'G  EMPRESAS AIRBUS' },
-    { local: 'VILLABETIS', visitante: 'CERVEZA CLUB' },
+    { local: 'VILLABETIS', visitante: 'CERVEZAS CLUB' },
     { descansa: 'BRAVO GETAFE' }
   ],
   // Jornada 13
   [
-    { local: 'SAN FRANCIS FC', visitante: 'ARSENAL GETAFE' },
-    { local: 'G  EMPRESAS AIRBUS', visitante: 'DEPORTIVO GETAFE' },
-    { local: 'CERVEZA CLUB', visitante: 'CELTIC DE ESPARTA' },
-    { local: 'OLIMPIC DE UCRANIA', visitante: 'BRAVO GETAFE' },
-    { local: 'VILLABETIS', visitante: 'LOS BRASAS' },
-    { descansa: 'REAL CAMPO REAL' }
+    { fecha: '25-01-26' },
+    { local: 'G  EMPRESAS AIRBUS', visitante: 'VILLABETIS' },
+    { local: 'ARSENAL GETAFE', visitante: 'DEPORTIVO GETAFE' },
+    { local: 'CERVEZAS CLUB', visitante: 'BRAVO GETAFE' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'REAL CAMPO REAL' },
+    { local: 'SAN FRANCIS FC', visitante: 'LOS BRASAS' },
+    { descansa: 'CELTIC DE ESPARTA' }
   ],
   // Jornada 14
   [
-    { local: 'BRAVO GETAFE', visitante: 'ARSENAL GETAFE' },
-    { local: 'CELTIC DE ESPARTA', visitante: 'SAN FRANCIS FC' },
-    { local: 'REAL CAMPO REAL', visitante: 'CERVEZA CLUB' },
+    { fecha: '01-02-26' },
+    { local: 'DEPORTIVO GETAFE', visitante: 'CELTIC DE ESPARTA' },
+    { local: 'LOS BRASAS', visitante: 'ARSENAL GETAFE' },
+    { local: 'REAL CAMPO REAL', visitante: 'SAN FRANCIS FC' },
     { local: 'VILLABETIS', visitante: 'OLIMPIC DE UCRANIA' },
-    { local: 'LOS BRASAS', visitante: 'G  EMPRESAS AIRBUS' },
-    { descansa: 'DEPORTIVO GETAFE' }
+    { local: 'BRAVO GETAFE', visitante: 'G  EMPRESAS AIRBUS' },
+    { descansa: 'CERVEZAS CLUB' }
   ],
   // Jornada 15
   [
-    { local: 'DEPORTIVO GETAFE', visitante: 'ARSENAL GETAFE' },
-    { local: 'SAN FRANCIS FC', visitante: 'REAL CAMPO REAL' },
-    { local: 'OLIMPIC DE UCRANIA', visitante: 'CELTIC DE ESPARTA' },
-    { local: 'CERVEZA CLUB', visitante: 'BRAVO GETAFE' },
-    { local: 'VILLABETIS', visitante: 'LOS BRASAS' },
-    { descansa: 'G  EMPRESAS AIRBUS' }
+    { fecha: '08-02-26' },
+    { local: 'CELTIC DE ESPARTA', visitante: 'LOS BRASAS' },
+    { local: 'ARSENAL GETAFE', visitante: 'REAL CAMPO REAL' },
+    { local: 'SAN FRANCIS FC', visitante: 'VILLABETIS' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'BRAVO GETAFE' },
+    { local: 'G  EMPRESAS AIRBUS', visitante: 'CERVEZAS CLUB' },
+    { descansa: 'DEPORTIVO GETAFE' }
   ],
   // Jornada 16
   [
-    { local: 'OLIMPIC DE UCRANIA', visitante: 'ARSENAL GETAFE' },
+    { local: 'LOS BRASAS', visitante: 'DEPORTIVO GETAFE' },
+    { local: 'REAL CAMPO REAL', visitante: 'CELTIC DE ESPARTA' },
+    { local: 'VILLABETIS', visitante: 'ARSENAL GETAFE' },
     { local: 'BRAVO GETAFE', visitante: 'SAN FRANCIS FC' },
-    { local: 'G  EMPRESAS AIRBUS', visitante: 'VILLABETIS' },
-    { local: 'LOS BRASAS', visitante: 'CERVEZA CLUB' },
-    { local: 'CELTIC DE ESPARTA', visitante: 'DEPORTIVO GETAFE' },
-    { descansa: 'REAL CAMPO REAL' }
+    { local: 'CERVEZAS CLUB', visitante: 'OLIMPIC DE UCRANIA' },
+    { descansa: 'G  EMPRESAS AIRBUS' }
   ],
   // Jornada 17
   [
-    { local: 'CERVEZA CLUB', visitante: 'ARSENAL GETAFE' },
-    { local: 'SAN FRANCIS FC', visitante: 'G  EMPRESAS AIRBUS' },
-    { local: 'OLIMPIC DE UCRANIA', visitante: 'REAL CAMPO REAL' },
-    { local: 'VILLABETIS', visitante: 'CELTIC DE ESPARTA' },
-    { local: 'LOS BRASAS', visitante: 'BRAVO GETAFE' },
-    { descansa: 'DEPORTIVO GETAFE' }
+    { fecha: '22-02-26' },
+    { local: 'DEPORIVO GETAFE', visitante: 'REAL CAMPO REAL' },
+    { local: 'CELTIC DE ESPARTA', visitante: 'VILLABETIS' },
+    { local: 'ARSENAL GETAFE', visitante: 'BRAVO GETAFE' },
+    { local: 'SAN FRANCIS FC', visitante: 'CERVEZAS CLUB' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'G  EMPRESAS AIRBUS' },
+    { descansa: 'LOS BRASAS' }
   ],
   // Jornada 18
   [
-    { local: 'REAL CAMPO REAL', visitante: 'ARSENAL GETAFE' },
-    { local: 'OLIMPIC DE UCRANIA', visitante: 'SAN FRANCIS FC' },
-    { local: 'CELTIC DE ESPARTA', visitante: 'LOS BRASAS' },
-    { local: 'DEPORTIVO GETAFE', visitante: 'VILLABETIS' },
-    { local: 'G  EMPRESAS AIRBUS', visitante: 'CERVEZA CLUB' },
-    { descansa: 'BRAVO GETAFE' }
+    { fecha: '01-03-26' },
+    { local: 'REAL CAMPO REAL', visitante: 'LOS BRASAS' },
+    { local: 'VILLABETIS', visitante: 'DEPORTIVO GETAFE' },
+    { local: 'BRAVO GETAFE', visitante: 'CELTIC DE ESPARTA' },
+    { local: 'CERVEZAS CLUB', visitante: 'ARSENAL GETAFE' },
+    { local: 'G  EMPRESAS AIRBUS', visitante: '' },
+    { descansa: 'OLIMPIC DE UCRANIA' }
   ],
   // Jornada 19
   [
-    { local: 'LOS BRASAS', visitante: 'ARSENAL GETAFE' },
-    { local: 'REAL CAMPO REAL', visitante: 'DEPORTIVO GETAFE' },
-    { local: 'G  EMPRESAS AIRBUS', visitante: 'CELTIC DE ESPARTA' },
-    { local: 'VILLABETIS', visitante: 'BRAVO GETAFE' },
-    { local: 'CERVEZA CLUB', visitante: 'OLIMPIC DE UCRANIA' },
-    { descansa: 'SAN FRANCIS FC' }
+    { fecha: '08-03-26' },
+    { local: 'LOS BRASAS', visitante: 'VILLABETIS' },
+    { local: 'DEPORTIVO GETAFE', visitante: 'BRAVO GETAFE' },
+    { local: 'ARSENAL GETAFE', visitante: 'G  EMPRESAS AIRBUS' },
+    { local: 'CELTIC DE ESPARTA', visitante: 'CERVEZAS CLUB' },
+    { local: 'SAN FRANCIS FC', visitante: 'OLIMPIC DE UCRANIA' },
+    { descansa: 'REAL CAMPO REAL' }
   ],
   // Jornada 20
   [
-    { local: 'VILLABETIS', visitante: 'ARSENAL GETAFE' },
-    { local: 'LOS BRASAS', visitante: 'SAN FRANCIS FC' },
-    { local: 'OLIMPIC DE UCRANIA', visitante: 'G  EMPRESAS AIRBUS' },
-    { local: 'CERVEZA CLUB', visitante: 'REAL CAMPO REAL' },
-    { local: 'BRAVO GETAFE', visitante: 'CELTIC DE ESPARTA' },
-    { descansa: 'DEPORTIVO GETAFE' }
+    { fecha: '15-03-26' },
+    { local: 'VILLABETIS', visitante: 'REAL CAMPO REAL' },
+    { local: 'BRAVO GETAFE', visitante: 'LOS BRASAS' },
+    { local: 'CERVEZAS CLUB', visitante: 'DEPORTIVO GETAFE' },
+    { local: 'G  EMPRESAS AIRBUS', visitante: 'CELTIC DE ESPARTA' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'ARSENAL GETAFE' },
+    { descansa: 'SAN FRANCIS FC' }
   ],
   // Jornada 21
   [
-    { local: 'G  EMPRESAS AIRBUS', visitante: 'ARSENAL GETAFE' },
-    { local: 'CERVEZA CLUB', visitante: 'SAN FRANCIS FC' },
-    { local: 'DEPORTIVO GETAFE', visitante: 'OLIMPIC DE UCRANIA' },
-    { local: 'REAL CAMPO REAL', visitante: 'LOS BRASAS' },
-    { local: 'BRAVO GETAFE', visitante: 'VILLABETIS' },
-    { descansa: 'CELTIC DE ESPARTA' }
+    { fecha: '22-03-26' },
+    { local: 'REAL CAMPO REAL', visitante: 'BRAVO GETAFE' },
+    { local: 'LOS BRASAS', visitante: 'CERVEZAS CLUB' },
+    { local: 'CELTIC DE ESPARTA', visitante: 'OLIMPIC DE UCRANIA' },
+    { local: 'DEPORTIVO GETAFE', visitante: 'G  EMPRESAS AIRBUS' },
+    { local: 'ARSENAL GETAFE', visitante: 'SAN FRANCIS FC' },
+    { descansa: 'VILLABETIS' }
   ],
   // Jornada 22
   [
-    { local: 'SAN FRANCIS FC', visitante: 'ARSENAL GETAFE' },
-    { local: 'REAL CAMPO REAL', visitante: 'CELTIC DE ESPARTA' },
-    { local: 'DEPORTIVO GETAFE', visitante: 'BRAVO GETAFE' },
-    { local: 'OLIMPIC DE UCRANIA', visitante: 'CERVEZA CLUB' },
-    { local: 'LOS BRASAS', visitante: 'VILLABETIS' },
-    { descansa: 'G  EMPRESAS AIRBUS' }
+    { fecha: '12-04-26' },
+    { local: 'BRAVO GETAFE', visitante: 'VILLABETIS' },
+    { local: 'CERVEZAS CLUB', visitante: 'REAL CAMPO REAL' },
+    { local: 'G  EMPRESAS AIRBUS', visitante: 'LOS BRASAS' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'DEPORTIVO GETAFE' },
+    { local: 'SAN FRANCIS FC', visitante: 'CELTIC DE ESPARTA' },
+    { descansa: 'ARSENAL GETAFE' }
   ]
 ]
 
