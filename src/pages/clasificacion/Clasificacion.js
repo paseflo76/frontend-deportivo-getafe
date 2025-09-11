@@ -77,31 +77,34 @@ function renderClasificacion(container) {
   const table = document.createElement('table')
   table.className = 'tabla-clasificacion'
   table.innerHTML = `
-    <thead>
-      <tr>
-        <th>Equipo</th>
-        <th>Puntos</th>
-        <th>GF</th>
-        <th>GC</th>
-        <th>DIF</th>
-      </tr>
-    </thead>
-  `
+  <thead>
+    <tr>
+      <th>Pos</th>
+      <th>Equipo</th>
+      <th>Puntos</th>
+      <th>GF</th>
+      <th>GC</th>
+      <th>DIF</th>
+    </tr>
+  </thead>
+`
   const tbody = document.createElement('tbody')
   Object.values(equipos)
     .sort(
       (a, b) =>
         b.puntos - a.puntos || b.gf - b.gc - (a.gf - a.gc) || b.gf - a.gf
     )
-    .forEach((e) => {
+    .forEach((e, index) => {
       const tr = document.createElement('tr')
+      if (index === 0) tr.classList.add('primero') // resalta el primero
       tr.innerHTML = `
-        <td>${e.equipo}</td>
-        <td>${e.puntos}</td>
-        <td>${e.gf}</td>
-        <td>${e.gc}</td>
-        <td>${e.gf - e.gc}</td>
-      `
+      <td>${index + 1}</td>
+      <td>${e.equipo}</td>
+      <td>${e.puntos}</td>
+      <td>${e.gf}</td>
+      <td>${e.gc}</td>
+      <td>${e.gf - e.gc}</td>
+    `
       tbody.appendChild(tr)
     })
   table.appendChild(tbody)
