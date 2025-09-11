@@ -68,7 +68,7 @@ export const calendario = [
   // Jornada 6
   [
     { fecha: '16-11-25' },
-    { local: 'REAL CAMPO REAL', visitante: 'DEPORIVO GETAFE' },
+    { local: 'REAL CAMPO REAL', visitante: 'DEPORTIVO GETAFE' },
     { local: 'VILLABETIS', visitante: 'CELTIC DE ESPARTA' },
     { local: 'BRAVO GETAFE', visitante: 'ARSENAL GETAFE' },
     { local: 'CERVEZAS CLUB', visitante: 'SAN FRANCIS FC' },
@@ -82,7 +82,7 @@ export const calendario = [
     { local: 'DEPORTIVO GETAFE', visitante: '' },
     { local: 'CELTIC DE ESPARTA', visitante: 'BRAVO GETAFE' },
     { local: 'ARSENAL GETAFE', visitante: 'CERVEZAS CLUB' },
-    { local: '', visitante: 'G  EMPRESAS AIRBUS' },
+    { local: 'SAN FRANCIS FC', visitante: 'G  EMPRESAS AIRBUS' },
     { descansa: 'OLIMPIC DE UCRANIA' }
   ],
   // Jornada 8
@@ -239,14 +239,18 @@ export const calendario = [
 // Inicializa resultados en localStorage
 export function initResultados() {
   if (!localStorage.getItem('resultados')) {
-    const init = calendario.map((jornada) =>
-      jornada.map((m) => ({
-        local: m.local,
-        visitante: m.visitante,
-        golesLocal: null,
-        golesVisitante: null
-      }))
-    )
+    const init = calendario.map((jornada) => {
+      const fechaJornada = jornada.find((m) => m.fecha)?.fecha || null
+      return jornada
+        .filter((m) => !m.fecha && !m.descansa) // solo partidos
+        .map((m) => ({
+          fecha: fechaJornada,
+          local: m.local,
+          visitante: m.visitante,
+          golesLocal: null,
+          golesVisitante: null
+        }))
+    })
     localStorage.setItem('resultados', JSON.stringify(init))
     localStorage.setItem('jornadaActual', '1')
   }
