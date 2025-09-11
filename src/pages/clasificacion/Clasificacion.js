@@ -44,22 +44,24 @@ function renderClasificacion(container) {
     j.forEach((m) => {
       if (m.descansa) return
       const { local, visitante, golesLocal, golesVisitante } = m
-      if (golesLocal == null || golesVisitante == null) return // solo contabiliza partidos jugados
+
       if (!equipos[local])
         equipos[local] = { equipo: local, puntos: 0, gf: 0, gc: 0 }
       if (!equipos[visitante])
         equipos[visitante] = { equipo: visitante, puntos: 0, gf: 0, gc: 0 }
 
-      equipos[local].gf += golesLocal
-      equipos[local].gc += golesVisitante
-      equipos[visitante].gf += golesVisitante
-      equipos[visitante].gc += golesLocal
+      if (golesLocal != null && golesVisitante != null) {
+        equipos[local].gf += golesLocal
+        equipos[local].gc += golesVisitante
+        equipos[visitante].gf += golesVisitante
+        equipos[visitante].gc += golesLocal
 
-      if (golesLocal > golesVisitante) equipos[local].puntos += 3
-      else if (golesLocal < golesVisitante) equipos[visitante].puntos += 3
-      else {
-        equipos[local].puntos++
-        equipos[visitante].puntos++
+        if (golesLocal > golesVisitante) equipos[local].puntos += 3
+        else if (golesLocal < golesVisitante) equipos[visitante].puntos += 3
+        else {
+          equipos[local].puntos++
+          equipos[visitante].puntos++
+        }
       }
     })
   })
