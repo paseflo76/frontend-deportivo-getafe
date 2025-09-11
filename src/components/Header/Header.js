@@ -54,11 +54,11 @@ export const Header = () => {
   const imgPortero = document.createElement('img')
   const imgJugador1 = document.createElement('img')
   const imgJugador2 = document.createElement('img')
-  imgPortero.src = 'assets/portero.png'
-  imgPortero.alt = 'portero'
+  imgPortero.src = 'assets/campo.gif'
+  imgPortero.alt = 'campo futbol'
   imgJugador1.src = 'assets/jugador-de-futbol.gif'
   imgJugador1.alt = 'jugador futbol'
-  imgJugador2.src = 'assets/jugador-de-futbol2.png'
+  imgJugador2.src = 'assets/jugador-de-futbol2.gif'
   imgJugador2.alt = 'jugador futbol2'
 
   divDecoracion.appendChild(imgJugador1)
