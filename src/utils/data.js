@@ -1,3 +1,5 @@
+import { apiCatch } from './fetch/fech'
+
 // utils/data.js
 export const equipos = [
   'ARSENAL GETAFE',
@@ -236,7 +238,6 @@ export const calendario = [
   ]
 ]
 
-import { apiCatch } from '../fetch/fech.js'
 export async function getResultados() {
   try {
     return await apiCatch('/league/matches')
