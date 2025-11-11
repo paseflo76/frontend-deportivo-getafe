@@ -1,32 +1,51 @@
-import { calendario, getJornadaActual } from './data.js'
-import { getResultados } from './data.js'
+import { API_BASE } from './data.js'
 
 export async function renderJornadas(container) {
   container.innerHTML = ''
 
-  const jornada = getJornadaActual()
-  const jornadaArray = calendario[jornada - 1] || []
-  const resultados = await getResultados()
+  let data = []
+  try {
+    const res = await fetch(`${API_BASE}/matches`)
+    if (!res.ok) throw new Error('Error al cargar las jornadas')
+    data = await res.json()
+  } catch (err) {
+    container.textContent = 'Error al cargar las jornadas'
+    console.error(err)
+    return
+  }
 
-  const h2 = document.createElement('h2')
-  h2.textContent = `Jornada ${jornada}`
-  container.appendChild(h2)
+  if (!data || data.length === 0) {
+    container.textContent = 'No hay partidos disponibles'
+    return
+  }
 
-  jornadaArray.forEach((m) => {
-    const div = document.createElement('div')
-    div.className = 'partido'
+  data.sort((a, b) => {
+    if (a.jornada !== b.jornada) return a.jornada - b.jornada
+    return new Date(a.fecha) - new Date(b.fecha)
+  })
 
-    if (m.descansa) {
-      div.textContent = `Descansa: ${m.descansa}`
-    } else {
-      const guardado = resultados.find(
-        (r) => r.local === m.local && r.visitante === m.visitante
-      )
-      const golesLocal = guardado?.golesLocal ?? '-'
-      const golesVisitante = guardado?.golesVisitante ?? '-'
-      div.textContent = `${m.local} ${golesLocal} - ${golesVisitante} ${m.visitante}`
+  let currentJornada = null
+  let jornadaDiv = null
+
+  data.forEach((m) => {
+    if (m.jornada !== currentJornada) {
+      currentJornada = m.jornada
+      jornadaDiv = document.createElement('div')
+      jornadaDiv.className = 'jornada-list'
+      container.appendChild(jornadaDiv)
+
+      const h2 = document.createElement('h2')
+      h2.textContent = `Jornada ${currentJornada}`
+      jornadaDiv.appendChild(h2)
     }
 
-    container.appendChild(div)
+    const matchDiv = document.createElement('div')
+    matchDiv.className = 'partido'
+    const local = m.local ?? 'Local'
+    const visitante = m.visitante ?? 'Visitante'
+    const golesLocal = m.golesLocal ?? '-'
+    const golesVisitante = m.golesVisitante ?? '-'
+    matchDiv.textContent = `${local} ${golesLocal} - ${golesVisitante} ${visitante}`
+    jornadaDiv.appendChild(matchDiv)
   })
 }

@@ -43,7 +43,6 @@ async function renderClasificacion(container) {
   const user = parseJwt(localStorage.getItem('token'))
 
   const equipos = {}
-
   calendario.flat().forEach((m) => {
     if (m.descansa) return
     if (m.local && !equipos[m.local])
@@ -87,6 +86,7 @@ async function renderClasificacion(container) {
 
   const h2 = document.createElement('h2')
   h2.textContent = `Jornada ${jornada}`
+  h2.style.textAlign = 'center'
   tablaWrapper.appendChild(h2)
 
   const table = document.createElement('table')
@@ -144,20 +144,22 @@ async function renderClasificacion(container) {
       const guardado = resultados.find(
         (r) => r.local === m.local && r.visitante === m.visitante
       )
-      if (!guardado) return
 
-      if (user?.rol === 'admin') {
+      const golesLocal = guardado?.golesLocal ?? '-'
+      const golesVisitante = guardado?.golesVisitante ?? '-'
+
+      if (user?.rol === 'admin' && guardado) {
         const contenidoDiv = document.createElement('div')
         contenidoDiv.className = 'contenido-partido'
 
         const inputL = document.createElement('input')
         inputL.type = 'number'
-        inputL.value = guardado.golesLocal ?? ''
+        inputL.value = golesLocal !== '-' ? golesLocal : ''
         inputL.min = 0
 
         const inputV = document.createElement('input')
         inputV.type = 'number'
-        inputV.value = guardado.golesVisitante ?? ''
+        inputV.value = golesVisitante !== '-' ? golesVisitante : ''
         inputV.min = 0
 
         contenidoDiv.innerHTML = `<span>${m.local}</span> - <span>${m.visitante}</span>`
@@ -186,9 +188,7 @@ async function renderClasificacion(container) {
         div.appendChild(btnGuardar)
         div.appendChild(btnBorrar)
       } else {
-        div.textContent = `${m.local} ${guardado.golesLocal ?? '-'} - ${
-          guardado.golesVisitante ?? '-'
-        } ${m.visitante}`
+        div.textContent = `${m.local} ${golesLocal} - ${golesVisitante} ${m.visitante}`
       }
     }
 
