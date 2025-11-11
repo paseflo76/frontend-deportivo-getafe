@@ -236,15 +236,10 @@ export const calendario = [
   ]
 ]
 
-// API base para resultados en backend
-export const API_BASE = 'https://tu-backend.onrender.com/api/v2/league'
-
-// Obtener resultados desde backend
+import { apiCatch } from '../fetch/fech.js'
 export async function getResultados() {
   try {
-    const res = await fetch(`${API_BASE}/matches`)
-    if (!res.ok) throw new Error('Error al obtener resultados')
-    return await res.json()
+    return await apiCatch('/league/matches')
   } catch (err) {
     console.error(err)
     return []
@@ -254,13 +249,10 @@ export async function getResultados() {
 // Guardar resultado de un partido (PUT)
 export async function saveResultado(id, golesLocal, golesVisitante) {
   try {
-    const res = await fetch(`${API_BASE}/matches/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ golesLocal, golesVisitante })
+    return await apiCatch(`/league/matches/${id}`, 'PUT', {
+      golesLocal,
+      golesVisitante
     })
-    if (!res.ok) throw new Error('Error al guardar resultado')
-    return await res.json()
   } catch (err) {
     console.error(err)
     return null
@@ -270,13 +262,10 @@ export async function saveResultado(id, golesLocal, golesVisitante) {
 // Borrar resultado (poner goles a null)
 export async function deleteResultado(id) {
   try {
-    const res = await fetch(`${API_BASE}/matches/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ golesLocal: null, golesVisitante: null })
+    return await apiCatch(`/league/matches/${id}`, 'PUT', {
+      golesLocal: null,
+      golesVisitante: null
     })
-    if (!res.ok) throw new Error('Error al borrar resultado')
-    return await res.json()
   } catch (err) {
     console.error(err)
     return null
@@ -290,7 +279,7 @@ export function parseJwt(token) {
   return JSON.parse(atob(payload))
 }
 
-// Jornada actual local (solo frontend para navegación)
+// Jornada actual local
 export function getJornadaActual() {
   return Number(localStorage.getItem('jornadaActual') || '1')
 }

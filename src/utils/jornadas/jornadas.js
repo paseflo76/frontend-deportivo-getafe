@@ -1,11 +1,13 @@
 /* import { apiCatch } from '../fetch/fech.js' */
 
+import { getResultados } from './data.js'
+
 export async function renderJornadas(container) {
-  container.innerHTML = '' // limpiar contenido previo
+  container.innerHTML = ''
 
   let data = []
   try {
-    data = await apiCatch('/api/v2/league/matches') // URL corregida
+    data = await getResultados()
   } catch (err) {
     container.textContent = 'Error al cargar las jornadas'
     console.error(err)
@@ -23,21 +25,27 @@ export async function renderJornadas(container) {
   })
 
   let currentJornada = null
+  let jornadaDiv = null
+
   data.forEach((m) => {
     if (m.jornada !== currentJornada) {
       currentJornada = m.jornada
+      jornadaDiv = document.createElement('div')
+      jornadaDiv.className = 'jornada-list'
+      container.appendChild(jornadaDiv)
+
       const h2 = document.createElement('h2')
       h2.textContent = `Jornada ${currentJornada}`
-      container.appendChild(h2)
+      jornadaDiv.appendChild(h2)
     }
 
     const matchDiv = document.createElement('div')
+    matchDiv.className = 'partido'
     const local = m.local ?? 'Local'
     const visitante = m.visitante ?? 'Visitante'
     const golesLocal = m.golesLocal ?? '-'
     const golesVisitante = m.golesVisitante ?? '-'
-
     matchDiv.textContent = `${local} ${golesLocal} - ${golesVisitante} ${visitante}`
-    container.appendChild(matchDiv)
+    jornadaDiv.appendChild(matchDiv)
   })
 }
