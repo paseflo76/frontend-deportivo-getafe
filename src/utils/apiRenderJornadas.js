@@ -1,13 +1,11 @@
-import { API_BASE } from './data.js'
+import { apiCatch } from './fetch/fech'
 
 export async function renderJornadas(container) {
   container.innerHTML = ''
-
   let data = []
+
   try {
-    const res = await fetch(`${API_BASE}/matches`)
-    if (!res.ok) throw new Error('Error al cargar las jornadas')
-    data = await res.json()
+    data = await apiCatch('/league/matches')
   } catch (err) {
     container.textContent = 'Error al cargar las jornadas'
     console.error(err)
