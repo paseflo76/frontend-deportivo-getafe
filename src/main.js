@@ -70,7 +70,6 @@ const Main = () => {
 
 window.addEventListener('load', async () => {
   // inicializar estructura de resultados antes de renderizar nada
-  initResultados()
 
   Main()
   const token = localStorage.getItem('token')
