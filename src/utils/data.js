@@ -236,60 +236,64 @@ export const calendario = [
   ]
 ]
 
-// Inicializa resultados en localStorage
-export function initResultados() {
-  if (!localStorage.getItem('resultados')) {
-    const init = calendario.map((jornada) => {
-      const fechaJornada = jornada.find((m) => m.fecha)?.fecha || null
-      return jornada
-        .filter((m) => !m.fecha && !m.descansa)
-        .map((m) => ({
-          fecha: fechaJornada,
-          local: m.local,
-          visitante: m.visitante,
-          golesLocal: null,
-          golesVisitante: null
-        }))
-    })
-    localStorage.setItem('resultados', JSON.stringify(init))
-    localStorage.setItem('jornadaActual', '1')
+// API base para resultados en backend
+export const API_BASE = 'https://tu-backend.onrender.com/api/v2/league'
+
+// Obtener resultados desde backend
+export async function getResultados() {
+  try {
+    const res = await fetch(`${API_BASE}/matches`)
+    if (!res.ok) throw new Error('Error al obtener resultados')
+    return await res.json()
+  } catch (err) {
+    console.error(err)
+    return []
   }
 }
 
-export function getResultados() {
-  return JSON.parse(localStorage.getItem('resultados')) || []
-}
-
-export function saveResultados(data) {
-  localStorage.setItem('resultados', JSON.stringify(data))
+// Guardar resultado de un partido (PUT)
+export async function saveResultado(id, golesLocal, golesVisitante) {
   try {
-    window.dispatchEvent(new Event('resultadosUpdated'))
-  } catch {}
+    const res = await fetch(`${API_BASE}/matches/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ golesLocal, golesVisitante })
+    })
+    if (!res.ok) throw new Error('Error al guardar resultado')
+    return await res.json()
+  } catch (err) {
+    console.error(err)
+    return null
+  }
 }
 
+// Borrar resultado (poner goles a null)
+export async function deleteResultado(id) {
+  try {
+    const res = await fetch(`${API_BASE}/matches/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ golesLocal: null, golesVisitante: null })
+    })
+    if (!res.ok) throw new Error('Error al borrar resultado')
+    return await res.json()
+  } catch (err) {
+    console.error(err)
+    return null
+  }
+}
+
+// JWT parsing
+export function parseJwt(token) {
+  if (!token) return null
+  const payload = token.split('.')[1]
+  return JSON.parse(atob(payload))
+}
+
+// Jornada actual local (solo frontend para navegación)
 export function getJornadaActual() {
   return Number(localStorage.getItem('jornadaActual') || '1')
 }
-
-export function nextJornada() {
-  const j = getJornadaActual()
-  localStorage.setItem('jornadaActual', String(j + 1))
-  try {
-    window.dispatchEvent(new Event('resultadosUpdated'))
-  } catch {}
-}
-
-export function prevJornada() {
-  const j = getJornadaActual()
-  if (j > 1) {
-    localStorage.setItem('jornadaActual', String(j - 1))
-    try {
-      window.dispatchEvent(new Event('resultadosUpdated'))
-    } catch {}
-  }
-}
-// En src/utils/data.js
-
 export function setJornadaActual(jornada) {
   localStorage.setItem('jornadaActual', String(jornada))
 }

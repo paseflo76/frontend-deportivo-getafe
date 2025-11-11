@@ -1,13 +1,15 @@
 import './clasificacion.css'
-
+import {
+  getResultados,
+  saveResultado,
+  deleteResultado,
+  parseJwt
+} from '../../utils/data.js'
 import {
   calendario,
-  getResultados,
-  saveResultados,
   getJornadaActual,
   setJornadaActual
 } from '../../utils/data.js'
-import { parseJwt } from '../../components/Header/Header.js'
 
 export async function Clasificacion() {
   const main = document.querySelector('main')
@@ -18,7 +20,7 @@ export async function Clasificacion() {
   container.id = 'clasificacion'
   main.appendChild(container)
 
-  renderClasificacion(container)
+  await renderClasificacion(container)
 
   if (window._clasificacionListener) {
     window.removeEventListener(
@@ -28,35 +30,42 @@ export async function Clasificacion() {
     window._clasificacionListener = null
   }
 
-  const handler = () => renderClasificacion(container)
+  const handler = async () => await renderClasificacion(container)
   window._clasificacionListener = handler
   window.addEventListener('resultadosUpdated', handler)
 }
 
-function renderClasificacion(container) {
+async function renderClasificacion(container) {
   container.innerHTML = ''
 
-  const resultados = getResultados()
+  const resultados = await getResultados()
   const jornada = getJornadaActual()
   const user = parseJwt(localStorage.getItem('token'))
 
   const equipos = {}
 
-  // Crear todos los equipos únicos desde el calendario
   calendario.flat().forEach((m) => {
     if (m.descansa) return
     if (m.local && !equipos[m.local])
-      equipos[m.local] = { equipo: m.local, puntos: 0, gf: 0, gc: 0 }
+      equipos[m.local] = { equipo: m.local, puntos: 0, gf: 0, gc: 0, id: null }
     if (m.visitante && !equipos[m.visitante])
-      equipos[m.visitante] = { equipo: m.visitante, puntos: 0, gf: 0, gc: 0 }
+      equipos[m.visitante] = {
+        equipo: m.visitante,
+        puntos: 0,
+        gf: 0,
+        gc: 0,
+        id: null
+      }
   })
 
-  // Sumar resultados existentes
-  resultados.forEach((j) => {
-    j.forEach((m) => {
-      if (m.descansa) return
-      const { local, visitante, golesLocal, golesVisitante } = m
-      if (golesLocal == null || golesVisitante == null) return
+  resultados.forEach((m) => {
+    if (m.descansa) return
+    const { local, visitante, golesLocal, golesVisitante, _id } = m
+
+    if (!equipos[local].id) equipos[local].id = _id
+    if (!equipos[visitante].id) equipos[visitante].id = _id
+
+    if (golesLocal != null && golesVisitante != null) {
       equipos[local].gf += golesLocal
       equipos[local].gc += golesVisitante
       equipos[visitante].gf += golesVisitante
@@ -68,7 +77,7 @@ function renderClasificacion(container) {
         equipos[local].puntos++
         equipos[visitante].puntos++
       }
-    })
+    }
   })
 
   // Tabla de clasificación
@@ -95,6 +104,7 @@ function renderClasificacion(container) {
     </thead>
   `
   const tbody = document.createElement('tbody')
+
   Object.values(equipos)
     .filter((e) => e.equipo)
     .sort(
@@ -123,7 +133,6 @@ function renderClasificacion(container) {
   container.appendChild(partidosWrapper)
 
   const jornadaArray = calendario[jornada - 1] || []
-  const resultadosJornada = resultados[jornada - 1] || []
 
   jornadaArray.forEach((m) => {
     const div = document.createElement('div')
@@ -132,77 +141,54 @@ function renderClasificacion(container) {
     if (m.descansa) {
       div.textContent = `Descansa: ${m.descansa}`
     } else {
-      // Buscar resultado coincidente
-      const guardado = resultadosJornada.find(
+      const guardado = resultados.find(
         (r) => r.local === m.local && r.visitante === m.visitante
       )
-      if (!guardado) return // evita partido vacío
-
-      const partido = { ...m, ...guardado }
+      if (!guardado) return
 
       if (user?.rol === 'admin') {
         const contenidoDiv = document.createElement('div')
         contenidoDiv.className = 'contenido-partido'
 
-        const spanLocal = document.createElement('span')
-        spanLocal.className = 'equipo-local'
-        spanLocal.textContent = partido.local
-
         const inputL = document.createElement('input')
         inputL.type = 'number'
-        inputL.value = partido.golesLocal ?? ''
+        inputL.value = guardado.golesLocal ?? ''
         inputL.min = 0
-
-        const spanGuion = document.createElement('span')
-        spanGuion.className = 'guion'
-        spanGuion.textContent = '-'
 
         const inputV = document.createElement('input')
         inputV.type = 'number'
-        inputV.value = partido.golesVisitante ?? ''
+        inputV.value = guardado.golesVisitante ?? ''
         inputV.min = 0
 
-        const spanVisitante = document.createElement('span')
-        spanVisitante.className = 'equipo-visitante'
-        spanVisitante.textContent = partido.visitante
-
-        contenidoDiv.appendChild(spanLocal)
+        contenidoDiv.innerHTML = `<span>${m.local}</span> - <span>${m.visitante}</span>`
         contenidoDiv.appendChild(inputL)
-        contenidoDiv.appendChild(spanGuion)
         contenidoDiv.appendChild(inputV)
-        contenidoDiv.appendChild(spanVisitante)
-
-        const botonesDiv = document.createElement('div')
-        botonesDiv.className = 'botones-partido'
 
         const btnGuardar = document.createElement('button')
         btnGuardar.textContent = 'Guardar'
-        btnGuardar.addEventListener('click', () => {
-          guardado.golesLocal =
-            inputL.value === '' ? null : Number(inputL.value)
-          guardado.golesVisitante =
-            inputV.value === '' ? null : Number(inputV.value)
-          saveResultados(resultados)
-          renderClasificacion(container)
+        btnGuardar.addEventListener('click', async () => {
+          await saveResultado(
+            guardado._id,
+            Number(inputL.value),
+            Number(inputV.value)
+          )
+          await renderClasificacion(container)
         })
 
         const btnBorrar = document.createElement('button')
         btnBorrar.textContent = 'Borrar'
-        btnBorrar.addEventListener('click', () => {
-          guardado.golesLocal = null
-          guardado.golesVisitante = null
-          saveResultados(resultados)
-          renderClasificacion(container)
+        btnBorrar.addEventListener('click', async () => {
+          await deleteResultado(guardado._id)
+          await renderClasificacion(container)
         })
 
-        botonesDiv.appendChild(btnGuardar)
-        botonesDiv.appendChild(btnBorrar)
         div.appendChild(contenidoDiv)
-        div.appendChild(botonesDiv)
+        div.appendChild(btnGuardar)
+        div.appendChild(btnBorrar)
       } else {
-        div.textContent = `${partido.local} ${partido.golesLocal ?? '-'} - ${
-          partido.golesVisitante ?? '-'
-        } ${partido.visitante}`
+        div.textContent = `${m.local} ${guardado.golesLocal ?? '-'} - ${
+          guardado.golesVisitante ?? '-'
+        } ${m.visitante}`
       }
     }
 
