@@ -8,7 +8,6 @@ import { Footer } from './components/footer/footer'
 import { Perfil } from './pages/perfil/perfil'
 import { Calendario } from './pages/Jornadas/Jornadas'
 import { Clasificacion } from './pages/clasificacion/Clasificacion'
-import { initResultados } from './utils/data.js'
 
 const routes = {
   home: Home,
