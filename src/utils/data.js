@@ -271,38 +271,22 @@ export const calendario = [
   ]
 ]
 
-// Resultados
 export async function getResultados() {
-  try {
-    return await apiCatch('/league/matches')
-  } catch (err) {
-    console.error(err)
-    return []
-  }
+  return await apiCatch('/api/v2/league/matches')
 }
 
 export async function saveResultado(id, golesLocal, golesVisitante) {
-  try {
-    return await apiCatch(`/league/matches/${id}`, 'PUT', {
-      golesLocal,
-      golesVisitante
-    })
-  } catch (err) {
-    console.error(err)
-    return null
-  }
+  return await apiCatch(`/api/v2/league/matches/${id}`, 'PUT', {
+    golesLocal,
+    golesVisitante
+  })
 }
 
 export async function deleteResultado(id) {
-  try {
-    return await apiCatch(`/league/matches/${id}`, 'PUT', {
-      golesLocal: null,
-      golesVisitante: null
-    })
-  } catch (err) {
-    console.error(err)
-    return null
-  }
+  return await apiCatch(`/api/v2/league/matches/${id}`, 'PUT', {
+    golesLocal: null,
+    golesVisitante: null
+  })
 }
 
 // JWT
