@@ -28,34 +28,26 @@ async function renderJornadas(container) {
   // Suponiendo que "calendario" viene de utils/data.js
   const { calendario } = await import('../../utils/data.js')
 
-  calendario.forEach((jornadaArray, i) => {
-    const jornadaDiv = document.createElement('div')
-    jornadaDiv.className = 'jornada'
+  jornadaArray.forEach((m) => {
+    const partidoDiv = document.createElement('div')
+    partidoDiv.className = 'partido'
 
-    const h2 = document.createElement('h2')
-    h2.textContent = `Jornada ${i + 1}`
-    jornadaDiv.appendChild(h2)
+    if (m.fecha) {
+      const fechaDiv = document.createElement('div')
+      fechaDiv.className = 'fecha'
+      fechaDiv.textContent = `Fecha: ${m.fecha}`
+      partidoDiv.appendChild(fechaDiv)
+    } else if (m.descansa) {
+      partidoDiv.textContent = `Descansa: ${m.descansa}`
+    } else if (m.local && m.visitante) {
+      const guardado = resultados.find(
+        (r) => r.local === m.local && r.visitante === m.visitante
+      )
+      const golesLocal = guardado?.golesLocal ?? '-'
+      const golesVisitante = guardado?.golesVisitante ?? '-'
+      partidoDiv.textContent = `${m.local} ${golesLocal} - ${golesVisitante} ${m.visitante}`
+    }
 
-    jornadaArray.forEach((m) => {
-      const partidoDiv = document.createElement('div')
-      partidoDiv.className = 'partido'
-
-      if (m.descansa) {
-        partidoDiv.textContent = `Descansa: ${m.descansa}`
-      } else {
-        const guardado = resultados.find(
-          (r) => r.local === m.local && r.visitante === m.visitante
-        )
-
-        const golesLocal = guardado?.golesLocal ?? '-'
-        const golesVisitante = guardado?.golesVisitante ?? '-'
-
-        partidoDiv.textContent = `${m.local} ${golesLocal} - ${golesVisitante} ${m.visitante}`
-      }
-
-      jornadaDiv.appendChild(partidoDiv)
-    })
-
-    container.appendChild(jornadaDiv)
+    jornadaDiv.appendChild(partidoDiv)
   })
 }
