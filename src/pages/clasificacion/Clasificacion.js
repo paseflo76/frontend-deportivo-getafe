@@ -3,7 +3,8 @@ import {
   getResultados,
   saveResultado,
   deleteResultado,
-  parseJwt
+  parseJwt,
+  saveResultadoNew
 } from '../../utils/data.js'
 import {
   calendario,
@@ -148,18 +149,18 @@ async function renderClasificacion(container) {
       const golesLocal = guardado?.golesLocal ?? '-'
       const golesVisitante = guardado?.golesVisitante ?? '-'
 
-      if (user?.rol === 'admin' && guardado) {
+      if (user?.rol === 'admin') {
         const contenidoDiv = document.createElement('div')
         contenidoDiv.className = 'contenido-partido'
 
         const inputL = document.createElement('input')
         inputL.type = 'number'
-        inputL.value = golesLocal !== '-' ? golesLocal : ''
+        inputL.value = guardado?.golesLocal ?? ''
         inputL.min = 0
 
         const inputV = document.createElement('input')
         inputV.type = 'number'
-        inputV.value = golesVisitante !== '-' ? golesVisitante : ''
+        inputV.value = guardado?.golesVisitante ?? ''
         inputV.min = 0
 
         contenidoDiv.innerHTML = `<span>${m.local}</span> - <span>${m.visitante}</span>`
@@ -169,19 +170,31 @@ async function renderClasificacion(container) {
         const btnGuardar = document.createElement('button')
         btnGuardar.textContent = 'Guardar'
         btnGuardar.addEventListener('click', async () => {
-          await saveResultado(
-            guardado._id,
-            Number(inputL.value),
-            Number(inputV.value)
-          )
-          await renderClasificacion(container)
+          if (guardado?._id) {
+            await saveResultado(
+              guardado._id,
+              Number(inputL.value),
+              Number(inputV.value)
+            )
+          } else {
+            await saveResultadoNew(
+              m.local,
+              m.visitante,
+              Number(inputL.value),
+              Number(inputV.value),
+              jornada
+            )
+          }
+          window.dispatchEvent(new Event('resultadosUpdated'))
         })
 
         const btnBorrar = document.createElement('button')
         btnBorrar.textContent = 'Borrar'
         btnBorrar.addEventListener('click', async () => {
-          await deleteResultado(guardado._id)
-          await renderClasificacion(container)
+          if (guardado?._id) {
+            await deleteResultado(guardado._id)
+            window.dispatchEvent(new Event('resultadosUpdated'))
+          }
         })
 
         div.appendChild(contenidoDiv)

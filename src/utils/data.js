@@ -281,12 +281,30 @@ export async function saveResultado(id, golesLocal, golesVisitante) {
     golesVisitante
   })
 }
+// utils/data.js
+export async function saveResultadoNew(
+  local,
+  visitante,
+  golesLocal,
+  golesVisitante,
+  jornada
+) {
+  try {
+    return await apiCatch('/api/v2/league/matches', 'POST', {
+      local,
+      visitante,
+      golesLocal,
+      golesVisitante,
+      jornada
+    })
+  } catch (err) {
+    console.error(err)
+    return null
+  }
+}
 
 export async function deleteResultado(id) {
-  return await apiCatch(`/api/v2/league/matches/${id}`, 'PUT', {
-    golesLocal: null,
-    golesVisitante: null
-  })
+  return await apiCatch(`/api/v2/league/matches/${id}`, 'DELETE')
 }
 
 // JWT

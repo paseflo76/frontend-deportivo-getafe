@@ -11,4 +11,12 @@ export async function Calendario() {
   main.appendChild(container)
 
   await renderFromAPI(container)
+
+  // Escuchar actualizaciones desde Clasificacion
+  if (!window._jornadasListener) {
+    window._jornadasListener = async () => {
+      await renderFromAPI(container)
+    }
+    window.addEventListener('resultadosUpdated', window._jornadasListener)
+  }
 }
