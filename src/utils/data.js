@@ -1,4 +1,37 @@
-import { apiCatch } from './fetch/fech'
+export const API_BASE = 'https://backend-deportivo-getafe.onrender.com'
+
+export const apiCatch = async (
+  url,
+  method = 'GET',
+  data = null,
+  token = null
+) => {
+  const isFormData = data instanceof FormData
+
+  if (!token) token = localStorage.getItem('token')
+
+  const headers = {}
+  if (token) headers['Authorization'] = `Bearer ${token}`
+  if (!isFormData) headers['Content-Type'] = 'application/json'
+
+  const options = {
+    method,
+    headers,
+    body: isFormData ? data : data ? JSON.stringify(data) : null
+  }
+
+  try {
+    const res = await fetch(API_BASE + url, options)
+    const contentType = res.headers.get('Content-Type') || ''
+    const isJson = contentType.includes('application/json')
+    const body = isJson ? await res.json() : null
+
+    if (!res.ok) throw { status: res.status, body }
+    return body
+  } catch (error) {
+    throw error
+  }
+}
 
 // utils/data.js
 export const equipos = [
@@ -238,6 +271,7 @@ export const calendario = [
   ]
 ]
 
+// Resultados
 export async function getResultados() {
   try {
     return await apiCatch('/league/matches')
@@ -247,7 +281,6 @@ export async function getResultados() {
   }
 }
 
-// Guardar resultado de un partido (PUT)
 export async function saveResultado(id, golesLocal, golesVisitante) {
   try {
     return await apiCatch(`/league/matches/${id}`, 'PUT', {
@@ -260,7 +293,6 @@ export async function saveResultado(id, golesLocal, golesVisitante) {
   }
 }
 
-// Borrar resultado (poner goles a null)
 export async function deleteResultado(id) {
   try {
     return await apiCatch(`/league/matches/${id}`, 'PUT', {
@@ -273,17 +305,18 @@ export async function deleteResultado(id) {
   }
 }
 
-// JWT parsing
+// JWT
 export function parseJwt(token) {
   if (!token) return null
   const payload = token.split('.')[1]
   return JSON.parse(atob(payload))
 }
 
-// Jornada actual local
+// Jornada actual
 export function getJornadaActual() {
   return Number(localStorage.getItem('jornadaActual') || '1')
 }
+
 export function setJornadaActual(jornada) {
   localStorage.setItem('jornadaActual', String(jornada))
 }

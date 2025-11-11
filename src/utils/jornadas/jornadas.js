@@ -1,6 +1,6 @@
 /* import { apiCatch } from '../fetch/fech.js' */
 
-import { getResultados } from './data.js'
+import { getResultados } from '../data'
 
 export async function renderJornadas(container) {
   container.innerHTML = ''

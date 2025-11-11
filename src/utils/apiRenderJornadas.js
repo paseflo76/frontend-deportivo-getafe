@@ -1,4 +1,4 @@
-import { apiCatch } from './fetch/fech'
+import { apiCatch } from './data.js'
 
 export async function renderJornadas(container) {
   container.innerHTML = ''
