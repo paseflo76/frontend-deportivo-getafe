@@ -154,37 +154,44 @@ async function renderClasificacion(container) {
         (r) => r.local === m.local && r.visitante === m.visitante
       )
 
-      const inputL = document.createElement('input')
-      inputL.type = 'number'
-      inputL.min = 0
-      inputL.value = guardado?.golesLocal ?? ''
-      inputL.dataset.local = m.local
-      inputL.dataset.visitante = m.visitante
-      inputL.dataset.id = guardado?._id || ''
+      if (user?.rol === 'admin') {
+        const inputL = document.createElement('input')
+        inputL.type = 'number'
+        inputL.min = 0
+        inputL.value = guardado?.golesLocal ?? ''
+        inputL.dataset.local = m.local
+        inputL.dataset.visitante = m.visitante
+        inputL.dataset.id = guardado?._id || ''
 
-      const inputV = document.createElement('input')
-      inputV.type = 'number'
-      inputV.min = 0
-      inputV.value = guardado?.golesVisitante ?? ''
-      inputV.dataset.local = m.local
-      inputV.dataset.visitante = m.visitante
-      inputV.dataset.id = guardado?._id || ''
+        const inputV = document.createElement('input')
+        inputV.type = 'number'
+        inputV.min = 0
+        inputV.value = guardado?.golesVisitante ?? ''
+        inputV.dataset.local = m.local
+        inputV.dataset.visitante = m.visitante
+        inputV.dataset.id = guardado?._id || ''
 
-      const contenidoDiv = document.createElement('div')
-      contenidoDiv.className = 'contenido-partido'
-      contenidoDiv.appendChild(
-        document.createTextNode(`${m.local} - ${m.visitante} `)
-      )
-      contenidoDiv.appendChild(inputL)
-      contenidoDiv.appendChild(document.createTextNode(' - '))
-      contenidoDiv.appendChild(inputV)
+        const contenidoDiv = document.createElement('div')
+        contenidoDiv.className = 'contenido-partido'
+        contenidoDiv.appendChild(
+          document.createTextNode(`${m.local} - ${m.visitante} `)
+        )
+        contenidoDiv.appendChild(inputL)
+        contenidoDiv.appendChild(document.createTextNode(' - '))
+        contenidoDiv.appendChild(inputV)
 
-      div.appendChild(contenidoDiv)
+        div.appendChild(contenidoDiv)
+      } else {
+        const golesLocal = guardado?.golesLocal ?? '-'
+        const golesVisitante = guardado?.golesVisitante ?? '-'
+        div.textContent = `${m.local} ${golesLocal} - ${golesVisitante} ${m.visitante}`
+      }
     }
 
     partidosWrapper.appendChild(div)
   })
 
+  // Botón guardar jornada solo para admin
   if (user?.rol === 'admin') {
     const btnGuardarJornada = document.createElement('button')
     btnGuardarJornada.textContent = 'Guardar Jornada'
