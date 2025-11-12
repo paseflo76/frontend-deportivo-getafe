@@ -271,6 +271,7 @@ export const calendario = [
   ]
 ]
 
+// Funciones API
 export async function getResultados() {
   return await apiCatch('/api/v2/league/matches')
 }
@@ -281,7 +282,7 @@ export async function saveResultado(id, golesLocal, golesVisitante) {
     golesVisitante
   })
 }
-// utils/data.js
+
 export async function saveResultadoNew(
   local,
   visitante,
