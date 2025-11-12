@@ -2,9 +2,9 @@ import './clasificacion.css'
 import {
   getResultados,
   saveResultado,
-  deleteResultado,
+  saveResultadoNew,
   parseJwt,
-  saveResultadoNew
+  deleteResultado
 } from '../../utils/data.js'
 import {
   calendario,
@@ -135,19 +135,17 @@ async function renderClasificacion(container) {
 
   const jornadaArray = calendario[jornada - 1] || []
 
-  // Mostrar fecha
-  const fechaObj = jornadaArray[0]?.fecha
-  const fechaDiv = document.createElement('div')
-  fechaDiv.className = 'fecha-jornada'
-  fechaDiv.textContent = fechaObj
-    ? `Fecha: ${formatearFecha(fechaObj)}`
-    : 'Fecha sin definir'
-  partidosWrapper.appendChild(fechaDiv)
-
-  // Iterar solo los partidos (omitimos la fecha)
-  jornadaArray.slice(1).forEach((m) => {
+  jornadaArray.forEach((m, index) => {
     const div = document.createElement('div')
     div.className = 'partido'
+
+    if (index === 0 && m.fecha) {
+      const fechaDiv = document.createElement('div')
+      fechaDiv.className = 'fecha'
+      fechaDiv.textContent = `Fecha: ${formatearFecha(m.fecha)}`
+      partidosWrapper.appendChild(fechaDiv)
+      return
+    }
 
     if (m.descansa) {
       div.textContent = `Descansa: ${m.descansa}`
@@ -155,67 +153,71 @@ async function renderClasificacion(container) {
       const guardado = resultados.find(
         (r) => r.local === m.local && r.visitante === m.visitante
       )
-      const golesLocal = guardado?.golesLocal ?? '-'
-      const golesVisitante = guardado?.golesVisitante ?? '-'
 
-      if (user?.rol === 'admin') {
-        const contenidoDiv = document.createElement('div')
-        contenidoDiv.className = 'contenido-partido'
+      const inputL = document.createElement('input')
+      inputL.type = 'number'
+      inputL.min = 0
+      inputL.value = guardado?.golesLocal ?? ''
+      inputL.dataset.local = m.local
+      inputL.dataset.visitante = m.visitante
+      inputL.dataset.id = guardado?._id || ''
 
-        const inputL = document.createElement('input')
-        inputL.type = 'number'
-        inputL.value = guardado?.golesLocal ?? ''
-        inputL.min = 0
+      const inputV = document.createElement('input')
+      inputV.type = 'number'
+      inputV.min = 0
+      inputV.value = guardado?.golesVisitante ?? ''
+      inputV.dataset.local = m.local
+      inputV.dataset.visitante = m.visitante
+      inputV.dataset.id = guardado?._id || ''
 
-        const inputV = document.createElement('input')
-        inputV.type = 'number'
-        inputV.value = guardado?.golesVisitante ?? ''
-        inputV.min = 0
+      const contenidoDiv = document.createElement('div')
+      contenidoDiv.className = 'contenido-partido'
+      contenidoDiv.appendChild(
+        document.createTextNode(`${m.local} - ${m.visitante} `)
+      )
+      contenidoDiv.appendChild(inputL)
+      contenidoDiv.appendChild(document.createTextNode(' - '))
+      contenidoDiv.appendChild(inputV)
 
-        contenidoDiv.innerHTML = `<span>${m.local}</span> - <span>${m.visitante}</span>`
-        contenidoDiv.appendChild(inputL)
-        contenidoDiv.appendChild(inputV)
-
-        const btnGuardar = document.createElement('button')
-        btnGuardar.textContent = 'Guardar'
-        btnGuardar.addEventListener('click', async () => {
-          if (guardado?._id) {
-            await saveResultado(
-              guardado._id,
-              Number(inputL.value),
-              Number(inputV.value)
-            )
-          } else {
-            await saveResultadoNew(
-              m.local,
-              m.visitante,
-              Number(inputL.value),
-              Number(inputV.value),
-              jornada
-            )
-          }
-          window.dispatchEvent(new Event('resultadosUpdated'))
-        })
-
-        const btnBorrar = document.createElement('button')
-        btnBorrar.textContent = 'Borrar'
-        btnBorrar.addEventListener('click', async () => {
-          if (guardado?._id) {
-            await deleteResultado(guardado._id)
-            window.dispatchEvent(new Event('resultadosUpdated'))
-          }
-        })
-
-        div.appendChild(contenidoDiv)
-        div.appendChild(btnGuardar)
-        div.appendChild(btnBorrar)
-      } else {
-        div.textContent = `${m.local} ${golesLocal} - ${golesVisitante} ${m.visitante}`
-      }
+      div.appendChild(contenidoDiv)
     }
 
     partidosWrapper.appendChild(div)
   })
+
+  if (user?.rol === 'admin') {
+    const btnGuardarJornada = document.createElement('button')
+    btnGuardarJornada.textContent = 'Guardar Jornada'
+    btnGuardarJornada.addEventListener('click', async () => {
+      const inputsLocal = partidosWrapper.querySelectorAll(
+        'input[type="number"][data-local]'
+      )
+      for (const input of inputsLocal) {
+        const local = input.dataset.local
+        const visitante = input.dataset.visitante
+        const golesLocal = Number(input.value)
+        const inputVisitante = Array.from(inputsLocal).find(
+          (i) => i.dataset.local === visitante && i.dataset.visitante === local
+        )
+        const golesVisitante = Number(inputVisitante?.value ?? 0)
+        const id = input.dataset.id
+
+        if (id) {
+          await saveResultado(id, golesLocal, golesVisitante)
+        } else {
+          await saveResultadoNew(
+            local,
+            visitante,
+            golesLocal,
+            golesVisitante,
+            jornada
+          )
+        }
+      }
+      window.dispatchEvent(new Event('resultadosUpdated'))
+    })
+    partidosWrapper.appendChild(btnGuardarJornada)
+  }
 
   // Navegación jornada
   const navDiv = document.createElement('div')
@@ -242,7 +244,7 @@ async function renderClasificacion(container) {
   partidosWrapper.appendChild(navDiv)
 }
 
-// Función auxiliar para formatear fechas
+// --- Funciones auxiliares para parsear y mostrar fechas ---
 function parseFecha(f) {
   if (!f) return new Date(0)
   const [d, m, y] = f.split('-').map(Number)
