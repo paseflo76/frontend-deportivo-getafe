@@ -197,8 +197,8 @@ async function renderClasificacion(container) {
     Button(
       partidosWrapper,
       'Guardar Jornada',
-      'primary',
-      'medium'
+      'secondary',
+      'small'
     ).addEventListener('click', async () => {
       const inputsLocal = partidosWrapper.querySelectorAll(
         'input[type="number"][data-local]'
