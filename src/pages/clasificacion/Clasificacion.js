@@ -135,7 +135,17 @@ async function renderClasificacion(container) {
 
   const jornadaArray = calendario[jornada - 1] || []
 
-  jornadaArray.forEach((m) => {
+  // Mostrar fecha
+  const fechaObj = jornadaArray[0]?.fecha
+  const fechaDiv = document.createElement('div')
+  fechaDiv.className = 'fecha-jornada'
+  fechaDiv.textContent = fechaObj
+    ? `Fecha: ${formatearFecha(fechaObj)}`
+    : 'Fecha sin definir'
+  partidosWrapper.appendChild(fechaDiv)
+
+  // Iterar solo los partidos (omitimos la fecha)
+  jornadaArray.slice(1).forEach((m) => {
     const div = document.createElement('div')
     div.className = 'partido'
 
@@ -145,7 +155,6 @@ async function renderClasificacion(container) {
       const guardado = resultados.find(
         (r) => r.local === m.local && r.visitante === m.visitante
       )
-
       const golesLocal = guardado?.golesLocal ?? '-'
       const golesVisitante = guardado?.golesVisitante ?? '-'
 
@@ -231,4 +240,16 @@ async function renderClasificacion(container) {
   navDiv.appendChild(btnAnterior)
   navDiv.appendChild(btnSiguiente)
   partidosWrapper.appendChild(navDiv)
+}
+
+// Función auxiliar para formatear fechas
+function parseFecha(f) {
+  if (!f) return new Date(0)
+  const [d, m, y] = f.split('-').map(Number)
+  return new Date(2000 + y, m - 1, d)
+}
+
+function formatearFecha(f) {
+  const date = parseFecha(f)
+  return isNaN(date) ? 'Fecha sin definir' : date.toLocaleDateString('es-ES')
 }
