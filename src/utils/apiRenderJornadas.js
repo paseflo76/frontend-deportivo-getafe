@@ -17,20 +17,17 @@ export async function renderJornadas(container) {
     return
   }
 
-  // Ordenar por jornada y fecha
   data.sort((a, b) => {
     if (a.jornada !== b.jornada) return a.jornada - b.jornada
-    return new Date(a.fecha) - new Date(b.fecha)
+    return parseFecha(a.fecha) - parseFecha(b.fecha)
   })
 
-  // Agrupar partidos por jornada
   const jornadasMap = {}
   data.forEach((m) => {
     if (!jornadasMap[m.jornada]) jornadasMap[m.jornada] = []
     jornadasMap[m.jornada].push(m)
   })
 
-  // Renderizar cada jornada completa
   Object.entries(jornadasMap).forEach(([num, matches]) => {
     const jornadaDiv = document.createElement('div')
     jornadaDiv.className = 'jornada-list'
@@ -40,9 +37,8 @@ export async function renderJornadas(container) {
     h2.textContent = `Jornada ${num}`
     jornadaDiv.appendChild(h2)
 
-    // Tomar la fecha del primer partido de la jornada
     const fechaJornada = matches[0]?.fecha
-      ? new Date(matches[0].fecha).toLocaleDateString('es-ES')
+      ? formatearFecha(matches[0].fecha)
       : 'Fecha sin definir'
 
     const fechaDiv = document.createElement('div')
@@ -67,4 +63,17 @@ export async function renderJornadas(container) {
       jornadaDiv.appendChild(partidoDiv)
     })
   })
+}
+
+// --- Funciones auxiliares para parsear y mostrar fechas ---
+function parseFecha(f) {
+  if (!f) return new Date(0)
+  // Soporta formato DD-MM-YY
+  const [d, m, y] = f.split('-').map(Number)
+  return new Date(2000 + y, m - 1, d)
+}
+
+function formatearFecha(f) {
+  const date = parseFecha(f)
+  return isNaN(date) ? 'Fecha sin definir' : date.toLocaleDateString('es-ES')
 }
