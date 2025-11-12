@@ -202,6 +202,7 @@ export const calendario = [
   ],
   // Jornada 16
   [
+    { fecha: '14-02-26' },
     { local: 'LOS BRASAS', visitante: 'DEPORTIVO GETAFE' },
     { local: 'CHACARITAS GETAFE', visitante: 'CELTIC DE ESPARTA' },
     { local: 'VILLABETIS', visitante: 'ARSENAL GETAFE' },
