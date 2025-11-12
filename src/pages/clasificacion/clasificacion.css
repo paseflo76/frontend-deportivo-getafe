@@ -103,18 +103,20 @@
     font-size: 12px;
     display: flex;
     align-items: center;
+    height: 100vh;
   }
-  .partidos-wrapper {
-    font-size: 12px;
-    width: 80%;
-  }
+
   .tabla-wrapper h2 {
     font-size: 20px;
   }
   .partidos-wrapper {
-    width: 88%;
+    height: 40vh;
+    justify-content: center;
   }
   .contenido-partido {
     font-size: 10px;
+  }
+  .tabla-clasificacion {
+    height: 50vh;
   }
 }
