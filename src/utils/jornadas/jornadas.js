@@ -1,51 +1,36 @@
-/* import { apiCatch } from '../fetch/fech.js' */
 
-import { getResultados } from '../data'
 
-export async function renderJornadas(container) {
-  container.innerHTML = ''
+export const API_BASE = 'https://backend-deportivo-getafe.onrender.com'
 
-  let data = []
+export const apiCatch = async (
+  url,
+  method = 'GET',
+  data = null,
+  token = null
+) => {
+  const isFormData = data instanceof FormData
+
+  if (!token) token = localStorage.getItem('token')
+
+  const headers = {}
+  if (token) headers['Authorization'] = `Bearer ${token}`
+  if (!isFormData) headers['Content-Type'] = 'application/json'
+
+  const options = {
+    method,
+    headers,
+    body: isFormData ? data : data ? JSON.stringify(data) : null
+  }
+
   try {
-    data = await getResultados()
-  } catch (err) {
-    container.textContent = 'Error al cargar las jornadas'
-    console.error(err)
-    return
+    const res = await fetch(API_BASE + url, options)
+    const contentType = res.headers.get('Content-Type') || ''
+    const isJson = contentType.includes('application/json')
+    const body = isJson ? await res.json() : null
+
+    if (!res.ok) throw { status: res.status, body }
+    return body
+  } catch (error) {
+    throw error
   }
-
-  if (!data || data.length === 0) {
-    container.textContent = 'No hay partidos disponibles'
-    return
-  }
-
-  data.sort((a, b) => {
-    if (a.jornada !== b.jornada) return a.jornada - b.jornada
-    return new Date(a.fecha) - new Date(b.fecha)
-  })
-
-  let currentJornada = null
-  let jornadaDiv = null
-
-  data.forEach((m) => {
-    if (m.jornada !== currentJornada) {
-      currentJornada = m.jornada
-      jornadaDiv = document.createElement('div')
-      jornadaDiv.className = 'jornada-list'
-      container.appendChild(jornadaDiv)
-
-      const h2 = document.createElement('h2')
-      h2.textContent = `Jornada ${currentJornada}`
-      jornadaDiv.appendChild(h2)
-    }
-
-    const matchDiv = document.createElement('div')
-    matchDiv.className = 'partido'
-    const local = m.local ?? 'Local'
-    const visitante = m.visitante ?? 'Visitante'
-    const golesLocal = m.golesLocal ?? '-'
-    const golesVisitante = m.golesVisitante ?? '-'
-    matchDiv.textContent = `${local} ${golesLocal} - ${golesVisitante} ${visitante}`
-    jornadaDiv.appendChild(matchDiv)
-  })
 }

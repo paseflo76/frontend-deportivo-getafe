@@ -114,7 +114,7 @@ export const calendario = [
   [
     { fecha: '23-11-25' },
     { local: 'LOS BRASAS', visitante: 'CHACARITAS GETAFE' },
-    { local: 'DEPORTIVO GETAFE', visitante: '' },
+    { local: 'DEPORTIVO GETAFE', visitante: 'OLIMPIC DE UCRANIA' },
     { local: 'CELTIC DE ESPARTA', visitante: 'BRAVO GETAFE' },
     { local: 'ARSENAL GETAFE', visitante: 'CERVEZAS CLUB' },
     { local: 'SAN FRANCIS FC', visitante: 'G  EMPRESAS AIRBUS' },
