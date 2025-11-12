@@ -1,4 +1,5 @@
 import './clasificacion.css'
+
 import {
   getResultados,
   saveResultado,
@@ -11,6 +12,7 @@ import {
   getJornadaActual,
   setJornadaActual
 } from '../../utils/data.js'
+import { Button } from '../../components/button/button.js'
 
 export async function Clasificacion() {
   const main = document.querySelector('main')
@@ -191,11 +193,13 @@ async function renderClasificacion(container) {
     partidosWrapper.appendChild(div)
   })
 
-  // Botón guardar jornada solo para admin
   if (user?.rol === 'admin') {
-    const btnGuardarJornada = document.createElement('button')
-    btnGuardarJornada.textContent = 'Guardar Jornada'
-    btnGuardarJornada.addEventListener('click', async () => {
+    Button(
+      partidosWrapper,
+      'Guardar Jornada',
+      'primary',
+      'medium'
+    ).addEventListener('click', async () => {
       const inputsLocal = partidosWrapper.querySelectorAll(
         'input[type="number"][data-local]'
       )
@@ -223,31 +227,26 @@ async function renderClasificacion(container) {
       }
       window.dispatchEvent(new Event('resultadosUpdated'))
     })
-    partidosWrapper.appendChild(btnGuardarJornada)
   }
 
   // Navegación jornada
   const navDiv = document.createElement('div')
   navDiv.className = 'navegacion-jornada'
 
-  const btnAnterior = document.createElement('button')
-  btnAnterior.textContent = 'Anterior Jornada'
+  const btnAnterior = Button(navDiv, 'Anterior Jornada', 'secondary', 'small')
   btnAnterior.disabled = jornada <= 1
   btnAnterior.addEventListener('click', () => {
     setJornadaActual(jornada - 1)
     renderClasificacion(container)
   })
 
-  const btnSiguiente = document.createElement('button')
-  btnSiguiente.textContent = 'Siguiente Jornada'
+  const btnSiguiente = Button(navDiv, 'Siguiente Jornada', 'secondary', 'small')
   btnSiguiente.disabled = jornada >= calendario.length
   btnSiguiente.addEventListener('click', () => {
     setJornadaActual(jornada + 1)
     renderClasificacion(container)
   })
 
-  navDiv.appendChild(btnAnterior)
-  navDiv.appendChild(btnSiguiente)
   partidosWrapper.appendChild(navDiv)
 }
 

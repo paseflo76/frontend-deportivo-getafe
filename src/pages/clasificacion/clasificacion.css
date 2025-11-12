@@ -114,4 +114,7 @@
   .partidos-wrapper {
     width: 88%;
   }
+  .contenido-partido {
+    font-size: 10px;
+  }
 }
