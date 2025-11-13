@@ -1,4 +1,3 @@
-/* contenedor principal del calendario */
 #calendario {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* dos columnas principales */
@@ -12,9 +11,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   font-size: 13px;
   border: solid 3px black;
   border-radius: 10px;
+  text-align: center;
+}
+.partido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3px 0;
+}
+.partido span {
+  display: block;
+  margin: 2px 0;
 }
 
 .jornada-actual {
