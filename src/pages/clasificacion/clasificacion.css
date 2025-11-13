@@ -1,7 +1,8 @@
+/* clasificacion.css corregido */
+
 #clasificacion {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
   align-items: center;
   background-color: #0000ffbf;
   width: 90%;
@@ -10,60 +11,39 @@
   margin-top: 50px;
   padding-bottom: 10px;
 }
+
 .tabla-clasificacion {
   background-color: #00aaff;
   padding: 5px;
   border-radius: 10px;
 }
+
 .tabla-clasificacion tr.primero {
-  background-color: gold; /* o cualquier color que quieras */
+  background-color: gold;
   font-weight: bold;
 }
 
+/* Partidos de la jornada */
 .partidos-wrapper {
-  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
   width: 80%;
   font-size: 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
   background-color: #33ccff;
   border-radius: 10px;
   padding: 15px;
 }
-.contenido-partido {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  width: 100%;
-}
-.botones-partido button {
-  cursor: pointer;
-  border-radius: 5px;
-  padding: 3px 8px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-}
 
-.partido {
+.partido,
+.contenido-partido {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   justify-items: center;
+  gap: 5px;
   width: 100%;
   text-align: center;
-}
-.contenido-partido {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  justify-items: center;
-  gap: 5px;
-  width: 100%;
 }
 
 .contenido-partido input {
@@ -71,10 +51,12 @@
   border-radius: 5px;
   text-align: center;
 }
+
 .equipo-local,
 .equipo-visitante,
 .guion {
   white-space: nowrap;
+  text-align: inherit;
 }
 
 .botones-partido {
@@ -88,12 +70,14 @@
 .tabla-wrapper h2 {
   margin-left: 110px;
 }
+
 .navegacion-jornada {
   width: 100%;
   display: flex;
   justify-content: center;
   gap: 10px;
 }
+
 .navegacion-jornada button {
   cursor: pointer;
   border-radius: 5px;
@@ -115,17 +99,20 @@
   .tabla-wrapper h2 {
     font-size: 20px;
   }
+
   .partidos-wrapper {
-    height: 40vh;
     justify-content: center;
   }
+
   .contenido-partido {
     font-size: 10px;
   }
+
   .tabla-clasificacion {
     height: 40vh;
   }
 }
+
 @media (max-width: 480px) {
   .partido,
   .contenido-partido {
