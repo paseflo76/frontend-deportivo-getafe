@@ -1,4 +1,4 @@
-/* clasificacion.css corregido */
+/* clasificacion.css corregido para alinear partidos como en jornadas */
 
 #clasificacion {
   display: flex;
@@ -25,20 +25,19 @@
 
 /* Partidos de la jornada */
 .partidos-wrapper {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
   width: 80%;
-  font-size: 15px;
   background-color: #33ccff;
   border-radius: 10px;
   padding: 15px;
+  align-items: center;
 }
 
-.partido,
-.contenido-partido {
+.partido {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto auto auto auto auto;
   align-items: center;
   justify-items: center;
   gap: 5px;
@@ -46,17 +45,27 @@
   text-align: center;
 }
 
-.contenido-partido input {
-  width: 25px;
-  border-radius: 5px;
-  text-align: center;
+.contenido-partido {
+  display: contents; /* los elementos hijos ocupan las columnas del grid padre */
 }
 
-.equipo-local,
-.equipo-visitante,
+.equipo-local {
+  text-align: right;
+}
+
+.equipo-visitante {
+  text-align: left;
+}
+
 .guion {
-  white-space: nowrap;
-  text-align: inherit;
+  text-align: center;
+  width: 20px;
+}
+
+.contenido-partido input {
+  width: 30px;
+  text-align: center;
+  border-radius: 5px;
 }
 
 .botones-partido {
@@ -91,9 +100,6 @@
   #clasificacion {
     width: 90%;
     font-size: 12px;
-    display: flex;
-    align-items: center;
-    height: 100vh;
   }
 
   .tabla-wrapper h2 {
@@ -104,8 +110,8 @@
     justify-content: center;
   }
 
-  .contenido-partido {
-    font-size: 10px;
+  .contenido-partido input {
+    width: 25px;
   }
 
   .tabla-clasificacion {
@@ -114,8 +120,25 @@
 }
 
 @media (max-width: 480px) {
-  .partido,
-  .contenido-partido {
-    grid-template-columns: 1fr auto 1fr;
+  .partido {
+    grid-template-columns: auto auto auto auto auto;
+  }
+
+  .equipo-local {
+    text-align: right;
+    padding-right: 3px;
+  }
+
+  .equipo-visitante {
+    text-align: left;
+    padding-left: 3px;
+  }
+
+  .guion {
+    width: 20px;
+  }
+
+  .contenido-partido input {
+    width: 20px;
   }
 }

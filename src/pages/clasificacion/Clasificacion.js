@@ -1,11 +1,12 @@
+// clasificacion.js corregido para estructura de partidos horizontal
+
 import './clasificacion.css'
 
 import {
   getResultados,
   saveResultado,
   saveResultadoNew,
-  parseJwt,
-  deleteResultado
+  parseJwt
 } from '../../utils/data.js'
 import {
   calendario,
@@ -137,17 +138,11 @@ async function renderClasificacion(container) {
 
   const jornadaArray = calendario[jornada - 1] || []
 
-  jornadaArray.forEach((m, index) => {
+  jornadaArray.forEach((m) => {
+    if (m.fecha) return
+
     const div = document.createElement('div')
     div.className = 'partido'
-
-    if (index === 0 && m.fecha) {
-      const fechaDiv = document.createElement('div')
-      fechaDiv.className = 'fecha'
-      fechaDiv.textContent = `Fecha: ${formatearFecha(m.fecha)}`
-      partidosWrapper.appendChild(fechaDiv)
-      return
-    }
 
     if (m.descansa) {
       div.textContent = `Descansa: ${m.descansa}`
@@ -175,18 +170,30 @@ async function renderClasificacion(container) {
 
         const contenidoDiv = document.createElement('div')
         contenidoDiv.className = 'contenido-partido'
-        contenidoDiv.appendChild(
-          document.createTextNode(`${m.local} - ${m.visitante} `)
-        )
+
+        const spanLocal = document.createElement('span')
+        spanLocal.className = 'equipo-local'
+        spanLocal.textContent = m.local
+
+        const spanGuion = document.createElement('span')
+        spanGuion.className = 'guion'
+        spanGuion.textContent = '-'
+
+        const spanVisitante = document.createElement('span')
+        spanVisitante.className = 'equipo-visitante'
+        spanVisitante.textContent = m.visitante
+
+        contenidoDiv.appendChild(spanLocal)
         contenidoDiv.appendChild(inputL)
-        contenidoDiv.appendChild(document.createTextNode(' - '))
+        contenidoDiv.appendChild(spanGuion)
         contenidoDiv.appendChild(inputV)
+        contenidoDiv.appendChild(spanVisitante)
 
         div.appendChild(contenidoDiv)
       } else {
-        const golesLocal = guardado?.golesLocal ?? '-'
-        const golesVisitante = guardado?.golesVisitante ?? '-'
-        div.textContent = `${m.local} ${golesLocal} - ${golesVisitante} ${m.visitante}`
+        div.textContent = `${m.local} ${guardado?.golesLocal ?? '-'} - ${
+          guardado?.golesVisitante ?? '-'
+        } ${m.visitante}`
       }
     }
 
@@ -213,9 +220,8 @@ async function renderClasificacion(container) {
         const golesVisitante = Number(inputVisitante?.value ?? 0)
         const id = input.dataset.id
 
-        if (id) {
-          await saveResultado(id, golesLocal, golesVisitante)
-        } else {
+        if (id) await saveResultado(id, golesLocal, golesVisitante)
+        else
           await saveResultadoNew(
             local,
             visitante,
@@ -223,7 +229,6 @@ async function renderClasificacion(container) {
             golesVisitante,
             jornada
           )
-        }
       }
       window.dispatchEvent(new Event('resultadosUpdated'))
     })
@@ -250,7 +255,7 @@ async function renderClasificacion(container) {
   partidosWrapper.appendChild(navDiv)
 }
 
-// --- Funciones auxiliares para parsear y mostrar fechas ---
+// Funciones auxiliares
 function parseFecha(f) {
   if (!f) return new Date(0)
   const [d, m, y] = f.split('-').map(Number)
