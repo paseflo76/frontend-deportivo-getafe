@@ -17,17 +17,27 @@
   border-radius: 10px;
   text-align: center;
 }
-.partido {
+.partidos-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 3px 0;
-}
-.partido span {
-  display: block;
-  margin: 2px 0;
+  justify-content: center;
+  width: 100%;
 }
 
+.partido {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin: 3px 0;
+  text-align: center;
+}
+
+.partido span {
+  display: inline-block;
+}
 .jornada-actual {
   background-color: #007bff;
   color: #fff;
