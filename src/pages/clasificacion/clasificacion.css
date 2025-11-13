@@ -50,21 +50,27 @@
 }
 
 .partido {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  justify-items: center;
+  width: 100%;
+  text-align: center;
+}
+.contenido-partido {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  justify-items: center;
   gap: 5px;
   width: 100%;
 }
 
-.partido input {
+.contenido-partido input {
   width: 25px;
   border-radius: 5px;
   text-align: center;
-  cursor: pointer;
 }
-
 .equipo-local,
 .equipo-visitante,
 .guion {
@@ -118,5 +124,11 @@
   }
   .tabla-clasificacion {
     height: 40vh;
+  }
+}
+@media (max-width: 480px) {
+  .partido,
+  .contenido-partido {
+    grid-template-columns: 1fr auto 1fr;
   }
 }
