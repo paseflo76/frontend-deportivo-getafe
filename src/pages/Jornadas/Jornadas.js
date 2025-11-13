@@ -35,7 +35,6 @@ async function renderJornadas(container) {
     h2.textContent = `Jornada ${index + 1}`
     jornadaDiv.appendChild(h2)
 
-    // Mostrar fecha de la jornada (primer objeto con fecha)
     const fechaObj = jornadaArray.find((m) => m.fecha)
     const fechaDiv = document.createElement('div')
     fechaDiv.className = 'fecha'
@@ -45,19 +44,25 @@ async function renderJornadas(container) {
     jornadaDiv.appendChild(fechaDiv)
 
     jornadaArray.forEach((m) => {
-      if (m.fecha) return // ya mostramos la fecha
+      if (m.fecha) return
+
       const partidoDiv = document.createElement('div')
       partidoDiv.className = 'partido'
 
       if (m.descansa) {
-        partidoDiv.textContent = `Descansa: ${m.descansa}`
+        partidoDiv.innerHTML = `<span class="descansa">Descansa: ${m.descansa}</span>`
       } else if (m.local && m.visitante) {
         const guardado = resultados.find(
           (r) => r.local === m.local && r.visitante === m.visitante
         )
         const golesLocal = guardado?.golesLocal ?? '-'
         const golesVisitante = guardado?.golesVisitante ?? '-'
-        partidoDiv.textContent = `${m.local} ${golesLocal} - ${golesVisitante} ${m.visitante}`
+
+        partidoDiv.innerHTML = `
+          <span class="local">${m.local}</span>
+          <span class="marcador">${golesLocal} - ${golesVisitante}</span>
+          <span class="visitante">${m.visitante}</span>
+        `
       }
 
       jornadaDiv.appendChild(partidoDiv)
