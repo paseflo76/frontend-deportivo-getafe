@@ -43,7 +43,6 @@ async function renderJornadas(container) {
       : 'Fecha sin definir'
     jornadaDiv.appendChild(fechaDiv)
 
-    // nuevo contenedor para los partidos
     const partidosContainer = document.createElement('div')
     partidosContainer.className = 'partidos-container'
     jornadaDiv.appendChild(partidosContainer)
