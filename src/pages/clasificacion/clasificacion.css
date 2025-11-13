@@ -34,32 +34,27 @@
   padding: 15px;
   align-items: center;
 }
-
 .partido {
-  display: grid;
-  grid-template-columns: auto auto auto auto auto;
+  display: flex;
   align-items: center;
-  justify-items: center;
-  gap: 5px;
+  justify-content: space-between;
   width: 100%;
   text-align: center;
 }
 
 .contenido-partido {
-  display: contents; /* los elementos hijos ocupan las columnas del grid padre */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex: 1;
 }
 
-.equipo-local {
-  text-align: right;
-}
-
+.equipo-local,
 .equipo-visitante {
-  text-align: left;
-}
-
-.guion {
+  width: 30%;
   text-align: center;
-  width: 20px;
+  white-space: nowrap;
 }
 
 .contenido-partido input {
