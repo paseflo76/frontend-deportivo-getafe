@@ -227,7 +227,7 @@ export const calendario = [
     { local: 'VILLABETIS', visitante: 'DEPORTIVO GETAFE' },
     { local: 'BRAVO GETAFE', visitante: 'CELTIC DE ESPARTA' },
     { local: 'CERVEZAS CLUB', visitante: 'ARSENAL GETAFE' },
-    { local: 'G  EMPRESAS AIRBUS', visitante: '' },
+    { local: 'G  EMPRESAS AIRBUS', visitante: 'SAN FRANCIS FC' },
     { descansa: 'OLIMPICO UCRANIA' }
   ],
   // Jornada 19
