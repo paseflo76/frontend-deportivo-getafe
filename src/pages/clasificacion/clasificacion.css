@@ -3,7 +3,6 @@
   flex-direction: column;
   align-items: center;
   background-color: #0000ffbf;
-
   border: solid 2px black;
   border-radius: 15px;
   margin-top: 50px;
@@ -35,8 +34,10 @@
   padding: 15px;
   align-items: center;
 }
-.partido {
-  display: flex;
+
+/* FORZADO PARA ANULAR EL DISPLAY: GRID QUE VIENE DE OTRO CSS */
+.partidos-wrapper .partido {
+  display: flex !important;
   justify-content: center;
   align-items: center;
   justify-content: space-between;

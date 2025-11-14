@@ -139,7 +139,13 @@ async function renderClasificacion(container) {
   const jornadaArray = calendario[jornada - 1] || []
 
   jornadaArray.forEach((m) => {
-    if (m.fecha) return
+    if (m.fecha) {
+      const fechaDiv = document.createElement('div')
+      fechaDiv.className = 'fecha'
+      fechaDiv.textContent = 'Fecha: ' + formatearFecha(m.fecha)
+      partidosWrapper.appendChild(fechaDiv)
+      return
+    }
 
     const div = document.createElement('div')
     div.className = 'partido'
