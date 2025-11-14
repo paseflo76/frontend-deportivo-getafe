@@ -58,8 +58,9 @@ main {
 @media (max-width: 720px) {
   body {
     background-image: url(/assets/fondoDGmovil.png);
-    background-size: cover;
-    background-position: center;
+    background-size: 110% auto;
+
+    background-color: #202469;
   }
   main {
     flex: 1;
