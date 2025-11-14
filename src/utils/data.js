@@ -42,9 +42,9 @@ export const equipos = [
   'DEPORTIVO GETAFE',
   'G  EMPRESAS AIRBUS',
   'LOS BRASAS',
-  'OLIMPIC UCRANIA',
+  'OLIMPIC DE UCRANIA',
   'CHACARITAS GETAFE',
-  'SAN FRANCIS ',
+  'SAN FRANCIS FC',
   'VILLABETIS'
 ]
 
@@ -54,8 +54,8 @@ export const calendario = [
   [
     { fecha: '28-09-25' },
     { local: 'ARSENAL GETAFE', visitante: 'CELTIC DE ESPARTA' },
-    { local: 'SAN FRANCIS ', visitante: 'DEPORTIVO GETAFE' },
-    { local: 'OLIMPIC UCRANIA', visitante: 'LOS BRASAS' },
+    { local: 'SAN FRANCIS FC', visitante: 'DEPORTIVO GETAFE' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'LOS BRASAS' },
     { local: 'G  EMPRESAS AIRBUS', visitante: 'CHACARITAS GETAFE' },
     { local: 'CERVEZAS CLUB', visitante: 'VILLABETIS' },
     { descansa: 'BRAVO GETAFE' }
@@ -66,8 +66,8 @@ export const calendario = [
     { local: 'VILLABETIS', visitante: 'G  EMPRESAS AIRBUS' },
     { local: 'DEPORTIVO GETAFE', visitante: 'ARSENAL GETAFE' },
     { local: 'BRAVO GETAFE', visitante: 'CERVEZAS CLUB' },
-    { local: 'CHACARITAS GETAFE', visitante: 'OLIMPIC UCRANIA' },
-    { local: 'LOS BRASAS', visitante: 'SAN FRANCIS ' },
+    { local: 'CHACARITAS GETAFE', visitante: 'OLIMPIC DE UCRANIA' },
+    { local: 'LOS BRASAS', visitante: 'SAN FRANCIS FC' },
     { descansa: 'CELTIC DE ESPARTA' }
   ],
   // Jornada 3
@@ -75,8 +75,8 @@ export const calendario = [
     { fecha: '19-10-25' },
     { local: 'CELTIC DE ESPARTA', visitante: 'DEPORTIVO GETAFE' },
     { local: 'ARSENAL GETAFE', visitante: 'LOS BRASAS' },
-    { local: 'SAN FRANCIS ', visitante: 'CHACARITAS GETAFE' },
-    { local: 'OLIMPIC UCRANIA', visitante: 'VILLABETIS' },
+    { local: 'SAN FRANCIS FC', visitante: 'CHACARITAS GETAFE' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'VILLABETIS' },
     { local: 'G  EMPRESAS AIRBUS', visitante: 'BRAVO GETAFE' },
     { descansa: 'CERVEZAS CLUB' }
   ],
@@ -85,8 +85,8 @@ export const calendario = [
     { fecha: '26-10-25' },
     { local: 'LOS BRASAS', visitante: 'CELTIC DE ESPARTA' },
     { local: 'CHACARITAS GETAFE', visitante: 'ARSENAL GETAFE' },
-    { local: 'VILLABETIS', visitante: 'SAN FRANCIS ' },
-    { local: 'BRAVO GETAFE', visitante: 'OLIMPIC UCRANIA' },
+    { local: 'VILLABETIS', visitante: 'SAN FRANCIS FC' },
+    { local: 'BRAVO GETAFE', visitante: 'OLIMPIC DE UCRANIA' },
     { local: 'CERVEZAS CLUB', visitante: 'G  EMPRESAS AIRBUS' },
     { descansa: 'DEPORTIVO GETAFE' }
   ],
@@ -96,8 +96,8 @@ export const calendario = [
     { local: 'DEPORTIVO GETAFE', visitante: 'LOS BRASAS' },
     { local: 'CELTIC DE ESPARTA', visitante: 'CHACARITAS GETAFE' },
     { local: 'ARSENAL GETAFE', visitante: 'VILLABETIS' },
-    { local: 'SAN FRANCIS ', visitante: 'BRAVO GETAFE' },
-    { local: 'OLIMPIC UCRANIA', visitante: 'CERVEZAS CLUB' },
+    { local: 'SAN FRANCIS FC', visitante: 'BRAVO GETAFE' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'CERVEZAS CLUB' },
     { descansa: 'G  EMPRESAS AIRBUS' }
   ],
   // Jornada 6
@@ -106,8 +106,8 @@ export const calendario = [
     { local: 'CHACARITAS GETAFE', visitante: 'DEPORTIVO GETAFE' },
     { local: 'VILLABETIS', visitante: 'CELTIC DE ESPARTA' },
     { local: 'BRAVO GETAFE', visitante: 'ARSENAL GETAFE' },
-    { local: 'CERVEZAS CLUB', visitante: 'SAN FRANCIS ' },
-    { local: 'G  EMPRESAS AIRBUS', visitante: 'OLIMPIC UCRANIA' },
+    { local: 'CERVEZAS CLUB', visitante: 'SAN FRANCIS FC' },
+    { local: 'G  EMPRESAS AIRBUS', visitante: 'OLIMPIC DE UCRANIA' },
     { descansa: 'LOS BRASAS' }
   ],
   // Jornada 7
@@ -117,8 +117,8 @@ export const calendario = [
     { local: 'DEPORTIVO GETAFE', visitante: 'VILLABETIS' },
     { local: 'CELTIC DE ESPARTA', visitante: 'BRAVO GETAFE' },
     { local: 'ARSENAL GETAFE', visitante: 'CERVEZAS CLUB' },
-    { local: 'SAN FRANCIS ', visitante: 'G  EMPRESAS AIRBUS' },
-    { descansa: 'OLIMPIC UCRANIA' }
+    { local: 'SAN FRANCIS FC', visitante: 'G  EMPRESAS AIRBUS' },
+    { descansa: 'OLIMPIC DE UCRANIA' }
   ],
   // Jornada 8
   [
@@ -127,7 +127,7 @@ export const calendario = [
     { local: 'BRAVO GETAFE', visitante: 'DEPORTIVO GETAFE' },
     { local: 'G  EMPRESAS AIRBUS', visitante: 'ARSENAL GETAFE' },
     { local: 'CERVEZAS CLUB', visitante: 'CELTIC DE ESPARTA' },
-    { local: 'OLIMPIC UCRANIA', visitante: 'SAN FRANCIS ' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'SAN FRANCIS FC' },
     { descansa: 'CHACARITAS GETAFE' }
   ],
   // Jornada 9
@@ -137,17 +137,17 @@ export const calendario = [
     { local: 'LOS BRASAS', visitante: 'BRAVO GETAFE' },
     { local: 'DEPORTIVO GETAFE', visitante: 'CERVEZAS CLUB' },
     { local: 'CELTIC DE ESPARTA', visitante: 'G  EMPRESAS AIRBUS' },
-    { local: 'ARSENAL GETAFE', visitante: 'OLIMPIC UCRANIA' },
-    { descansa: 'SAN FRANCIS ' }
+    { local: 'ARSENAL GETAFE', visitante: 'OLIMPIC DE UCRANIA' },
+    { descansa: 'SAN FRANCIS FC' }
   ],
   // Jornada 10
   [
     { fecha: '21-12-25' },
     { local: 'BRAVO GETAFE', visitante: 'CHACARITAS GETAFE' },
     { local: 'CERVEZAS CLUB', visitante: 'LOS BRASAS' },
-    { local: 'OLIMPIC UCRANIA', visitante: 'CELTIC DE ESPARTA' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'CELTIC DE ESPARTA' },
     { local: 'G  EMPRESAS AIRBUS', visitante: 'DEPORTIVO GETAFE' },
-    { local: 'SAN FRANCIS ', visitante: 'ARSENAL GETAFE' },
+    { local: 'SAN FRANCIS FC', visitante: 'ARSENAL GETAFE' },
     { descansa: 'VILLABETIS' }
   ],
   // Jornada 11
@@ -156,16 +156,16 @@ export const calendario = [
     { local: 'VILLABETIS', visitante: 'BRAVO GETAFE' },
     { local: 'CHACARITAS GETAFE', visitante: 'CERVEZAS CLUB' },
     { local: 'LOS BRASAS', visitante: 'G  EMPRESAS AIRBUS' },
-    { local: 'DEPORTIVO GETAFE', visitante: 'OLIMPIC UCRANIA' },
-    { local: 'CELTIC DE ESPARTA', visitante: 'SAN FRANCIS ' },
+    { local: 'DEPORTIVO GETAFE', visitante: 'OLIMPIC DE UCRANIA' },
+    { local: 'CELTIC DE ESPARTA', visitante: 'SAN FRANCIS FC' },
     { descansa: 'ARSENAL GETAFE' }
   ],
   // Jornada 12
   [
     { fecha: '18-01-26' },
     { local: 'CELTIC DE ESPARTA', visitante: 'ARSENAL GETAFE' },
-    { local: 'DEPORTIVO GETAFE', visitante: 'SAN FRANCIS ' },
-    { local: 'LOS BRASAS', visitante: 'OLIMPIC UCRANIA' },
+    { local: 'DEPORTIVO GETAFE', visitante: 'SAN FRANCIS FC' },
+    { local: 'LOS BRASAS', visitante: 'OLIMPIC DE UCRANIA' },
     { local: 'CHACARITAS GETAFE', visitante: 'G  EMPRESAS AIRBUS' },
     { local: 'VILLABETIS', visitante: 'CERVEZAS CLUB' },
     { descansa: 'BRAVO GETAFE' }
@@ -176,8 +176,8 @@ export const calendario = [
     { local: 'G  EMPRESAS AIRBUS', visitante: 'VILLABETIS' },
     { local: 'ARSENAL GETAFE', visitante: 'DEPORTIVO GETAFE' },
     { local: 'CERVEZAS CLUB', visitante: 'BRAVO GETAFE' },
-    { local: 'OLIMPIC UCRANIA', visitante: 'CHACARITAS GETAFE' },
-    { local: 'SAN FRANCIS ', visitante: 'LOS BRASAS' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'CHACARITAS GETAFE' },
+    { local: 'SAN FRANCIS FC', visitante: 'LOS BRASAS' },
     { descansa: 'CELTIC DE ESPARTA' }
   ],
   // Jornada 14
@@ -185,8 +185,8 @@ export const calendario = [
     { fecha: '01-02-26' },
     { local: 'DEPORTIVO GETAFE', visitante: 'CELTIC DE ESPARTA' },
     { local: 'LOS BRASAS', visitante: 'ARSENAL GETAFE' },
-    { local: 'CHACARITAS GETAFE', visitante: 'SAN FRANCIS ' },
-    { local: 'VILLABETIS', visitante: 'OLIMPIC UCRANIA' },
+    { local: 'CHACARITAS GETAFE', visitante: 'SAN FRANCIS FC' },
+    { local: 'VILLABETIS', visitante: 'OLIMPIC DE UCRANIA' },
     { local: 'BRAVO GETAFE', visitante: 'G  EMPRESAS AIRBUS' },
     { descansa: 'CERVEZAS CLUB' }
   ],
@@ -195,8 +195,8 @@ export const calendario = [
     { fecha: '08-02-26' },
     { local: 'CELTIC DE ESPARTA', visitante: 'LOS BRASAS' },
     { local: 'ARSENAL GETAFE', visitante: 'CHACARITAS GETAFE' },
-    { local: 'SAN FRANCIS ', visitante: 'VILLABETIS' },
-    { local: 'OLIMPIC UCRANIA', visitante: 'BRAVO GETAFE' },
+    { local: 'SAN FRANCIS FC', visitante: 'VILLABETIS' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'BRAVO GETAFE' },
     { local: 'G  EMPRESAS AIRBUS', visitante: 'CERVEZAS CLUB' },
     { descansa: 'DEPORTIVO GETAFE' }
   ],
@@ -206,8 +206,8 @@ export const calendario = [
     { local: 'LOS BRASAS', visitante: 'DEPORTIVO GETAFE' },
     { local: 'CHACARITAS GETAFE', visitante: 'CELTIC DE ESPARTA' },
     { local: 'VILLABETIS', visitante: 'ARSENAL GETAFE' },
-    { local: 'BRAVO GETAFE', visitante: 'SAN FRANCIS ' },
-    { local: 'CERVEZAS CLUB', visitante: 'OLIMPIC UCRANIA' },
+    { local: 'BRAVO GETAFE', visitante: 'SAN FRANCIS FC' },
+    { local: 'CERVEZAS CLUB', visitante: 'OLIMPIC DE UCRANIA' },
     { descansa: 'G  EMPRESAS AIRBUS' }
   ],
   // Jornada 17
@@ -216,8 +216,8 @@ export const calendario = [
     { local: 'DEPORTIVO GETAFE', visitante: 'CHACARITAS GETAFE' },
     { local: 'CELTIC DE ESPARTA', visitante: 'VILLABETIS' },
     { local: 'ARSENAL GETAFE', visitante: 'BRAVO GETAFE' },
-    { local: 'SAN FRANCIS ', visitante: 'CERVEZAS CLUB' },
-    { local: 'OLIMPIC UCRANIA', visitante: 'G  EMPRESAS AIRBUS' },
+    { local: 'SAN FRANCIS FC', visitante: 'CERVEZAS CLUB' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'G  EMPRESAS AIRBUS' },
     { descansa: 'LOS BRASAS' }
   ],
   // Jornada 18
@@ -227,8 +227,8 @@ export const calendario = [
     { local: 'VILLABETIS', visitante: 'DEPORTIVO GETAFE' },
     { local: 'BRAVO GETAFE', visitante: 'CELTIC DE ESPARTA' },
     { local: 'CERVEZAS CLUB', visitante: 'ARSENAL GETAFE' },
-    { local: 'G  EMPRESAS AIRBUS', visitante: 'SAN FRANCIS ' },
-    { descansa: 'OLIMPIC UCRANIA' }
+    { local: 'G  EMPRESAS AIRBUS', visitante: 'SAN FRANCIS FC' },
+    { descansa: 'OLIMPIC DE UCRANIA' }
   ],
   // Jornada 19
   [
@@ -237,7 +237,7 @@ export const calendario = [
     { local: 'DEPORTIVO GETAFE', visitante: 'BRAVO GETAFE' },
     { local: 'ARSENAL GETAFE', visitante: 'G  EMPRESAS AIRBUS' },
     { local: 'CELTIC DE ESPARTA', visitante: 'CERVEZAS CLUB' },
-    { local: 'SAN FRANCIS ', visitante: 'OLIMPIC UCRANIA' },
+    { local: 'SAN FRANCIS FC', visitante: 'OLIMPIC DE UCRANIA' },
     { descansa: 'CHACARITAS GETAFE' }
   ],
   // Jornada 20
@@ -247,17 +247,17 @@ export const calendario = [
     { local: 'BRAVO GETAFE', visitante: 'LOS BRASAS' },
     { local: 'CERVEZAS CLUB', visitante: 'DEPORTIVO GETAFE' },
     { local: 'G  EMPRESAS AIRBUS', visitante: 'CELTIC DE ESPARTA' },
-    { local: 'OLIMPIC UCRANIA', visitante: 'ARSENAL GETAFE' },
-    { descansa: 'SAN FRANCIS ' }
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'ARSENAL GETAFE' },
+    { descansa: 'SAN FRANCIS FC' }
   ],
   // Jornada 21
   [
     { fecha: '22-03-26' },
     { local: 'CHACARITAS GETAFE', visitante: 'BRAVO GETAFE' },
     { local: 'LOS BRASAS', visitante: 'CERVEZAS CLUB' },
-    { local: 'CELTIC DE ESPARTA', visitante: 'OLIMPIC UCRANIA' },
+    { local: 'CELTIC DE ESPARTA', visitante: 'OLIMPIC DE UCRANIA' },
     { local: 'DEPORTIVO GETAFE', visitante: 'G  EMPRESAS AIRBUS' },
-    { local: 'ARSENAL GETAFE', visitante: 'SAN FRANCIS ' },
+    { local: 'ARSENAL GETAFE', visitante: 'SAN FRANCIS FC' },
     { descansa: 'VILLABETIS' }
   ],
   // Jornada 22
@@ -266,8 +266,8 @@ export const calendario = [
     { local: 'BRAVO GETAFE', visitante: 'VILLABETIS' },
     { local: 'CERVEZAS CLUB', visitante: 'CHACARITAS GETAFE' },
     { local: 'G  EMPRESAS AIRBUS', visitante: 'LOS BRASAS' },
-    { local: 'OLIMPIC UCRANIA', visitante: 'DEPORTIVO GETAFE' },
-    { local: 'SAN FRANCIS ', visitante: 'CELTIC DE ESPARTA' },
+    { local: 'OLIMPIC DE UCRANIA', visitante: 'DEPORTIVO GETAFE' },
+    { local: 'SAN FRANCIS FC', visitante: 'CELTIC DE ESPARTA' },
     { descansa: 'ARSENAL GETAFE' }
   ]
 ]
