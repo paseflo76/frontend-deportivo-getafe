@@ -1,21 +1,22 @@
-/* clasificacion.css corregido para alinear partidos como en jornadas */
-
 #clasificacion {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #0000ffbf;
-  width: 90%;
+
   border: solid 2px black;
   border-radius: 15px;
   margin-top: 50px;
   padding-bottom: 10px;
+  gap: 20px;
+  width: 70%;
 }
 
 .tabla-clasificacion {
   background-color: #00aaff;
   padding: 5px;
   border-radius: 10px;
+  height: 50vh;
 }
 
 .tabla-clasificacion tr.primero {
@@ -27,19 +28,21 @@
 .partidos-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  width: 80%;
-  background-color: #33ccff;
+  gap: 5px;
+  width: 60%;
+  background-color: var(--perfil);
   border-radius: 10px;
   padding: 15px;
   align-items: center;
 }
 .partido {
   display: flex;
+  justify-content: center;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  margin: 4px 0;
   text-align: center;
+  font-size: 11px;
 }
 
 .contenido-partido {
@@ -103,6 +106,7 @@
 
   .partidos-wrapper {
     justify-content: center;
+    width: 90%;
   }
 
   .contenido-partido input {
@@ -115,10 +119,6 @@
 }
 
 @media (max-width: 480px) {
-  .partido {
-    grid-template-columns: auto auto auto auto auto;
-  }
-
   .equipo-local {
     text-align: right;
     padding-right: 3px;
@@ -127,10 +127,6 @@
   .equipo-visitante {
     text-align: left;
     padding-left: 3px;
-  }
-
-  .guion {
-    width: 20px;
   }
 
   .contenido-partido input {
