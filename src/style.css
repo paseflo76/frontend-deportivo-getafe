@@ -57,7 +57,9 @@ main {
 }
 @media (max-width: 720px) {
   body {
-    background-image: url('/assets/imagen-movil2.png');
+    background-image: url(/assets/fondoDGmovil.png);
+    background-size: cover;
+    background-position: center;
   }
   main {
     flex: 1;
