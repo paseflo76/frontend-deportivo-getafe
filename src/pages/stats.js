@@ -1,7 +1,7 @@
 import './stats.css'
-
 import { Button } from '../components/button/button.js'
 import { apiCatch } from '../utils/fetch/fech.js'
+import { parseJwt } from '../utils/data.js'
 
 export async function Stats() {
   const main = document.querySelector('main')
@@ -38,8 +38,8 @@ export async function Stats() {
       <input type="text" id="nombre" placeholder="Nombre">
       <input type="number" id="valor" placeholder="Cantidad">
     `
-    const btnAgregar = Button(adminForm, 'Actualizar', 'secondary', 'small')
-    btnAgregar.addEventListener('click', async () => {
+    const btnActualizar = Button(adminForm, 'Actualizar', 'secondary', 'small')
+    btnActualizar.addEventListener('click', async () => {
       const tipo = selectTipo.value
       const nombre = document.getElementById('nombre').value.trim()
       const valor = Number(document.getElementById('valor').value)
@@ -67,7 +67,7 @@ export async function Stats() {
 
   async function mostrar() {
     const tipo = selectTipo.value
-    const data = await apiCatch('/stats')
+    const data = await apiCatch('/stats') // Trae todos los jugadores y porteros desde backend
     let html = '<table><thead><tr>'
 
     if (tipo === 'porteros') {
