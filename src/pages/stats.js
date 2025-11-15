@@ -122,7 +122,9 @@ export async function Stats() {
         tablaWrapper.querySelectorAll('.delete-portero').forEach((btn) => {
           btn.addEventListener('click', async () => {
             const id = btn.dataset.id
-            await apiCatch(`/api/v2/stats/portero/${id}`, 'DELETE')
+            await apiCatch(`/api/v2/stats/portero/${id}`, 'DELETE', null, {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            })
             mostrar() // recargar tabla
           })
         })
