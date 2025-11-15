@@ -12,16 +12,22 @@ export const apiCatch = async (
 ) => {
   const isFormData = data instanceof FormData
 
+  // Tomar token si no se pasa
   if (!token) token = localStorage.getItem('token')
 
   const headers = {}
   if (token) headers['Authorization'] = `Bearer ${token}`
-  if (!isFormData) headers['Content-Type'] = 'application/json'
+  if (!isFormData && method !== 'GET')
+    headers['Content-Type'] = 'application/json'
 
   const options = {
     method,
     headers,
-    body: isFormData ? data : data ? JSON.stringify(data) : null
+    body: isFormData
+      ? data
+      : data && method !== 'GET'
+      ? JSON.stringify(data)
+      : null
   }
 
   try {
