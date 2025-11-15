@@ -105,7 +105,7 @@ const submitLogin = async (userName, password, form) => {
 
   loader(true)
   try {
-    const data = await apiCatch('/users/login', 'POST', {
+    const data = await apiCatch('/api/v2/users/login', 'POST', {
       userName,
       password
     })
@@ -172,7 +172,7 @@ const submitRegister = async (userName, email, password, form) => {
 
   loader(true)
   try {
-    const data = await apiCatch('/users/register', 'POST', {
+    const data = await apiCatch('/api/v2/users/register', 'POST', {
       userName,
       email,
       password
