@@ -1,4 +1,8 @@
-export const API_BASE = 'https://backend-deportivo-getafe.onrender.com'
+// apiCatch.js
+export const API_BASE =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3000/api/v2'
+    : 'https://backend-deportivo-getafe.onrender.com/api/v2'
 
 export const apiCatch = async (
   url,
