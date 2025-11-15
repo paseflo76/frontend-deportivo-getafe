@@ -13,6 +13,8 @@
 .admin-form input {
   margin-right: 5px;
   padding: 5px;
+  border-radius: 10px;
+  border: none;
 }
 #tabla {
   background-color: var(--perfil);
@@ -20,6 +22,10 @@
   font-weight: 500;
   border-radius: 10px;
   border: none;
+}
+#tipo {
+  border-radius: 10px;
+  padding: 5px;
 }
 
 table {

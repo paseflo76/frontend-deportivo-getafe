@@ -94,7 +94,7 @@ export async function Stats() {
       html += '</tbody>'
     } else if (tipo === 'porteros') {
       html +=
-        '<th>Pos</th><th>Portero</th><th>Promedio Goles Recibidos</th></tr><tbody>'
+        '<th>Pos</th><th>Portero</th><th>Promedio Goles Recibidos</th><th>Acciones</th></tr><tbody>'
       data.porteros
         .sort(
           (a, b) =>
@@ -103,11 +103,30 @@ export async function Stats() {
         )
         .forEach((p, i) => {
           const promedio = (p.golesRecibidos / (p.partidos || 1)).toFixed(2)
-          html += `<tr><td>${i + 1}</td><td>${
-            p.nombre
-          }</td><td>${promedio}</td></tr>`
+          html += `<tr>
+        <td>${i + 1}</td>
+        <td>${p.nombre}</td>
+        <td>${promedio}</td>
+        <td>${
+          user?.rol === 'admin'
+            ? `<button class="delete-portero" data-id="${p._id}">Eliminar</button>`
+            : ''
+        }</td>
+      </tr>`
         })
       html += '</tbody>'
+      tablaWrapper.innerHTML = html
+
+      // Añadir event listener para borrar
+      if (user?.rol === 'admin') {
+        tablaWrapper.querySelectorAll('.delete-portero').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.id
+            await apiCatch(`/api/v2/stats/portero/${id}`, 'DELETE')
+            mostrar() // recargar tabla
+          })
+        })
+      }
     }
 
     html += '</table>'
