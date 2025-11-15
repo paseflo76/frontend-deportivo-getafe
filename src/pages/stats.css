@@ -39,3 +39,11 @@ td {
   white-space: normal; /* permite que el contenido se ajuste */
   word-break: break-word; /* evita desbordes de palabras largas */
 }
+
+@media (max-width: 600px) {
+  table th,
+  table td {
+    padding: 4px;
+    font-size: 13px;
+  }
+}
