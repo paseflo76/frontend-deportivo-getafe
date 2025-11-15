@@ -124,6 +124,8 @@ export async function Stats() {
       tablaWrapper.querySelectorAll('.delete-portero').forEach((btn) => {
         btn.addEventListener('click', async () => {
           const id = btn.dataset.id
+          console.log(localStorage.getItem('token'))
+
           await apiCatch(`/api/v2/stats/portero/${id}`, 'DELETE', null, {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           })
