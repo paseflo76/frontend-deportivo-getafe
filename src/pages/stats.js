@@ -114,7 +114,7 @@ export async function Stats() {
         }</td>
       </tr>`
         })
-      html += '</tbody>'
+      html += '</tbody></table>'
       tablaWrapper.innerHTML = html
 
       // Añadir event listener para borrar
