@@ -1,0 +1,28 @@
+#stats {
+  padding: 20px;
+}
+
+.filtro-stats {
+  margin-bottom: 10px;
+}
+
+.admin-form {
+  margin-bottom: 15px;
+}
+
+.admin-form input {
+  margin-right: 5px;
+  padding: 5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}

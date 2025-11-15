@@ -74,7 +74,8 @@ export const Header = () => {
     { texto: 'Calendario', path: 'jornadas', function: Calendario },
     { texto: 'Editar', path: 'admin', function: Admin },
     { texto: 'Login', path: 'login', function: LoginRegister },
-    { texto: 'Perfil', path: 'perfil', function: Perfil }
+    { texto: 'Perfil', path: 'perfil', function: Perfil },
+    { texto: 'Estadísticas', path: 'stats', function: Stats }
   ]
 
   if (user?.rol !== 'admin') {

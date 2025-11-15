@@ -8,6 +8,7 @@ import { Footer } from './components/footer/footer'
 import { Perfil } from './pages/perfil/perfil'
 import { Calendario } from './pages/Jornadas/Jornadas'
 import { Clasificacion } from './pages/clasificacion/Clasificacion'
+import { Stats } from './pages/stats'
 
 const routes = {
   home: Home,
@@ -15,7 +16,8 @@ const routes = {
   admin: Admin,
   perfil: Perfil,
   clasificacion: Clasificacion,
-  jornadas: Calendario
+  jornadas: Calendario,
+  stats: Stats
 }
 
 export const navigate = async (path) => {
