@@ -1,7 +1,6 @@
 import './stats.css'
-import { parseJwt } from '../utils/data.js'
+import { parseJwt, apiCatch } from '../utils/data.js'
 import { Button } from '../components/button/button.js'
-import { jugadores, porteros } from '../utils/dataStats.js'
 
 export async function Stats() {
   const main = document.querySelector('main')
@@ -12,10 +11,10 @@ export async function Stats() {
   container.id = 'stats'
   main.appendChild(container)
 
-  renderStats(container)
+  await renderStats(container)
 }
 
-function renderStats(container) {
+async function renderStats(container) {
   container.innerHTML = ''
 
   const user = parseJwt(localStorage.getItem('token'))
@@ -50,9 +49,9 @@ function renderStats(container) {
   }
 
   selectTipo.addEventListener('change', mostrar)
-  mostrar()
+  await mostrar()
 
-  function agregar() {
+  async function agregar() {
     if (user?.rol !== 'admin') return
     const tipo = selectTipo.value
     const nombre = document.getElementById('nombre').value.trim()
@@ -60,47 +59,42 @@ function renderStats(container) {
     if (!nombre || isNaN(valor)) return
 
     if (tipo === 'porteros') {
-      const porteroExistente = porteros.find((p) => p.nombre === nombre)
-      if (porteroExistente) porteroExistente.golesRecibidos = valor
-      else porteros.push({ nombre, golesRecibidos: valor, partidos: 1 })
-    } else {
-      const jugadorExistente = jugadores.find((j) => j.nombre === nombre)
-      if (jugadorExistente) {
-        if (tipo === 'goles') jugadorExistente.goles = valor
-        if (tipo === 'asistencias') jugadorExistente.asistencias = valor
-      } else {
-        const nuevo = { nombre, goles: 0, asistencias: 0 }
-        if (tipo === 'goles') nuevo.goles = valor
-        if (tipo === 'asistencias') nuevo.asistencias = valor
-        jugadores.push(nuevo)
-      }
+      await apiCatch('/api/v2/stats/portero', 'POST', {
+        nombre,
+        golesRecibidos: valor
+      })
+    } else if (tipo === 'goles') {
+      await apiCatch('/api/v2/stats/jugador', 'POST', { nombre, goles: valor })
+    } else if (tipo === 'asistencias') {
+      await apiCatch('/api/v2/stats/jugador', 'POST', {
+        nombre,
+        asistencias: valor
+      })
     }
 
-    mostrar()
+    await mostrar()
   }
 
-  function mostrar() {
+  async function mostrar() {
     const tipo = selectTipo.value
-    let html = '<table><thead><tr>'
+    const data = await apiCatch('/api/v2/stats')
 
+    let html = '<table><thead><tr>'
     if (tipo === 'porteros') {
-      html += '<th>Portero</th><th>Promedio Goles Recibidos</th></tr>'
-      html += '<tbody>'
-      porteros.forEach((p) => {
+      html += '<th>Portero</th><th>Promedio Goles Recibidos</th></tr><tbody>'
+      data.porteros.forEach((p) => {
         html += `<tr><td>${p.nombre}</td><td>${(
           p.golesRecibidos / (p.partidos || 1)
         ).toFixed(2)}</td></tr>`
       })
       html += '</tbody>'
     } else {
-      html += '<th>Jugador</th><th>Goles</th><th>Asistencias</th></tr>'
-      html += '<tbody>'
-      jugadores.forEach((j) => {
+      html += '<th>Jugador</th><th>Goles</th><th>Asistencias</th></tr><tbody>'
+      data.jugadores.forEach((j) => {
         html += `<tr><td>${j.nombre}</td><td>${j.goles}</td><td>${j.asistencias}</td></tr>`
       })
       html += '</tbody>'
     }
-
     html += '</table>'
     tablaWrapper.innerHTML = html
   }
