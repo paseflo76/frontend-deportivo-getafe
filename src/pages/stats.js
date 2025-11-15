@@ -81,7 +81,7 @@ export async function Stats() {
             j.goles
           }</td></tr>`
         })
-      html += '</tbody>'
+      html += '</tbody></table>'
     } else if (tipo === 'asistencias') {
       html += '<th>Pos</th><th>Jugador</th><th>Asistencias</th></tr><tbody>'
       data.jugadores
@@ -91,7 +91,7 @@ export async function Stats() {
             j.asistencias
           }</td></tr>`
         })
-      html += '</tbody>'
+      html += '</tbody></table>'
     } else if (tipo === 'porteros') {
       html +=
         '<th>Pos</th><th>Portero</th><th>Promedio Goles Recibidos</th><th>Acciones</th></tr><tbody>'
@@ -104,34 +104,32 @@ export async function Stats() {
         .forEach((p, i) => {
           const promedio = (p.golesRecibidos / (p.partidos || 1)).toFixed(2)
           html += `<tr>
-        <td>${i + 1}</td>
-        <td>${p.nombre}</td>
-        <td>${promedio}</td>
-        <td>${
-          user?.rol === 'admin'
-            ? `<button class="delete-portero" data-id="${p._id}">Eliminar</button>`
-            : ''
-        }</td>
-      </tr>`
+            <td>${i + 1}</td>
+            <td>${p.nombre}</td>
+            <td>${promedio}</td>
+            <td>${
+              user?.rol === 'admin'
+                ? `<button class="delete-portero" data-id="${p._id}">Eliminar</button>`
+                : ''
+            }</td>
+          </tr>`
         })
       html += '</tbody></table>'
-      tablaWrapper.innerHTML = html
-
-      // Añadir event listener para borrar
-      if (user?.rol === 'admin') {
-        tablaWrapper.querySelectorAll('.delete-portero').forEach((btn) => {
-          btn.addEventListener('click', async () => {
-            const id = btn.dataset.id
-            await apiCatch(`/api/v2/stats/portero/${id}`, 'DELETE', null, {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-            })
-            mostrar() // recargar tabla
-          })
-        })
-      }
     }
 
-    html += '</table>'
     tablaWrapper.innerHTML = html
+
+    // Event listeners para eliminar porteros solo si es admin
+    if (tipo === 'porteros' && user?.rol === 'admin') {
+      tablaWrapper.querySelectorAll('.delete-portero').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.id
+          await apiCatch(`/api/v2/stats/portero/${id}`, 'DELETE', null, {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          })
+          mostrar()
+        })
+      })
+    }
   }
 }
