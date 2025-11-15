@@ -10,7 +10,7 @@ const DeleteButton = (userId, token) => {
   const btn = Button(null, 'Eliminar cuenta', 'secondary', 's')
   btn.classList.add('perfil-btn')
   btn.addEventListener('click', async () => {
-    await apiCatch(`/users/${userId}`, 'DELETE', null, token)
+    await apiCatch(`/api/v2/users/${userId}`, 'DELETE', null, token)
     localStorage.removeItem('token')
     localStorage.removeItem('userId')
     navigate('home')

@@ -32,7 +32,7 @@ export const AvatarForm = async (userId, token, avatarImg) => {
 
     try {
       const res = await apiCatch(
-        `/users/${userId}/avatar`,
+        `/api/v2/users/${userId}/avatar`,
         'POST',
         formData,
         token,

@@ -48,7 +48,7 @@ export async function Stats() {
       if (!nombre || isNaN(valor)) return
 
       if (tipo === 'porteros') {
-        await apiCatch('/stats/portero', 'POST', {
+        await apiCatch('/api/v2/stats/portero', 'POST', {
           nombre,
           golesRecibidos: valor,
           partidos: 1
@@ -57,7 +57,7 @@ export async function Stats() {
         const data = { nombre }
         if (tipo === 'goles') data.goles = valor
         if (tipo === 'asistencias') data.asistencias = valor
-        await apiCatch('/stats/jugador', 'POST', data)
+        await apiCatch('/api/v2/stats/jugador', 'POST', data)
       }
       mostrar()
     })
@@ -69,7 +69,7 @@ export async function Stats() {
 
   async function mostrar() {
     const tipo = selectTipo.value
-    const data = await apiCatch('/stats')
+    const data = await apiCatch('/api/v2/stats')
     let html = '<table><thead><tr>'
 
     if (tipo === 'goles') {

@@ -26,7 +26,7 @@ export const Admin = async () => {
 const obtenerTipos = async () => {
   const token = localStorage.getItem('token')
   try {
-    return await apiCatch('/eventos/tipos', 'GET', null, token)
+    return await apiCatch('/api/v2/eventos/tipos', 'GET', null, token)
   } catch {
     return ['Entrenamiento', 'Partido', 'Otro']
   }
@@ -69,7 +69,7 @@ const crearFormularioEvento = async () => {
     loader(true)
     const token = localStorage.getItem('token')
     try {
-      await apiCatch('/eventos', 'POST', formData, token)
+      await apiCatch('/api/v2/eventos', 'POST', formData, token)
       await Admin()
     } catch (err) {
       console.error(err)

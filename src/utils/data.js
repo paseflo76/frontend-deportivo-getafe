@@ -35,7 +35,6 @@ export const apiCatch = async (
     throw error
   }
 }
-
 // utils/data.js
 export const equipos = [
   'ARSENAL GETAFE',

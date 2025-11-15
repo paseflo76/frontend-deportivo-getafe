@@ -263,7 +263,7 @@ async function renderClasificacion(container) {
       try {
         // Llamada al backend para poner goles en null
         await apiCatch(
-          `/league/matches/jornada/${jornada}/clear`,
+          `/api/v2/league/matches/jornada/${jornada}/clear`,
           'PUT',
           null,
           localStorage.getItem('token')

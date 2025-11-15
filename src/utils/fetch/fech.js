@@ -1,11 +1,11 @@
 // apiCatch.js
 export const API_BASE =
   window.location.hostname === 'localhost'
-    ? 'http://localhost:3000/api/v2'
-    : 'https://backend-deportivo-getafe.onrender.com/api/v2'
+    ? 'http://localhost:3000'
+    : 'https://backend-deportivo-getafe.onrender.com'
 
 export const apiCatch = async (
-  url,
+  endpoint,
   method = 'GET',
   data = null,
   token = null
@@ -25,7 +25,7 @@ export const apiCatch = async (
   }
 
   try {
-    const res = await fetch(API_BASE + url, options)
+    const res = await fetch(`${API_BASE}${endpoint}`, options)
     const contentType = res.headers.get('Content-Type') || ''
     const isJson = contentType.includes('application/json')
     const body = isJson ? await res.json() : null
@@ -33,7 +33,6 @@ export const apiCatch = async (
     if (!res.ok) throw { status: res.status, body }
     return body
   } catch (error) {
-    console.error('Error en apiCatch:', error)
     throw error
   }
 }

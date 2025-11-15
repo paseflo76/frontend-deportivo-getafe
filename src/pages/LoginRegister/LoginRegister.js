@@ -19,7 +19,6 @@ const createFormWithInputs = (placeholders) => {
   return { form, inputs }
 }
 
-// --- NUEVO: banner flash para avisar que requiere login ---
 const renderFlashBanner = (parent) => {
   try {
     const raw = sessionStorage.getItem('flash')
@@ -58,8 +57,6 @@ export const LoginRegister = async () => {
 
   const container = document.createElement('div')
   container.id = 'login'
-
-  // --- mostrar aviso si viene de redirección ---
   renderFlashBanner(container)
 
   const { form, inputs } = createFormWithInputs([
@@ -119,11 +116,8 @@ const submitLogin = async (userName, password, form) => {
     await navigate('home')
     Header()
   } catch (err) {
-    if (err.status === 400) {
-      showError(form, 'Usuario o Contraseña Incorrectos')
-    } else {
-      showError(form, 'Error de red o servidor.')
-    }
+    if (err.status === 400) showError(form, 'Usuario o Contraseña Incorrectos')
+    else showError(form, 'Error de red o servidor.')
   } finally {
     loader(false)
   }
@@ -135,8 +129,6 @@ const renderRegisterForm = (main) => {
 
   const container = document.createElement('div')
   container.id = 'login'
-
-  // --- mostrar aviso si se quisiera usar también aquí ---
   renderFlashBanner(container)
 
   const { form, inputs } = createFormWithInputs([
@@ -187,11 +179,7 @@ const submitRegister = async (userName, email, password, form) => {
       email,
       password
     })
-
-    if (!data || !data.token || !data.user) {
-      throw new Error('Registro fallido')
-    }
-
+    if (!data || !data.token || !data.user) throw new Error('Registro fallido')
     localStorage.setItem('token', data.token)
     localStorage.setItem('userId', data.user._id)
     await navigate('home')
@@ -199,14 +187,10 @@ const submitRegister = async (userName, email, password, form) => {
   } catch (err) {
     if (err.status === 400) {
       const msg = err.body?.message || 'Error'
-      if (msg === 'Nombre de usuario ya existe') {
+      if (msg === 'Nombre de usuario ya existe')
         showError(form, 'El usuario ya existe')
-      } else {
-        showError(form, msg)
-      }
-    } else {
-      showError(form, 'Error de red o servidor.')
-    }
+      else showError(form, msg)
+    } else showError(form, 'Error de red o servidor.')
   } finally {
     loader(false)
   }

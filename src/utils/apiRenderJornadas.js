@@ -5,7 +5,7 @@ export async function renderJornadas(container) {
   let data = []
 
   try {
-    data = await apiCatch('/api/v2/league/matches')
+    data = await apiCatch('/league/matches')
   } catch (err) {
     container.textContent = 'Error al cargar las jornadas'
     console.error(err)
