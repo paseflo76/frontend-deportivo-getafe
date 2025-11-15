@@ -14,6 +14,7 @@ import {
   setJornadaActual
 } from '../../utils/data.js'
 import { Button } from '../../components/button/button.js'
+import { apiCatch } from '../../utils/fetch/fech.js'
 
 export async function Clasificacion() {
   const main = document.querySelector('main')
@@ -66,7 +67,6 @@ async function renderClasificacion(container) {
 
     const { local, visitante, golesLocal, golesVisitante, _id } = m
 
-    // Protección para evitar el crash
     if (!equipos[local] || !equipos[visitante]) {
       console.warn('Resultado con equipo no presente en calendario:', m)
       return
@@ -214,6 +214,7 @@ async function renderClasificacion(container) {
   })
 
   if (user?.rol === 'admin') {
+    // Guardar Jornada
     Button(
       partidosWrapper,
       'Guardar Jornada',
@@ -244,6 +245,33 @@ async function renderClasificacion(container) {
           )
       }
       window.dispatchEvent(new Event('resultadosUpdated'))
+    })
+
+    // Borrar resultados jornada
+    Button(
+      partidosWrapper,
+      'Borrar Resultados Jornada',
+      'danger',
+      'small'
+    ).addEventListener('click', async () => {
+      if (
+        !confirm(
+          `¿Seguro que quieres borrar todos los resultados de la jornada ${jornada}?`
+        )
+      )
+        return
+      try {
+        await apiCatch(
+          `/api/v2/league/matches/jornada/${jornada}/clear`,
+          'PUT',
+          null,
+          localStorage.getItem('token')
+        )
+        window.dispatchEvent(new Event('resultadosUpdated'))
+      } catch (err) {
+        console.error('Error al borrar resultados:', err)
+        alert('No se pudieron borrar los resultados. Revisa la consola.')
+      }
     })
   }
 
