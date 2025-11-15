@@ -1,6 +1,10 @@
 #stats {
   padding: 20px;
 }
+#tipo {
+  border-radius: 10px;
+  padding: 8px;
+}
 
 .filtro-stats {
   margin-bottom: 10px;
@@ -8,6 +12,11 @@
 
 .admin-form {
   margin-bottom: 15px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .admin-form input {
