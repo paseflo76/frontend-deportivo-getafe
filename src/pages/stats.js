@@ -42,30 +42,33 @@ export async function Stats() {
     `
     const btnActualizar = Button(adminForm, 'Actualizar', 'secondary', 's')
     btnActualizar.addEventListener('click', async () => {
-      const tipo = selectTipo.value
-      const nombre = document.getElementById('nombre').value.trim()
-      const valor = Number(document.getElementById('valor').value)
-      if (!nombre || isNaN(valor)) return
+  const tipo = selectTipo.value
+  const nombreInput = document.getElementById('nombre')
+  const valorInput = document.getElementById('valor')
+  const nombre = nombreInput.value.trim()
+  const valor = Number(valorInput.value)
+  if (!nombre || isNaN(valor)) return
 
-      if (tipo === 'porteros') {
-        await apiCatch('/api/v2/stats/portero', 'POST', {
-          nombre,
-          golesRecibidos: valor,
-          partidos: 1
-        })
-      } else {
-        const data = { nombre }
-        if (tipo === 'goles') data.goles = valor
-        if (tipo === 'asistencias') data.asistencias = valor
-        await apiCatch('/api/v2/stats/jugador', 'POST', data)
-      }
-      mostrar()
+  if (tipo === 'porteros') {
+    await apiCatch('/api/v2/stats/portero', 'POST', {
+      nombre,
+      golesRecibidos: valor,
+      partidos: 1
     })
-    container.insertBefore(adminForm, tablaWrapper)
+  } else {
+    const data = { nombre }
+    if (tipo === 'goles') data.goles = valor
+    if (tipo === 'asistencias') data.asistencias = valor
+    await apiCatch('/api/v2/stats/jugador', 'POST', data)
   }
 
-  selectTipo.addEventListener('change', mostrar)
+  // Vaciar inputs después de guardar
+  nombreInput.value = ''
+  valorInput.value = ''
+
   mostrar()
+})
+
 
   async function mostrar() {
     const tipo = selectTipo.value
