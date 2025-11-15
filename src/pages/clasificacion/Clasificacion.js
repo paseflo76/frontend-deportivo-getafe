@@ -1,7 +1,6 @@
 // clasificacion.js corregido para estructura de partidos horizontal
 
 import './clasificacion.css'
-
 import {
   getResultados,
   saveResultado,
@@ -41,7 +40,6 @@ export async function Clasificacion() {
 
 async function renderClasificacion(container) {
   container.innerHTML = ''
-
   const resultados = await getResultados()
   const jornada = getJornadaActual()
   const user = parseJwt(localStorage.getItem('token'))
@@ -50,24 +48,14 @@ async function renderClasificacion(container) {
   calendario.flat().forEach((m) => {
     if (m.descansa) return
     if (m.local && !equipos[m.local])
-      equipos[m.local] = { equipo: m.local, puntos: 0, gf: 0, gc: 0, id: null }
+      equipos[m.local] = { equipo: m.local, puntos: 0, gf: 0, gc: 0 }
     if (m.visitante && !equipos[m.visitante])
-      equipos[m.visitante] = {
-        equipo: m.visitante,
-        puntos: 0,
-        gf: 0,
-        gc: 0,
-        id: null
-      }
+      equipos[m.visitante] = { equipo: m.visitante, puntos: 0, gf: 0, gc: 0 }
   })
 
   resultados.forEach((m) => {
     if (m.descansa) return
-    const { local, visitante, golesLocal, golesVisitante, _id } = m
-
-    if (!equipos[local].id) equipos[local].id = _id
-    if (!equipos[visitante].id) equipos[visitante].id = _id
-
+    const { local, visitante, golesLocal, golesVisitante } = m
     if (golesLocal != null && golesVisitante != null) {
       equipos[local].gf += golesLocal
       equipos[local].gc += golesVisitante
@@ -83,7 +71,7 @@ async function renderClasificacion(container) {
     }
   })
 
-  // Tabla de clasificación
+  // Ordenar tabla
   const tablaWrapper = document.createElement('div')
   tablaWrapper.className = 'tabla-wrapper'
   container.appendChild(tablaWrapper)
@@ -98,19 +86,12 @@ async function renderClasificacion(container) {
   table.innerHTML = `
     <thead>
       <tr>
-        <th>Pos</th>
-        <th>Equipo</th>
-        <th>Puntos</th>
-        <th>GF</th>
-        <th>GC</th>
-        <th>DIF</th>
+        <th>Pos</th><th>Equipo</th><th>Puntos</th><th>GF</th><th>GC</th><th>DIF</th>
       </tr>
     </thead>
   `
   const tbody = document.createElement('tbody')
-
   Object.values(equipos)
-    .filter((e) => e.equipo)
     .sort(
       (a, b) =>
         b.puntos - a.puntos || b.gf - b.gc - (a.gf - a.gc) || b.gf - a.gf
@@ -131,7 +112,7 @@ async function renderClasificacion(container) {
   table.appendChild(tbody)
   tablaWrapper.appendChild(table)
 
-  // Partidos de la jornada
+  // Partidos jornada
   const partidosWrapper = document.createElement('div')
   partidosWrapper.className = 'partidos-wrapper'
   container.appendChild(partidosWrapper)
@@ -139,68 +120,49 @@ async function renderClasificacion(container) {
   const jornadaArray = calendario[jornada - 1] || []
 
   jornadaArray.forEach((m) => {
-    if (m.fecha) {
-      const fechaDiv = document.createElement('div')
-      fechaDiv.className = 'fecha'
-      fechaDiv.textContent = 'Fecha: ' + formatearFecha(m.fecha)
-      partidosWrapper.appendChild(fechaDiv)
+    if (m.descansa) {
+      const div = document.createElement('div')
+      div.textContent = `Descansa: ${m.descansa}`
+      partidosWrapper.appendChild(div)
       return
     }
 
+    const guardado = resultados.find(
+      (r) => r.local === m.local && r.visitante === m.visitante
+    )
     const div = document.createElement('div')
     div.className = 'partido'
 
-    if (m.descansa) {
-      div.textContent = `Descansa: ${m.descansa}`
+    if (user?.rol === 'admin') {
+      const inputL = document.createElement('input')
+      inputL.type = 'number'
+      inputL.min = 0
+      inputL.value = guardado?.golesLocal ?? ''
+      inputL.dataset.local = m.local
+      inputL.dataset.visitante = m.visitante
+      inputL.dataset.id = guardado?._id || ''
+
+      const inputV = document.createElement('input')
+      inputV.type = 'number'
+      inputV.min = 0
+      inputV.value = guardado?.golesVisitante ?? ''
+      inputV.dataset.local = m.visitante
+      inputV.dataset.visitante = m.local
+      inputV.dataset.id = guardado?._id || ''
+
+      const contenidoDiv = document.createElement('div')
+      contenidoDiv.className = 'contenido-partido'
+      contenidoDiv.appendChild(document.createTextNode(`${m.local} `))
+      contenidoDiv.appendChild(inputL)
+      contenidoDiv.appendChild(document.createTextNode(' - '))
+      contenidoDiv.appendChild(inputV)
+      contenidoDiv.appendChild(document.createTextNode(` ${m.visitante}`))
+
+      div.appendChild(contenidoDiv)
     } else {
-      const guardado = resultados.find(
-        (r) => r.local === m.local && r.visitante === m.visitante
-      )
-
-      if (user?.rol === 'admin') {
-        const inputL = document.createElement('input')
-        inputL.type = 'number'
-        inputL.min = 0
-        inputL.value = guardado?.golesLocal ?? ''
-        inputL.dataset.local = m.local
-        inputL.dataset.visitante = m.visitante
-        inputL.dataset.id = guardado?._id || ''
-
-        const inputV = document.createElement('input')
-        inputV.type = 'number'
-        inputV.min = 0
-        inputV.value = guardado?.golesVisitante ?? ''
-        inputV.dataset.local = m.local
-        inputV.dataset.visitante = m.visitante
-        inputV.dataset.id = guardado?._id || ''
-
-        const contenidoDiv = document.createElement('div')
-        contenidoDiv.className = 'contenido-partido'
-
-        const spanLocal = document.createElement('span')
-        spanLocal.className = 'equipo-local'
-        spanLocal.textContent = m.local
-
-        const spanGuion = document.createElement('span')
-        spanGuion.className = 'guion'
-        spanGuion.textContent = '-'
-
-        const spanVisitante = document.createElement('span')
-        spanVisitante.className = 'equipo-visitante'
-        spanVisitante.textContent = m.visitante
-
-        contenidoDiv.appendChild(spanLocal)
-        contenidoDiv.appendChild(inputL)
-        contenidoDiv.appendChild(spanGuion)
-        contenidoDiv.appendChild(inputV)
-        contenidoDiv.appendChild(spanVisitante)
-
-        div.appendChild(contenidoDiv)
-      } else {
-        div.textContent = `${m.local} ${guardado?.golesLocal ?? '-'} - ${
-          guardado?.golesVisitante ?? '-'
-        } ${m.visitante}`
-      }
+      div.textContent = `${m.local} ${guardado?.golesLocal ?? '-'} - ${
+        guardado?.golesVisitante ?? '-'
+      } ${m.visitante}`
     }
 
     partidosWrapper.appendChild(div)
@@ -216,59 +178,33 @@ async function renderClasificacion(container) {
       const inputsLocal = partidosWrapper.querySelectorAll(
         'input[type="number"][data-local]'
       )
-      for (const input of inputsLocal) {
-        const local = input.dataset.local
-        const visitante = input.dataset.visitante
-        const golesLocal = Number(input.value)
-        const inputVisitante = Array.from(inputsLocal).find(
-          (i) => i.dataset.local === visitante && i.dataset.visitante === local
-        )
-        const golesVisitante = Number(inputVisitante?.value ?? 0)
-        const id = input.dataset.id
+      const pares = {}
 
-        if (id) await saveResultado(id, golesLocal, golesVisitante)
+      inputsLocal.forEach((input) => {
+        const key = [input.dataset.local, input.dataset.visitante]
+          .sort()
+          .join('-')
+        pares[key] = pares[key] || {}
+        if (input.dataset.local === input.dataset.visitante) return
+        if (input.dataset.id) pares[key].id = input.dataset.id
+        if (input.dataset.local === input.dataset.id) return
+        if (!pares[key].local) pares[key].local = Number(input.value)
+        else pares[key].visitante = Number(input.value)
+      })
+
+      for (const key in pares) {
+        const r = pares[key]
+        if (r.id) await saveResultado(r.id, r.local, r.visitante)
         else
           await saveResultadoNew(
-            local,
-            visitante,
-            golesLocal,
-            golesVisitante,
+            r.local,
+            r.visitante,
+            r.local,
+            r.visitante,
             jornada
           )
       }
       window.dispatchEvent(new Event('resultadosUpdated'))
     })
   }
-
-  // Navegación jornada
-  const navDiv = document.createElement('div')
-  navDiv.className = 'navegacion-jornada'
-
-  const btnAnterior = Button(navDiv, 'Anterior Jornada', 'secondary', 'small')
-  btnAnterior.disabled = jornada <= 1
-  btnAnterior.addEventListener('click', () => {
-    setJornadaActual(jornada - 1)
-    renderClasificacion(container)
-  })
-
-  const btnSiguiente = Button(navDiv, 'Siguiente Jornada', 'secondary', 'small')
-  btnSiguiente.disabled = jornada >= calendario.length
-  btnSiguiente.addEventListener('click', () => {
-    setJornadaActual(jornada + 1)
-    renderClasificacion(container)
-  })
-
-  partidosWrapper.appendChild(navDiv)
-}
-
-// Funciones auxiliares
-function parseFecha(f) {
-  if (!f) return new Date(0)
-  const [d, m, y] = f.split('-').map(Number)
-  return new Date(2000 + y, m - 1, d)
-}
-
-function formatearFecha(f) {
-  const date = parseFecha(f)
-  return isNaN(date) ? 'Fecha sin definir' : date.toLocaleDateString('es-ES')
 }
