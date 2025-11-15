@@ -22,13 +22,13 @@
   font-weight: 500;
   border-radius: 10px;
   border: none;
-  overflow-x: auto; /* permite scroll horizontal si es necesario */
+  overflow-x: hidden; /* quitar scroll horizontal */
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 600px; /* fuerza un ancho mínimo para tablas con muchas columnas */
+  table-layout: fixed; /* columnas distribuidas proporcionalmente */
 }
 
 th,
@@ -36,5 +36,6 @@ td {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: center;
-  white-space: nowrap; /* evita que el contenido se rompa en varias líneas */
+  white-space: normal; /* permite que el contenido se ajuste */
+  word-break: break-word; /* evita desbordes de palabras largas */
 }
