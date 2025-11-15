@@ -62,11 +62,11 @@ export async function Stats() {
         await apiCatch('/api/v2/stats/jugador', 'POST', data)
       }
 
-      // Vaciar inputs después de guardar
+      mostrar() // primero actualizar tabla
+
+      // Vaciar inputs después de mostrar tabla
       nombreInput.value = ''
       valorInput.value = ''
-
-      mostrar()
     })
 
     async function mostrar() {
