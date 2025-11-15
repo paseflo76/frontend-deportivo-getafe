@@ -27,6 +27,7 @@ export const Home = async () => {
   listaEventos.className = 'lista-eventos'
 
   const eventos = await getEventos()
+  console.log('Eventos obtenidos:', eventos) // Verificar datos
   printEventos(eventos, listaEventos)
 
   container.append(header, listaEventos)

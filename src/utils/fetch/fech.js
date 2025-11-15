@@ -33,6 +33,7 @@ export const apiCatch = async (
     if (!res.ok) throw { status: res.status, body }
     return body
   } catch (error) {
+    console.error('Error en apiCatch:', error)
     throw error
   }
 }
