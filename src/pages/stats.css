@@ -1,16 +1,17 @@
 #stats {
   padding: 20px;
 }
-#tipo {
+
+#stats #tipo {
   border-radius: 10px;
   padding: 8px;
 }
 
-.filtro-stats {
+#stats .filtro-stats {
   margin-bottom: 10px;
 }
 
-.admin-form {
+#stats .admin-form {
   margin-bottom: 15px;
   gap: 10px;
   display: flex;
@@ -19,39 +20,40 @@
   align-items: center;
 }
 
-.admin-form input {
+#stats .admin-form input {
   margin-right: 5px;
   padding: 5px;
   border-radius: 10px;
   border: none;
 }
-#tabla {
+
+#stats #tabla {
   background-color: var(--perfil);
   font-size: 15px;
   font-weight: 500;
   border-radius: 10px;
   border: none;
-  overflow-x: hidden; /* quitar scroll horizontal */
+  overflow-x: hidden;
 }
 
-table {
+#stats table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* columnas distribuidas proporcionalmente */
+  table-layout: fixed;
 }
 
-th,
-td {
+#stats th,
+#stats td {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: center;
-  white-space: normal; /* permite que el contenido se ajuste */
-  word-break: break-word; /* evita desbordes de palabras largas */
+  white-space: normal;
+  word-break: break-word;
 }
 
 @media (max-width: 600px) {
-  table th,
-  table td {
+  #stats table th,
+  #stats table td {
     padding: 4px;
     font-size: 13px;
   }
