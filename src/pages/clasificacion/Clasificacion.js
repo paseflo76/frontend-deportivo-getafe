@@ -63,7 +63,14 @@ async function renderClasificacion(container) {
 
   resultados.forEach((m) => {
     if (m.descansa) return
+
     const { local, visitante, golesLocal, golesVisitante, _id } = m
+
+    // Protección para evitar el crash
+    if (!equipos[local] || !equipos[visitante]) {
+      console.warn('Resultado con equipo no presente en calendario:', m)
+      return
+    }
 
     if (!equipos[local].id) equipos[local].id = _id
     if (!equipos[visitante].id) equipos[visitante].id = _id
