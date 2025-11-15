@@ -72,18 +72,24 @@ export async function Stats() {
     const data = await apiCatch('/stats')
     let html = '<table><thead><tr>'
 
-    if (tipo === 'porteros') {
+    if (tipo === 'goles') {
+      html += '<th>Jugador</th><th>Goles</th></tr><tbody>'
+      data.jugadores.forEach((j) => {
+        html += `<tr><td>${j.nombre}</td><td>${j.goles}</td></tr>`
+      })
+      html += '</tbody>'
+    } else if (tipo === 'asistencias') {
+      html += '<th>Jugador</th><th>Asistencias</th></tr><tbody>'
+      data.jugadores.forEach((j) => {
+        html += `<tr><td>${j.nombre}</td><td>${j.asistencias}</td></tr>`
+      })
+      html += '</tbody>'
+    } else if (tipo === 'porteros') {
       html += '<th>Portero</th><th>Promedio Goles Recibidos</th></tr><tbody>'
       data.porteros.forEach((p) => {
         html += `<tr><td>${p.nombre}</td><td>${(
           p.golesRecibidos / (p.partidos || 1)
         ).toFixed(2)}</td></tr>`
-      })
-      html += '</tbody>'
-    } else {
-      html += '<th>Jugador</th><th>Goles</th><th>Asistencias</th></tr><tbody>'
-      data.jugadores.forEach((j) => {
-        html += `<tr><td>${j.nombre}</td><td>${j.goles}</td><td>${j.asistencias}</td></tr>`
       })
       html += '</tbody>'
     }
