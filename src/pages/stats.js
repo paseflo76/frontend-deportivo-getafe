@@ -107,11 +107,7 @@ export async function Stats() {
             <td>${i + 1}</td>
             <td>${p.nombre}</td>
             <td>${promedio}</td>
-            <td>${
-              user?.rol === 'admin'
-                ? `<button class="delete-portero" data-id="${p._id}">Eliminar</button>`
-                : ''
-            }</td>
+            <td id="acciones-${p._id}"></td>
           </tr>`
         })
       html += '</tbody></table>'
@@ -119,12 +115,13 @@ export async function Stats() {
 
     tablaWrapper.innerHTML = html
 
-    // Event listeners para eliminar porteros solo si es admin
+    // Event listeners y creación del botón eliminar con componente Button
     if (tipo === 'porteros' && user?.rol === 'admin') {
-      tablaWrapper.querySelectorAll('.delete-portero').forEach((btn) => {
-        btn.addEventListener('click', async () => {
-          const id = btn.dataset.id
-          await apiCatch(`/api/v2/stats/portero/${id}`, 'DELETE')
+      data.porteros.forEach((p) => {
+        const accionesTd = document.getElementById(`acciones-${p._id}`)
+        const btnEliminar = Button(accionesTd, 'Eliminar', 'danger', 's')
+        btnEliminar.addEventListener('click', async () => {
+          await apiCatch(`/api/v2/stats/portero/${p._id}`, 'DELETE')
           mostrar()
         })
       })
