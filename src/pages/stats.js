@@ -12,6 +12,7 @@ export async function Stats() {
   container.id = 'stats'
   main.appendChild(container)
 
+  // Filtro tipo
   const filtroDiv = document.createElement('div')
   filtroDiv.className = 'filtro-stats'
   const selectTipo = document.createElement('select')
@@ -30,6 +31,7 @@ export async function Stats() {
 
   const user = parseJwt(localStorage.getItem('token'))
 
+  // Formulario admin
   let adminForm
   if (user?.rol === 'admin') {
     adminForm = document.createElement('div')
@@ -67,7 +69,7 @@ export async function Stats() {
 
   async function mostrar() {
     const tipo = selectTipo.value
-    const data = await apiCatch('/stats') // Trae todos los jugadores y porteros desde backend
+    const data = await apiCatch('/stats')
     let html = '<table><thead><tr>'
 
     if (tipo === 'porteros') {
