@@ -1,7 +1,7 @@
 import './stats.css'
 
-import { Button } from '../../components/button/button.js'
 import { parseJwt } from '../utils/data.js'
+import { Button } from '../components/button/button.js'
 
 export async function Stats() {
   const main = document.querySelector('main')
