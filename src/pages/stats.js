@@ -40,7 +40,7 @@ export async function Stats() {
       <input type="text" id="nombre" placeholder="Nombre">
       <input type="number" id="valor" placeholder="Cantidad">
     `
-    const btnActualizar = Button(adminForm, 'Actualizar', 'secondary', 'small')
+    const btnActualizar = Button(adminForm, 'Actualizar', 'secondary', 's')
     btnActualizar.addEventListener('click', async () => {
       const tipo = selectTipo.value
       const nombre = document.getElementById('nombre').value.trim()
