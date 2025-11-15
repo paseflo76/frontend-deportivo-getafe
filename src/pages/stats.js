@@ -1,6 +1,7 @@
-import { apiCatch } from '../utils/api.js'
-import { parseJwt } from '../utils/data.js'
+import './stats.css'
+
 import { Button } from '../components/button/button.js'
+import { apiCatch } from '../utils/fetch/fech.js'
 
 export async function Stats() {
   const main = document.querySelector('main')
