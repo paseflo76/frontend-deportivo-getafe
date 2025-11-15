@@ -94,7 +94,7 @@ export async function Stats() {
       html += '</tbody></table>'
     } else if (tipo === 'porteros') {
       html +=
-        '<th>Pos</th><th>Portero</th><th>Promedio Goles Recibidos</th><th>Acciones</th></tr><tbody>'
+        '<th>Pos</th><th>Portero</th><th>Goles Recibidos</th><th>Partidos</th><th>Promedio por Partido</th><th>Acciones</th></tr><tbody>'
       data.porteros
         .sort(
           (a, b) =>
@@ -106,6 +106,8 @@ export async function Stats() {
           html += `<tr>
             <td>${i + 1}</td>
             <td>${p.nombre}</td>
+            <td>${p.golesRecibidos}</td>
+            <td>${p.partidos}</td>
             <td>${promedio}</td>
             <td id="acciones-${p._id}"></td>
           </tr>`
