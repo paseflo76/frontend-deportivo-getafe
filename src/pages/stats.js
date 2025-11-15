@@ -1,5 +1,5 @@
-import './stats.css'
-import { parseJwt, apiCatch } from '../utils/data.js'
+import { apiCatch } from '../utils/api.js'
+import { parseJwt } from '../utils/data.js'
 import { Button } from '../components/button/button.js'
 
 export async function Stats() {
@@ -10,14 +10,6 @@ export async function Stats() {
   const container = document.createElement('div')
   container.id = 'stats'
   main.appendChild(container)
-
-  await renderStats(container)
-}
-
-async function renderStats(container) {
-  container.innerHTML = ''
-
-  const user = parseJwt(localStorage.getItem('token'))
 
   const filtroDiv = document.createElement('div')
   filtroDiv.className = 'filtro-stats'
@@ -35,6 +27,8 @@ async function renderStats(container) {
   tablaWrapper.id = 'tabla'
   container.appendChild(tablaWrapper)
 
+  const user = parseJwt(localStorage.getItem('token'))
+
   let adminForm
   if (user?.rol === 'admin') {
     adminForm = document.createElement('div')
@@ -43,43 +37,38 @@ async function renderStats(container) {
       <input type="text" id="nombre" placeholder="Nombre">
       <input type="number" id="valor" placeholder="Cantidad">
     `
-    const btnAgregar = Button(adminForm, 'Agregar', 'secondary', 'small')
-    btnAgregar.addEventListener('click', agregar)
+    const btnAgregar = Button(adminForm, 'Actualizar', 'secondary', 'small')
+    btnAgregar.addEventListener('click', async () => {
+      const tipo = selectTipo.value
+      const nombre = document.getElementById('nombre').value.trim()
+      const valor = Number(document.getElementById('valor').value)
+      if (!nombre || isNaN(valor)) return
+
+      if (tipo === 'porteros') {
+        await apiCatch('/stats/portero', 'POST', {
+          nombre,
+          golesRecibidos: valor,
+          partidos: 1
+        })
+      } else {
+        const data = { nombre }
+        if (tipo === 'goles') data.goles = valor
+        if (tipo === 'asistencias') data.asistencias = valor
+        await apiCatch('/stats/jugador', 'POST', data)
+      }
+      mostrar()
+    })
     container.insertBefore(adminForm, tablaWrapper)
   }
 
   selectTipo.addEventListener('change', mostrar)
-  await mostrar()
-
-  async function agregar() {
-    if (user?.rol !== 'admin') return
-    const tipo = selectTipo.value
-    const nombre = document.getElementById('nombre').value.trim()
-    const valor = Number(document.getElementById('valor').value)
-    if (!nombre || isNaN(valor)) return
-
-    if (tipo === 'porteros') {
-      await apiCatch('/api/v2/stats/portero', 'POST', {
-        nombre,
-        golesRecibidos: valor
-      })
-    } else if (tipo === 'goles') {
-      await apiCatch('/api/v2/stats/jugador', 'POST', { nombre, goles: valor })
-    } else if (tipo === 'asistencias') {
-      await apiCatch('/api/v2/stats/jugador', 'POST', {
-        nombre,
-        asistencias: valor
-      })
-    }
-
-    await mostrar()
-  }
+  mostrar()
 
   async function mostrar() {
     const tipo = selectTipo.value
-    const data = await apiCatch('/api/v2/stats')
-
+    const data = await apiCatch('/stats')
     let html = '<table><thead><tr>'
+
     if (tipo === 'porteros') {
       html += '<th>Portero</th><th>Promedio Goles Recibidos</th></tr><tbody>'
       data.porteros.forEach((p) => {
@@ -95,6 +84,7 @@ async function renderStats(container) {
       })
       html += '</tbody>'
     }
+
     html += '</table>'
     tablaWrapper.innerHTML = html
   }
