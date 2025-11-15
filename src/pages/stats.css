@@ -1,36 +1,16 @@
-#stats {
-  padding: 20px;
-}
-
-.filtro-stats {
-  margin-bottom: 10px;
-}
-
-.admin-form {
-  margin-bottom: 15px;
-}
-
-.admin-form input {
-  margin-right: 5px;
-  padding: 5px;
-  border-radius: 10px;
-  border: none;
-}
 #tabla {
   background-color: var(--perfil);
   font-size: 15px;
   font-weight: 500;
   border-radius: 10px;
   border: none;
-}
-#tipo {
-  border-radius: 10px;
-  padding: 5px;
+  overflow-x: hidden; /* evita scroll */
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed; /* distribuye las columnas de forma uniforme */
 }
 
 th,
@@ -38,4 +18,14 @@ td {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: center;
+  word-wrap: break-word; /* permite que el contenido se ajuste */
+}
+
+/* Opcional: columnas más estrechas en móviles */
+@media (max-width: 600px) {
+  table th,
+  table td {
+    padding: 4px;
+    font-size: 13px;
+  }
 }
