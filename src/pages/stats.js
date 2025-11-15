@@ -73,24 +73,40 @@ export async function Stats() {
     let html = '<table><thead><tr>'
 
     if (tipo === 'goles') {
-      html += '<th>Jugador</th><th>Goles</th></tr><tbody>'
-      data.jugadores.forEach((j) => {
-        html += `<tr><td>${j.nombre}</td><td>${j.goles}</td></tr>`
-      })
+      html += '<th>Pos</th><th>Jugador</th><th>Goles</th></tr><tbody>'
+      data.jugadores
+        .sort((a, b) => b.goles - a.goles)
+        .forEach((j, i) => {
+          html += `<tr><td>${i + 1}</td><td>${j.nombre}</td><td>${
+            j.goles
+          }</td></tr>`
+        })
       html += '</tbody>'
     } else if (tipo === 'asistencias') {
-      html += '<th>Jugador</th><th>Asistencias</th></tr><tbody>'
-      data.jugadores.forEach((j) => {
-        html += `<tr><td>${j.nombre}</td><td>${j.asistencias}</td></tr>`
-      })
+      html += '<th>Pos</th><th>Jugador</th><th>Asistencias</th></tr><tbody>'
+      data.jugadores
+        .sort((a, b) => b.asistencias - a.asistencias)
+        .forEach((j, i) => {
+          html += `<tr><td>${i + 1}</td><td>${j.nombre}</td><td>${
+            j.asistencias
+          }</td></tr>`
+        })
       html += '</tbody>'
     } else if (tipo === 'porteros') {
-      html += '<th>Portero</th><th>Promedio Goles Recibidos</th></tr><tbody>'
-      data.porteros.forEach((p) => {
-        html += `<tr><td>${p.nombre}</td><td>${(
-          p.golesRecibidos / (p.partidos || 1)
-        ).toFixed(2)}</td></tr>`
-      })
+      html +=
+        '<th>Pos</th><th>Portero</th><th>Promedio Goles Recibidos</th></tr><tbody>'
+      data.porteros
+        .sort(
+          (a, b) =>
+            a.golesRecibidos / (a.partidos || 1) -
+            b.golesRecibidos / (b.partidos || 1)
+        )
+        .forEach((p, i) => {
+          const promedio = (p.golesRecibidos / (p.partidos || 1)).toFixed(2)
+          html += `<tr><td>${i + 1}</td><td>${
+            p.nombre
+          }</td><td>${promedio}</td></tr>`
+        })
       html += '</tbody>'
     }
 
