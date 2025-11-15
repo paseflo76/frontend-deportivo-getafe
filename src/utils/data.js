@@ -1,4 +1,7 @@
-export const API_BASE = 'https://backend-deportivo-getafe.onrender.com'
+export const API_BASE =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3000/api/v2'
+    : 'https://backend-deportivo-getafe.onrender.com/api/v2'
 
 export const apiCatch = async (
   url,
@@ -274,11 +277,11 @@ export const calendario = [
 
 // Funciones API
 export async function getResultados() {
-  return await apiCatch('/api/v2/league/matches')
+  return await apiCatch('/league/matches')
 }
 
 export async function saveResultado(id, golesLocal, golesVisitante) {
-  return await apiCatch(`/api/v2/league/matches/${id}`, 'PUT', {
+  return await apiCatch(`/league/matches/${id}`, 'PUT', {
     golesLocal,
     golesVisitante
   })
@@ -292,7 +295,7 @@ export async function saveResultadoNew(
   jornada
 ) {
   try {
-    return await apiCatch('/api/v2/league/matches', 'POST', {
+    return await apiCatch('/league/matches', 'POST', {
       local,
       visitante,
       golesLocal,
@@ -306,7 +309,7 @@ export async function saveResultadoNew(
 }
 
 export async function deleteResultado(id) {
-  return await apiCatch(`/api/v2/league/matches/${id}`, 'DELETE')
+  return await apiCatch(`/league/matches/${id}`, 'DELETE')
 }
 
 // JWT

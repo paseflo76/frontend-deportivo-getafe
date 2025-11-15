@@ -263,11 +263,12 @@ async function renderClasificacion(container) {
       try {
         // Llamada al backend para poner goles en null
         await apiCatch(
-          `/api/v2/league/matches/jornada/${jornada}/clear`,
+          `/league/matches/jornada/${jornada}/clear`,
           'PUT',
           null,
           localStorage.getItem('token')
         )
+
         window.dispatchEvent(new Event('resultadosUpdated'))
       } catch (err) {
         console.error('Error al borrar resultados:', err)
