@@ -247,7 +247,7 @@ async function renderClasificacion(container) {
       window.dispatchEvent(new Event('resultadosUpdated'))
     })
 
-    // Borrar resultados jornada
+    // Borrar resultados jornada (nuevo)
     Button(
       partidosWrapper,
       'Borrar Resultados Jornada',
@@ -261,6 +261,7 @@ async function renderClasificacion(container) {
       )
         return
       try {
+        // Llamada al backend para poner goles en null
         await apiCatch(
           `/api/v2/league/matches/jornada/${jornada}/clear`,
           'PUT',
