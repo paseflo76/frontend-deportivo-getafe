@@ -30,7 +30,7 @@ export async function Stats() {
 
   const user = parseJwt(localStorage.getItem('token'))
 
-  // Admin form (creamos campos pero mostraremos/ocultaremos según tipo)
+  // Admin form (campos según tipo)
   let adminForm
   let selectNombre // para goles/asistencias
   let inputNombrePortero // para porteros
@@ -40,18 +40,15 @@ export async function Stats() {
     adminForm = document.createElement('div')
     adminForm.className = 'admin-form'
 
-    // select para jugadores/porteros (cuando proceda)
     selectNombre = document.createElement('select')
     selectNombre.id = 'nombre'
 
-    // input libre para portero
     inputNombrePortero = document.createElement('input')
     inputNombrePortero.type = 'text'
     inputNombrePortero.id = 'nombre-portero'
     inputNombrePortero.placeholder = 'Nombre portero'
     inputNombrePortero.style.display = 'none'
 
-    // select valor 1..5
     selectValor = document.createElement('select')
     selectValor.id = 'valor'
     for (let i = 0; i <= 5; i++) {
@@ -88,7 +85,6 @@ export async function Stats() {
       }
 
       mostrar()
-      // limpiar inputs
       if (tipo === 'porteros') inputNombrePortero.value = ''
       else selectNombre.selectedIndex = 0
       selectValor.selectedIndex = 0
@@ -98,22 +94,19 @@ export async function Stats() {
   }
 
   selectTipo.addEventListener('change', mostrar)
-  // también actualizar formulario admin al cambiar tipo
   selectTipo.addEventListener('change', () => {
     ajustarAdminForm(selectTipo.value)
   })
 
-  await mostrar() // primera carga
+  await mostrar()
 
   async function ajustarAdminForm(tipo) {
     if (!adminForm) return
     if (tipo === 'porteros') {
-      // mostrar input libre, ocultar select listado
       selectNombre.style.display = 'none'
       inputNombrePortero.style.display = ''
       inputNombrePortero.focus()
     } else {
-      // mostrar select listado, ocultar input libre
       selectNombre.style.display = ''
       inputNombrePortero.style.display = 'none'
     }
@@ -124,7 +117,6 @@ export async function Stats() {
     selectNombre.innerHTML = ''
     const tipo = selectTipo.value
     const lista = tipo === 'porteros' ? statsData.porteros : statsData.jugadores
-    // si la lista contiene objetos con _id o sin _id no importa: usamos nombre y, si hay _id, lo guardamos en data-id del option
     lista.forEach((p) => {
       const op = document.createElement('option')
       op.value = p.nombre
@@ -187,13 +179,13 @@ export async function Stats() {
         .sort((a, b) => a.coef - b.coef)
         .forEach((p, i) => {
           html += `<tr>
-        <td>${i + 1}</td>
-        <td>${p.nombre}</td>
-        <td>${p.golesRecibidos}</td>
-        <td>${p.partidos}</td>
-        <td>${p.coef.toFixed(2)}</td>
-        <td id="acciones-${p._id}"></td>
-      </tr>`
+            <td>${i + 1}</td>
+            <td>${p.nombre}</td>
+            <td>${p.golesRecibidos}</td>
+            <td>${p.partidos}</td>
+            <td>${p.coef.toFixed(2)}</td>
+            <td id="acciones-p-${p._id}"></td>
+          </tr>`
         })
 
       html += '</tbody></table>'
@@ -201,8 +193,9 @@ export async function Stats() {
 
     tablaWrapper.innerHTML = html
 
-    // Crear botones eliminar (admin)
+    // ************** Crear botones eliminar **************
     if (user?.rol === 'admin') {
+      // Porteros
       if (tipo === 'porteros') {
         data.porteros.forEach((p) => {
           const td = document.getElementById(`acciones-p-${p._id}`)
@@ -213,8 +206,9 @@ export async function Stats() {
             mostrar()
           })
         })
-      } else {
-        // jugadores: intentar borrar por _id; si no existe o la petición falla, borrar por nombre
+      }
+      // Jugadores
+      else {
         data.jugadores.forEach((j) => {
           const idAttr = j._id ? j._id : encodeURIComponent(j.nombre)
           const td = document.getElementById(`acciones-j-${escapeId(idAttr)}`)
@@ -225,33 +219,23 @@ export async function Stats() {
               if (j._id) {
                 await apiCatch(`/api/v2/stats/jugador/${j._id}`, 'DELETE')
               } else {
-                // no _id: eliminar por nombre
                 await apiCatch(
                   `/api/v2/stats/jugador/${encodeURIComponent(j.nombre)}`,
                   'DELETE'
                 )
               }
+              mostrar()
             } catch (err) {
-              // si falla con id, intentar por nombre
-              try {
-                await apiCatch(
-                  `/api/v2/stats/jugador/${encodeURIComponent(j.nombre)}`,
-                  'DELETE'
-                )
-              } catch (err2) {
-                console.error('No se pudo eliminar jugador:', err2)
-                alert('No se pudo eliminar el jugador. Revisa la consola.')
-                return
-              }
+              console.error('No se pudo eliminar jugador:', err)
+              alert('No se pudo eliminar el jugador. Revisa la consola.')
             }
-            mostrar()
           })
         })
       }
     }
+    // *********************************************
   }
 
-  // Helper: generar id seguro para atributo DOM (quita caracteres problemáticos)
   function escapeId(s) {
     return String(s).replace(/[^a-zA-Z0-9\-_:.]/g, '_')
   }
