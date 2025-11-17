@@ -51,14 +51,28 @@ async function renderClasificacion(container) {
   calendario.flat().forEach((m) => {
     if (m.descansa) return
     if (m.local && !equipos[m.local])
-      equipos[m.local] = { equipo: m.local, puntos: 0, gf: 0, gc: 0, id: null }
+      equipos[m.local] = {
+        equipo: m.local,
+        puntos: 0,
+        gf: 0,
+        gc: 0,
+        id: null,
+        jugados: 0,
+        ganados: 0,
+        empatados: 0,
+        perdidos: 0
+      }
     if (m.visitante && !equipos[m.visitante])
       equipos[m.visitante] = {
         equipo: m.visitante,
         puntos: 0,
         gf: 0,
         gc: 0,
-        id: null
+        id: null,
+        jugados: 0,
+        ganados: 0,
+        empatados: 0,
+        perdidos: 0
       }
   })
 
@@ -66,7 +80,6 @@ async function renderClasificacion(container) {
     if (m.descansa) return
 
     const { local, visitante, golesLocal, golesVisitante, _id } = m
-
     if (!equipos[local] || !equipos[visitante]) return
 
     if (!equipos[local].id) equipos[local].id = _id
@@ -78,11 +91,22 @@ async function renderClasificacion(container) {
       equipos[visitante].gf += golesVisitante
       equipos[visitante].gc += golesLocal
 
-      if (golesLocal > golesVisitante) equipos[local].puntos += 3
-      else if (golesLocal < golesVisitante) equipos[visitante].puntos += 3
-      else {
+      equipos[local].jugados++
+      equipos[visitante].jugados++
+
+      if (golesLocal > golesVisitante) {
+        equipos[local].puntos += 3
+        equipos[local].ganados++
+        equipos[visitante].perdidos++
+      } else if (golesLocal < golesVisitante) {
+        equipos[visitante].puntos += 3
+        equipos[visitante].ganados++
+        equipos[local].perdidos++
+      } else {
         equipos[local].puntos++
         equipos[visitante].puntos++
+        equipos[local].empatados++
+        equipos[visitante].empatados++
       }
     }
   })
@@ -104,8 +128,12 @@ async function renderClasificacion(container) {
         <th>Pos</th>
         <th>Equipo</th>
         <th>Puntos</th>
-        <th>GF</th>
-        <th>GC</th>
+        <th>J</th>
+        <th>G</th>
+        <th>E</th>
+        <th>P</th>
+        <th>F</th>
+        <th>C</th>
         <th>DIF</th>
       </tr>
     </thead>
@@ -125,6 +153,10 @@ async function renderClasificacion(container) {
         <td>${index + 1}</td>
         <td>${e.equipo}</td>
         <td>${e.puntos}</td>
+        <td>${e.jugados}</td>
+        <td>${e.ganados}</td>
+        <td>${e.empatados}</td>
+        <td>${e.perdidos}</td>
         <td>${e.gf}</td>
         <td>${e.gc}</td>
         <td>${e.gf - e.gc}</td>
