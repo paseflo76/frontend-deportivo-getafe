@@ -177,24 +177,25 @@ export async function Stats() {
       html += '</tbody></table>'
     } else if (tipo === 'porteros') {
       html +=
-        '<th>Pos</th><th>Portero</th><th>Goles Recibidos</th><th>Partidos</th><th>Promedio</th><th>Acciones</th></tr><tbody>'
+        '<th>Pos</th><th>Portero</th><th>Goles Recibidos</th><th>Partidos</th><th>Coeficiente</th><th>Acciones</th></tr><tbody>'
+
       data.porteros
-        .sort(
-          (a, b) =>
-            a.golesRecibidos / (a.partidos || 1) -
-            b.golesRecibidos / (b.partidos || 1)
-        )
+        .map((p) => ({
+          ...p,
+          coef: p.partidos > 0 ? p.golesRecibidos / p.partidos : 0
+        }))
+        .sort((a, b) => a.coef - b.coef)
         .forEach((p, i) => {
-          const promedio = (p.golesRecibidos / (p.partidos || 1)).toFixed(2)
           html += `<tr>
-            <td>${i + 1}</td>
-            <td>${p.nombre}</td>
-            <td>${p.golesRecibidos}</td>
-            <td>${p.partidos}</td>
-            <td>${promedio}</td>
-            <td id="acciones-p-${p._id}"></td>
-          </tr>`
+        <td>${i + 1}</td>
+        <td>${p.nombre}</td>
+        <td>${p.golesRecibidos}</td>
+        <td>${p.partidos}</td>
+        <td>${p.coef.toFixed(2)}</td>
+        <td id="acciones-${p._id}"></td>
+      </tr>`
         })
+
       html += '</tbody></table>'
     }
 
