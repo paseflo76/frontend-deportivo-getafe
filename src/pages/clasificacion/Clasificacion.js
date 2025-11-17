@@ -67,10 +67,7 @@ async function renderClasificacion(container) {
 
     const { local, visitante, golesLocal, golesVisitante, _id } = m
 
-    if (!equipos[local] || !equipos[visitante]) {
-      console.warn('Resultado con equipo no presente en calendario:', m)
-      return
-    }
+    if (!equipos[local] || !equipos[visitante]) return
 
     if (!equipos[local].id) equipos[local].id = _id
     if (!equipos[visitante].id) equipos[visitante].id = _id
@@ -90,7 +87,6 @@ async function renderClasificacion(container) {
     }
   })
 
-  // Tabla de clasificación
   const tablaWrapper = document.createElement('div')
   tablaWrapper.className = 'tabla-wrapper'
   container.appendChild(tablaWrapper)
@@ -138,7 +134,6 @@ async function renderClasificacion(container) {
   table.appendChild(tbody)
   tablaWrapper.appendChild(table)
 
-  // Partidos de la jornada
   const partidosWrapper = document.createElement('div')
   partidosWrapper.className = 'partidos-wrapper'
   container.appendChild(partidosWrapper)
@@ -214,28 +209,30 @@ async function renderClasificacion(container) {
   })
 
   if (user?.rol === 'admin') {
-    // Guardar Jornada
+    // ************* CORREGIDO *************
     Button(
       partidosWrapper,
       'Guardar Jornada',
       'secondary',
       'small'
     ).addEventListener('click', async () => {
-      const inputsLocal = partidosWrapper.querySelectorAll(
-        'input[type="number"][data-local]'
-      )
-      for (const input of inputsLocal) {
-        const local = input.dataset.local
-        const visitante = input.dataset.visitante
-        const golesLocal = Number(input.value)
-        const inputVisitante = Array.from(inputsLocal).find(
-          (i) => i.dataset.local === visitante && i.dataset.visitante === local
-        )
-        const golesVisitante = Number(inputVisitante?.value ?? 0)
-        const id = input.dataset.id
+      const partidos = partidosWrapper.querySelectorAll('.partido')
 
-        if (id) await saveResultado(id, golesLocal, golesVisitante)
-        else
+      for (const partido of partidos) {
+        const inputL = partido.querySelector('input[data-local]')
+        const inputV = partido.querySelector('input[data-visitante]')
+
+        if (!inputL || !inputV) continue
+
+        const local = inputL.dataset.local
+        const visitante = inputL.dataset.visitante
+        const golesLocal = Number(inputL.value)
+        const golesVisitante = Number(inputV.value)
+        const id = inputL.dataset.id
+
+        if (id) {
+          await saveResultado(id, golesLocal, golesVisitante)
+        } else {
           await saveResultadoNew(
             local,
             visitante,
@@ -243,11 +240,13 @@ async function renderClasificacion(container) {
             golesVisitante,
             jornada
           )
+        }
       }
+
       window.dispatchEvent(new Event('resultadosUpdated'))
     })
+    // ****************************************
 
-    // Borrar resultados jornada (nuevo)
     Button(
       partidosWrapper,
       'Borrar Resultados Jornada',
@@ -260,24 +259,18 @@ async function renderClasificacion(container) {
         )
       )
         return
-      try {
-        // Llamada al backend para poner goles en null
-        await apiCatch(
-          `/api/v2/league/matches/jornada/${jornada}/clear`,
-          'PUT',
-          null,
-          localStorage.getItem('token')
-        )
 
-        window.dispatchEvent(new Event('resultadosUpdated'))
-      } catch (err) {
-        console.error('Error al borrar resultados:', err)
-        alert('No se pudieron borrar los resultados. Revisa la consola.')
-      }
+      await apiCatch(
+        `/api/v2/league/matches/jornada/${jornada}/clear`,
+        'PUT',
+        null,
+        localStorage.getItem('token')
+      )
+
+      window.dispatchEvent(new Event('resultadosUpdated'))
     })
   }
 
-  // Navegación jornada
   const navDiv = document.createElement('div')
   navDiv.className = 'navegacion-jornada'
 
@@ -298,7 +291,6 @@ async function renderClasificacion(container) {
   partidosWrapper.appendChild(navDiv)
 }
 
-// Funciones auxiliares
 function parseFecha(f) {
   if (!f) return new Date(0)
   const [d, m, y] = f.split('-').map(Number)
