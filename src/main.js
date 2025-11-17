@@ -88,7 +88,7 @@ window.addEventListener('load', async () => {
     } catch {}
     await navigate('login')
   } else {
-    await navigate('clasificacion')
+    await navigate('Clasificacion')
   }
 })
 
