@@ -32,9 +32,10 @@ export async function Stats() {
 
   // Admin form (campos según tipo)
   let adminForm
-  let selectNombre // para goles/asistencias
-  let inputNombrePortero // para porteros
+  let selectNombre
+  let inputNombrePortero
   let selectValor
+  let currentId = null // id del jugador o portero a corregir
 
   if (user?.rol === 'admin') {
     adminForm = document.createElement('div')
@@ -71,19 +72,34 @@ export async function Stats() {
       const valor = Number(selectValor.value)
       if (!nombre || isNaN(valor)) return
 
-      if (tipo === 'porteros') {
-        await apiCatch('/api/v2/stats/portero', 'POST', {
-          nombre,
-          golesRecibidos: valor,
-          partidos: 1
-        })
+      if (currentId) {
+        // Corregir un registro existente
+        if (tipo === 'porteros') {
+          await apiCatch(`/api/v2/stats/portero/${currentId}`, 'PUT', {
+            golesRecibidos: valor
+          })
+        } else {
+          const data =
+            tipo === 'goles' ? { goles: valor } : { asistencias: valor }
+          await apiCatch(`/api/v2/stats/jugador/${currentId}`, 'PUT', data)
+        }
       } else {
-        const data = { nombre }
-        if (tipo === 'goles') data.goles = valor
-        if (tipo === 'asistencias') data.asistencias = valor
-        await apiCatch('/api/v2/stats/jugador', 'POST', data)
+        // Crear nuevo registro si no se seleccionó ninguno
+        if (tipo === 'porteros') {
+          await apiCatch('/api/v2/stats/portero', 'POST', {
+            nombre,
+            golesRecibidos: valor,
+            partidos: 1
+          })
+        } else {
+          const data = { nombre }
+          if (tipo === 'goles') data.goles = valor
+          if (tipo === 'asistencias') data.asistencias = valor
+          await apiCatch('/api/v2/stats/jugador', 'POST', data)
+        }
       }
 
+      currentId = null
       mostrar()
       if (tipo === 'porteros') inputNombrePortero.value = ''
       else selectNombre.selectedIndex = 0
@@ -191,7 +207,6 @@ export async function Stats() {
 
     tablaWrapper.innerHTML = html
 
-    // ************** Crear botones eliminar y corregir **************
     if (user?.rol === 'admin') {
       if (tipo === 'porteros') {
         data.porteros.forEach((p) => {
@@ -206,6 +221,7 @@ export async function Stats() {
           btnCorregir.addEventListener('click', () => {
             inputNombrePortero.value = p.nombre
             selectValor.value = p.golesRecibidos
+            currentId = p._id
             ajustarAdminForm('porteros')
           })
         })
@@ -234,12 +250,12 @@ export async function Stats() {
           btnCorregir.addEventListener('click', () => {
             selectNombre.value = j.nombre
             selectValor.value = tipo === 'goles' ? j.goles : j.asistencias
+            currentId = j._id
             ajustarAdminForm(tipo)
           })
         })
       }
     }
-    // *********************************************
   }
 
   function escapeId(s) {
