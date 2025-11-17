@@ -63,7 +63,9 @@
   white-space: nowrap;
   margin-right: 15px;
 }
-
+#clasificacion td {
+  padding: 0 10px;
+}
 .contenido-partido input {
   width: 30px;
   text-align: center;
