@@ -44,6 +44,8 @@
   margin: 4px 0;
   text-align: center;
   font-size: 11px;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .contenido-partido {
@@ -56,9 +58,10 @@
 
 .equipo-local,
 .equipo-visitante {
-  width: 30%;
+  width: 100px;
   text-align: center;
   white-space: nowrap;
+  margin-right: 15px;
 }
 
 .contenido-partido input {

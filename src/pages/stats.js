@@ -12,7 +12,6 @@ export async function Stats() {
   container.id = 'stats'
   main.appendChild(container)
 
-  // Filtro tipo
   const filtroDiv = document.createElement('div')
   filtroDiv.className = 'filtro-stats'
   const selectTipo = document.createElement('select')
@@ -31,7 +30,6 @@ export async function Stats() {
 
   const user = parseJwt(localStorage.getItem('token'))
 
-  // Formulario admin
   let adminForm
   if (user?.rol === 'admin') {
     adminForm = document.createElement('div')
@@ -62,7 +60,7 @@ export async function Stats() {
         await apiCatch('/api/v2/stats/jugador', 'POST', data)
       }
 
-      mostrar() // actualizar tabla
+      mostrar()
       nombreInput.value = ''
       valorInput.value = ''
     })
@@ -79,28 +77,36 @@ export async function Stats() {
     let html = '<table><thead><tr>'
 
     if (tipo === 'goles') {
-      html += '<th>Pos</th><th>Jugador</th><th>Goles</th></tr><tbody>'
+      html +=
+        '<th>Pos</th><th>Jugador</th><th>Goles</th><th>Acciones</th></tr><tbody>'
       data.jugadores
         .sort((a, b) => b.goles - a.goles)
         .forEach((j, i) => {
-          html += `<tr><td>${i + 1}</td><td>${j.nombre}</td><td>${
-            j.goles
-          }</td></tr>`
+          html += `<tr>
+            <td>${i + 1}</td>
+            <td>${j.nombre}</td>
+            <td>${j.goles}</td>
+            <td id="acciones-j-${j._id}"></td>
+          </tr>`
         })
       html += '</tbody></table>'
     } else if (tipo === 'asistencias') {
-      html += '<th>Pos</th><th>Jugador</th><th>Asistencias</th></tr><tbody>'
+      html +=
+        '<th>Pos</th><th>Jugador</th><th>Asistencias</th><th>Acciones</th></tr><tbody>'
       data.jugadores
         .sort((a, b) => b.asistencias - a.asistencias)
         .forEach((j, i) => {
-          html += `<tr><td>${i + 1}</td><td>${j.nombre}</td><td>${
-            j.asistencias
-          }</td></tr>`
+          html += `<tr>
+            <td>${i + 1}</td>
+            <td>${j.nombre}</td>
+            <td>${j.asistencias}</td>
+            <td id="acciones-j-${j._id}"></td>
+          </tr>`
         })
       html += '</tbody></table>'
     } else if (tipo === 'porteros') {
       html +=
-        '<th>Pos</th><th>Portero</th><th>Goles Recibidos</th><th>Partidos</th><th>Promedio por Partido</th><th>Acciones</th></tr><tbody>'
+        '<th>Pos</th><th>Portero</th><th>Goles Recibidos</th><th>Partidos</th><th>Promedio</th><th>Acciones</th></tr><tbody>'
       data.porteros
         .sort(
           (a, b) =>
@@ -123,16 +129,28 @@ export async function Stats() {
 
     tablaWrapper.innerHTML = html
 
-    // Crear botones eliminar con componente Button
-    if (tipo === 'porteros' && user?.rol === 'admin') {
-      data.porteros.forEach((p) => {
-        const accionesTd = document.getElementById(`acciones-${p._id}`)
-        const btnEliminar = Button(accionesTd, 'Eliminar', 'danger', 's')
-        btnEliminar.addEventListener('click', async () => {
-          await apiCatch(`/api/v2/stats/portero/${p._id}`, 'DELETE')
-          mostrar()
+    if (user?.rol === 'admin') {
+      if (tipo === 'porteros') {
+        data.porteros.forEach((p) => {
+          const accionesTd = document.getElementById(`acciones-${p._id}`)
+          const btnEliminar = Button(accionesTd, 'Eliminar', 'danger', 's')
+          btnEliminar.addEventListener('click', async () => {
+            await apiCatch(`/api/v2/stats/portero/${p._id}`, 'DELETE')
+            mostrar()
+          })
         })
-      })
+      }
+
+      if (tipo === 'goles' || tipo === 'asistencias') {
+        data.jugadores.forEach((j) => {
+          const accionesTd = document.getElementById(`acciones-j-${j._id}`)
+          const btnEliminar = Button(accionesTd, 'Eliminar', 'danger', 's')
+          btnEliminar.addEventListener('click', async () => {
+            await apiCatch(`/api/v2/stats/jugador/${j._id}`, 'DELETE')
+            mostrar()
+          })
+        })
+      }
     }
   }
 }
