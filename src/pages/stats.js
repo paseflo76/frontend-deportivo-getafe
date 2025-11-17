@@ -170,7 +170,6 @@ export async function Stats() {
     } else if (tipo === 'porteros') {
       html +=
         '<th>Pos</th><th>Portero</th><th>Goles Recibidos</th><th>Partidos</th><th>Coeficiente</th><th>Acciones</th></tr><tbody>'
-
       data.porteros
         .map((p) => ({
           ...p,
@@ -187,48 +186,55 @@ export async function Stats() {
             <td id="acciones-p-${p._id}"></td>
           </tr>`
         })
-
       html += '</tbody></table>'
     }
 
     tablaWrapper.innerHTML = html
 
-    // ************** Crear botones eliminar **************
+    // ************** Crear botones eliminar y corregir **************
     if (user?.rol === 'admin') {
-      // Porteros
       if (tipo === 'porteros') {
         data.porteros.forEach((p) => {
           const td = document.getElementById(`acciones-p-${p._id}`)
           if (!td) return
-          const btn = Button(td, 'Eliminar', 'danger', 's')
-          btn.addEventListener('click', async () => {
+          const btnEliminar = Button(td, 'Eliminar', 'danger', 's')
+          btnEliminar.addEventListener('click', async () => {
             await apiCatch(`/api/v2/stats/portero/${p._id}`, 'DELETE')
             mostrar()
           })
+          const btnCorregir = Button(td, 'Corregir', 'secondary', 's')
+          btnCorregir.addEventListener('click', () => {
+            inputNombrePortero.value = p.nombre
+            selectValor.value = p.golesRecibidos
+            ajustarAdminForm('porteros')
+          })
         })
-      }
-      // Jugadores
-      else {
+      } else {
         data.jugadores.forEach((j) => {
           const idAttr = j._id ? j._id : encodeURIComponent(j.nombre)
           const td = document.getElementById(`acciones-j-${escapeId(idAttr)}`)
           if (!td) return
-          const btn = Button(td, 'Eliminar', 'danger', 's')
-          btn.addEventListener('click', async () => {
+          const btnEliminar = Button(td, 'Eliminar', 'danger', 's')
+          btnEliminar.addEventListener('click', async () => {
             try {
-              if (j._id) {
+              if (j._id)
                 await apiCatch(`/api/v2/stats/jugador/${j._id}`, 'DELETE')
-              } else {
+              else
                 await apiCatch(
                   `/api/v2/stats/jugador/${encodeURIComponent(j.nombre)}`,
                   'DELETE'
                 )
-              }
               mostrar()
             } catch (err) {
               console.error('No se pudo eliminar jugador:', err)
               alert('No se pudo eliminar el jugador. Revisa la consola.')
             }
+          })
+          const btnCorregir = Button(td, 'Corregir', 'secondary', 's')
+          btnCorregir.addEventListener('click', () => {
+            selectNombre.value = j.nombre
+            selectValor.value = tipo === 'goles' ? j.goles : j.asistencias
+            ajustarAdminForm(tipo)
           })
         })
       }
