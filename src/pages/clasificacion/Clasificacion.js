@@ -198,6 +198,30 @@ async function renderClasificacion(container) {
         contenidoDiv.appendChild(spanVisitante)
 
         div.appendChild(contenidoDiv)
+
+        // BOTÓN INDIVIDUAL DE GUARDAR
+        const btnGuardar = Button(div, 'Guardar', 'secondary', 'small')
+        btnGuardar.addEventListener('click', async () => {
+          const local = inputL.dataset.local
+          const visitante = inputL.dataset.visitante
+          const golesLocal = Number(inputL.value)
+          const golesVisitante = Number(inputV.value)
+          const id = inputL.dataset.id
+
+          if (id) {
+            await saveResultado(id, golesLocal, golesVisitante)
+          } else {
+            await saveResultadoNew(
+              local,
+              visitante,
+              golesLocal,
+              golesVisitante,
+              jornada
+            )
+          }
+
+          window.dispatchEvent(new Event('resultadosUpdated'))
+        })
       } else {
         div.textContent = `${m.local} ${guardado?.golesLocal ?? '-'} - ${
           guardado?.golesVisitante ?? '-'
@@ -209,44 +233,6 @@ async function renderClasificacion(container) {
   })
 
   if (user?.rol === 'admin') {
-    // ************* CORREGIDO *************
-    Button(
-      partidosWrapper,
-      'Guardar Jornada',
-      'secondary',
-      'small'
-    ).addEventListener('click', async () => {
-      const partidos = partidosWrapper.querySelectorAll('.partido')
-
-      for (const partido of partidos) {
-        const inputL = partido.querySelector('input[data-local]')
-        const inputV = partido.querySelector('input[data-visitante]')
-
-        if (!inputL || !inputV) continue
-
-        const local = inputL.dataset.local
-        const visitante = inputL.dataset.visitante
-        const golesLocal = Number(inputL.value)
-        const golesVisitante = Number(inputV.value)
-        const id = inputL.dataset.id
-
-        if (id) {
-          await saveResultado(id, golesLocal, golesVisitante)
-        } else {
-          await saveResultadoNew(
-            local,
-            visitante,
-            golesLocal,
-            golesVisitante,
-            jornada
-          )
-        }
-      }
-
-      window.dispatchEvent(new Event('resultadosUpdated'))
-    })
-    // ****************************************
-
     Button(
       partidosWrapper,
       'Borrar Resultados Jornada',
