@@ -54,7 +54,7 @@ export async function Stats() {
     // select valor 1..5
     selectValor = document.createElement('select')
     selectValor.id = 'valor'
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 0; i <= 5; i++) {
       const op = document.createElement('option')
       op.value = i
       op.textContent = i
