@@ -109,16 +109,8 @@
     width: 210px;
     margin-bottom: 60px;
     margin-right: 110px;
-    background: radial-gradient(
-      circle,
-      #4cae4f,
-      #80c684,
-      #aed581,
-      #dce773,
-      #fff175
-    );
+
     border: solid 2px var(--primary);
-    color: var(--primary);
   }
 
   .asistentes {
