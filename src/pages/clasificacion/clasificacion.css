@@ -17,18 +17,6 @@
   border-radius: 10px;
   height: 50vh;
 }
-.tabla-clasificacion table tr {
-  border-bottom: 2px solid black;
-}
-
-.tabla-clasificacion table tr:last-child {
-  border-bottom: none;
-}
-
-.tabla-clasificacion table td,
-.tabla-clasificacion table th {
-  border: none;
-}
 
 .tabla-clasificacion tr.primero {
   background-color: gold;
@@ -77,6 +65,7 @@
 }
 #clasificacion td {
   padding: 0 5px;
+  border-top: solid black;
 }
 .contenido-partido input {
   width: 30px;
