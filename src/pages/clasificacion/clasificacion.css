@@ -102,8 +102,7 @@
 
 @media (max-width: 768px) {
   #clasificacion {
-    width: 90%;
-    font-size: 12px;
+    width: 100%;
   }
 
   .tabla-wrapper h2 {
@@ -120,7 +119,9 @@
   }
 
   .tabla-clasificacion {
-    height: 40vh;
+    width: 350px;
+    font-size: 10px;
+    font-weight: 650;
   }
 }
 
