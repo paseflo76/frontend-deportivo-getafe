@@ -64,8 +64,9 @@
   margin-right: 15px;
 }
 #clasificacion td {
-  padding: 0 5px;
+  padding: 0 2px;
   border-top: solid black;
+  text-align: center;
 }
 .contenido-partido input {
   width: 30px;
