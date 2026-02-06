@@ -189,19 +189,19 @@ export async function Stats() {
       data.porteros
         .map((p) => ({
           ...p,
-          coef: p.partidos > 0 ? p.golesRecibidos / p.partidos : 0
+          coef: p.partidos > 0 ? p.golesRecibidos / p.partidos : Infinity
         }))
-        .sort((a, b) => a.coef - b.coef)
-        .forEach((p, i) => {
-          html += `<tr>
-            <td>${i + 1}</td>
-            <td>${p.nombre}</td>
-            <td>${p.golesRecibidos}</td>
-            <td>${p.partidos}</td>
-            <td>${p.coef.toFixed(2)}</td>
-            <td id="acciones-p-${p._id}"></td>
-          </tr>`
+        .sort((a, b) => {
+          // 1) mejor coeficiente Zamora
+          if (a.coef !== b.coef) return a.coef - b.coef
+
+          // 2) más partidos jugados
+          if (a.partidos !== b.partidos) return b.partidos - a.partidos
+
+          // 3) menos goles encajados
+          return a.golesRecibidos - b.golesRecibidos
         })
+
       html += '</tbody></table>'
     }
 
