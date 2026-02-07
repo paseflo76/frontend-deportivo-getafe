@@ -145,6 +145,7 @@ async function renderClasificacion(container) {
         <th>Pos</th>
         <th>Equipo</th>
         <th>Puntos</th>
+        <th>Sanción</th>
         <th>J</th>
         <th>G</th>
         <th>E</th>
@@ -152,7 +153,6 @@ async function renderClasificacion(container) {
         <th>F</th>
         <th>C</th>
         <th>DIF</th>
-        <th>Sanción</th>
       </tr>
     </thead>
   `
