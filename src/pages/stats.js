@@ -177,10 +177,20 @@ export async function Stats() {
           coef: p.partidos ? p.golesRecibidos / p.partidos : Infinity
         }))
         .sort((a, b) => {
-          const diff = a.coef - b.coef
-          if (Math.abs(diff) < 0.15) return b.partidos - a.partidos
-          return diff
+          // 1) prioridad a partidos jugados
+          if (a.partidos !== b.partidos) {
+            return b.partidos - a.partidos
+          }
+
+          // 2) coeficiente Zamora
+          if (a.coef !== b.coef) {
+            return a.coef - b.coef
+          }
+
+          // 3) menos goles encajados
+          return a.golesRecibidos - b.golesRecibidos
         })
+
         .forEach((p, i) => {
           html += `<tr>
             <td>${i + 1}</td>
