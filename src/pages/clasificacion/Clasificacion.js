@@ -13,11 +13,15 @@ import {
   saveResultadoNew,
   parseJwt
 } from '../../utils/data.js'
-import { apiCatch, API_BASE } from '../../utils/fetch/fech.js'
 
 // Obtener sanciones del backend
 async function getSanciones() {
-  return await apiCatch('/sanciones/teams')
+  return await apiCatch(
+    '/sanciones',
+    'GET',
+    null,
+    localStorage.getItem('token')
+  )
 }
 
 // Guardar sanción de un equipo
