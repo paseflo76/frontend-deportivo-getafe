@@ -1,26 +1,28 @@
 // clasificacion.js corregido para estructura de partidos horizontal
 
 import './clasificacion.css'
-
+import { Button } from '../../components/button/button.js'
+import {
+  calendario,
+  getJornadaActual,
+  setJornadaActual
+} from '../../utils/data.js'
 import {
   getResultados,
   saveResultado,
   saveResultadoNew,
   parseJwt
 } from '../../utils/data.js'
-import {
-  calendario,
-  getJornadaActual,
-  setJornadaActual
-} from '../../utils/data.js'
-import { Button } from '../../components/button/button.js'
-import { apiCatch } from '../../utils/fetch/fech.js'
+import { apiCatch, API_BASE } from '../../utils/fetch/fech.js'
 
 // Obtener sanciones del backend
 async function getSanciones() {
-  const res = await fetch('/api/v2/sanciones/teams')
-  if (!res.ok) throw new Error('Error al obtener sanciones')
-  return res.json()
+  return await apiCatch('/sanciones/teams')
+}
+
+// Guardar sanción de un equipo
+async function saveSancion(nombre, puntos) {
+  return await apiCatch('/sanciones/penalizacion', 'PUT', { nombre, puntos })
 }
 
 export async function Clasificacion() {
@@ -62,6 +64,7 @@ async function renderClasificacion(container) {
       equipos[m.local] = {
         equipo: m.local,
         puntos: 0,
+        sancion: 0,
         gf: 0,
         gc: 0,
         id: null,
@@ -74,6 +77,7 @@ async function renderClasificacion(container) {
       equipos[m.visitante] = {
         equipo: m.visitante,
         puntos: 0,
+        sancion: 0,
         gf: 0,
         gc: 0,
         id: null,
@@ -86,22 +90,17 @@ async function renderClasificacion(container) {
 
   resultados.forEach((m) => {
     if (m.descansa) return
-
     const { local, visitante, golesLocal, golesVisitante, _id } = m
     if (!equipos[local] || !equipos[visitante]) return
-
     if (!equipos[local].id) equipos[local].id = _id
     if (!equipos[visitante].id) equipos[visitante].id = _id
-
     if (golesLocal != null && golesVisitante != null) {
       equipos[local].gf += golesLocal
       equipos[local].gc += golesVisitante
       equipos[visitante].gf += golesVisitante
       equipos[visitante].gc += golesLocal
-
       equipos[local].jugados++
       equipos[visitante].jugados++
-
       if (golesLocal > golesVisitante) {
         equipos[local].puntos += 3
         equipos[local].ganados++
@@ -122,7 +121,8 @@ async function renderClasificacion(container) {
   // Aplicar sanciones
   Object.values(equipos).forEach((e) => {
     const s = sanciones.find((t) => t.nombre === e.equipo)
-    if (s) e.puntos -= s.penalizacion
+    e.sancion = s ? s.penalizacion : 0
+    e.puntos -= e.sancion
     if (e.puntos < 0) e.puntos = 0
   })
 
@@ -143,6 +143,7 @@ async function renderClasificacion(container) {
         <th>Pos</th>
         <th>Equipo</th>
         <th>Puntos</th>
+        <th>Sanción</th>
         <th>J</th>
         <th>G</th>
         <th>E</th>
@@ -156,7 +157,6 @@ async function renderClasificacion(container) {
   const tbody = document.createElement('tbody')
 
   Object.values(equipos)
-    .filter((e) => e.equipo)
     .sort(
       (a, b) =>
         b.puntos - a.puntos || b.gf - b.gc - (a.gf - a.gc) || b.gf - a.gf
@@ -164,10 +164,12 @@ async function renderClasificacion(container) {
     .forEach((e, index) => {
       const tr = document.createElement('tr')
       if (index === 0) tr.classList.add('primero')
+
       tr.innerHTML = `
         <td>${index + 1}</td>
         <td>${e.equipo}</td>
         <td>${e.puntos}</td>
+        <td></td>
         <td>${e.jugados}</td>
         <td>${e.ganados}</td>
         <td>${e.empatados}</td>
@@ -176,12 +178,33 @@ async function renderClasificacion(container) {
         <td>${e.gc}</td>
         <td>${e.gf - e.gc}</td>
       `
+
+      // Sanción
+      const sancionCell = document.createElement('td')
+      if (user?.rol === 'admin') {
+        const input = document.createElement('input')
+        input.type = 'number'
+        input.min = 0
+        input.value = e.sancion
+        sancionCell.appendChild(input)
+
+        const btn = Button(sancionCell, 'Guardar', 'small', 'secondary')
+        btn.addEventListener('click', async () => {
+          const puntos = Number(input.value)
+          await saveSancion(e.equipo, puntos)
+          window.dispatchEvent(new Event('resultadosUpdated'))
+        })
+      } else {
+        sancionCell.textContent = e.sancion
+      }
+      tr.replaceChild(sancionCell, tr.children[3])
       tbody.appendChild(tr)
     })
+
   table.appendChild(tbody)
   tablaWrapper.appendChild(table)
 
-  // Render de partidos
+  // Partidos y navegación
   const partidosWrapper = document.createElement('div')
   partidosWrapper.className = 'partidos-wrapper'
   container.appendChild(partidosWrapper)
@@ -270,16 +293,13 @@ async function renderClasificacion(container) {
           window.dispatchEvent(new Event('resultadosUpdated'))
         })
       } else {
-        div.textContent = `${m.local} ${guardado?.golesLocal ?? '-'} - ${
-          guardado?.golesVisitante ?? '-'
-        } ${m.visitante}`
+        div.textContent = `${m.local} ${guardado?.golesLocal ?? '-'} - ${guardado?.golesVisitante ?? '-'} ${m.visitante}`
       }
     }
 
     partidosWrapper.appendChild(div)
   })
 
-  // Botón borrar jornada
   if (user?.rol === 'admin') {
     Button(
       partidosWrapper,
@@ -295,17 +315,15 @@ async function renderClasificacion(container) {
         return
 
       await apiCatch(
-        `/api/v2/league/matches/jornada/${jornada}/clear`,
+        `/league/matches/jornada/${jornada}/clear`,
         'PUT',
         null,
         localStorage.getItem('token')
       )
-
       window.dispatchEvent(new Event('resultadosUpdated'))
     })
   }
 
-  // Navegación jornadas
   const navDiv = document.createElement('div')
   navDiv.className = 'navegacion-jornada'
 
@@ -326,6 +344,7 @@ async function renderClasificacion(container) {
   partidosWrapper.appendChild(navDiv)
 }
 
+// Formateo de fecha
 function parseFecha(f) {
   if (!f) return new Date(0)
   const [d, m, y] = f.split('-').map(Number)
