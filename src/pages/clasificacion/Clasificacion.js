@@ -13,6 +13,7 @@ import {
   saveResultadoNew,
   parseJwt
 } from '../../utils/data.js'
+import { apiCatch } from '../../utils/fetch/fech.js'
 
 // Obtener sanciones del backend
 async function getSanciones() {
@@ -21,7 +22,7 @@ async function getSanciones() {
 
 // Guardar sanción de un equipo
 async function saveSancion(nombre, puntos) {
-  return await apiCatc('/sanciones/penalizacion', 'PUT', { nombre, puntos })
+  return await apiCatch('/sanciones/penalizacion', 'PUT', { nombre, puntos })
 }
 
 export async function Clasificacion() {
