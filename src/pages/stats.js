@@ -41,14 +41,13 @@ export async function Stats() {
     selectNombre.id = 'nombre'
 
     inputNombrePortero = document.createElement('input')
-    inputNombrePortero.type = 'text'
     inputNombrePortero.id = 'nombre-portero'
     inputNombrePortero.placeholder = 'Nombre portero'
     inputNombrePortero.style.display = 'none'
 
     selectValor = document.createElement('select')
     selectValor.id = 'valor'
-    for (let i = 0; i <= 5; i++) {
+    for (let i = 0; i <= 20; i++) {
       const op = document.createElement('option')
       op.value = i
       op.textContent = i
@@ -65,7 +64,7 @@ export async function Stats() {
           ? inputNombrePortero.value.trim()
           : selectNombre.value
       const valor = Number(selectValor.value)
-      if (!nombre || isNaN(valor)) return
+      if (!nombre) return
 
       if (currentId) {
         if (tipo === 'porteros') {
@@ -102,59 +101,94 @@ export async function Stats() {
   selectTipo.addEventListener('change', mostrar)
   await mostrar()
 
+  async function cargarNombresParaSelect(data) {
+    if (!selectNombre) return
+    selectNombre.innerHTML = ''
+    const lista =
+      selectTipo.value === 'porteros' ? data.porteros : data.jugadores
+    lista.forEach((p) => {
+      const op = document.createElement('option')
+      op.value = p.nombre
+      op.textContent = p.nombre
+      selectNombre.appendChild(op)
+    })
+  }
+
+  async function ajustarAdminForm() {
+    if (!adminForm) return
+    const tipo = selectTipo.value
+    if (tipo === 'porteros') {
+      selectNombre.style.display = 'none'
+      inputNombrePortero.style.display = ''
+    } else {
+      selectNombre.style.display = ''
+      inputNombrePortero.style.display = 'none'
+    }
+  }
+
   async function mostrar() {
     const tipo = selectTipo.value
     const data = await apiCatch('/api/v2/stats')
 
+    if (user?.rol === 'admin') {
+      await cargarNombresParaSelect(data)
+      ajustarAdminForm()
+    }
+
     let html = `<table class="tabla-${tipo}"><tbody>`
 
     if (tipo === 'goles') {
+      html += `<tr class="header"><td>#</td><td>Jugador</td><td>G</td><td></td></tr>`
       data.jugadores
         .sort((a, b) => b.goles - a.goles)
         .forEach((j, i) => {
-          html += `
-          <tr>
+          html += `<tr>
             <td>${i + 1}</td>
             <td>${j.nombre}</td>
             <td>${j.goles}</td>
-            <td id="acciones-j-${j._id}"></td>
+            <td></td>
           </tr>`
         })
     }
 
     if (tipo === 'asistencias') {
+      html += `<tr class="header"><td>#</td><td>Jugador</td><td>A</td><td></td></tr>`
       data.jugadores
         .sort((a, b) => b.asistencias - a.asistencias)
         .forEach((j, i) => {
-          html += `
-          <tr>
+          html += `<tr>
             <td>${i + 1}</td>
             <td>${j.nombre}</td>
             <td>${j.asistencias}</td>
-            <td id="acciones-j-${j._id}"></td>
+            <td></td>
           </tr>`
         })
     }
 
     if (tipo === 'porteros') {
+      html += `
+        <tr class="header">
+          <td>#</td><td>Portero</td><td>GC</td><td>PJ</td><td>Coef</td><td></td>
+        </tr>`
+
       data.porteros
         .map((p) => ({
           ...p,
-          coef: p.partidos > 0 ? p.golesRecibidos / p.partidos : Infinity
+          coef: p.partidos ? p.golesRecibidos / p.partidos : Infinity
         }))
         .sort((a, b) => {
-          if (a.coef !== b.coef) return a.coef - b.coef
-          return b.partidos - a.partidos
+          const diff = a.coef - b.coef
+          if (Math.abs(diff) < 0.15) return b.partidos - a.partidos
+          return diff
         })
         .forEach((p, i) => {
-          html += `
-          <tr>
+          html += `<tr>
             <td>${i + 1}</td>
             <td>${p.nombre}</td>
             <td>${p.golesRecibidos}</td>
             <td>${p.partidos}</td>
             <td>${p.coef.toFixed(2)}</td>
-            <td id="acciones-p-${p._id}"></td>
+            <td></td>
           </tr>`
         })
     }

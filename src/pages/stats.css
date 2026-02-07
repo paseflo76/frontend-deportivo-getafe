@@ -20,17 +20,22 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
+#stats tr.header {
+  font-weight: 700;
+  opacity: 0.75;
+  background: rgba(255, 255, 255, 0.1);
+}
+
 #stats td {
-  border: none;
   color: #fff;
   text-align: center;
   font-weight: 600;
 }
 
-/* GOLES y ASISTENCIAS */
+/* GOLES / ASISTENCIAS */
 #stats .tabla-goles tr,
 #stats .tabla-asistencias tr {
-  grid-template-columns: 40px 1fr 60px 80px;
+  grid-template-columns: 40px 1fr 60px 60px;
 }
 
 /* PORTEROS */
@@ -41,7 +46,7 @@
     0.8fr
     0.8fr
     0.8fr
-    1fr;
+    0.8fr;
 }
 
 @media (max-width: 600px) {
