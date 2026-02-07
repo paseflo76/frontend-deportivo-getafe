@@ -20,7 +20,6 @@ async function getSanciones() {
   return await apiCatch('/api/v2/sanciones/teams')
 }
 
-// Guardar sanción de un equipo
 async function saveSancion(nombre, puntos) {
   return await apiCatch('/api/v2/sanciones/penalizacion', 'PUT', {
     nombre,
@@ -179,13 +178,14 @@ async function renderClasificacion(container) {
         <td>${e.gf}</td>
         <td>${e.gc}</td>
         <td>${e.gf - e.gc}</td>
+        <td></td>
       `
 
+      // Sanción
       const sancionCell = document.createElement('td')
       if (user?.rol === 'admin') {
         const input = document.createElement('input')
         input.type = 'number'
-        input.min = 0
         input.value = e.sancion
         sancionCell.appendChild(input)
 
@@ -198,14 +198,14 @@ async function renderClasificacion(container) {
       } else {
         sancionCell.textContent = e.sancion
       }
-
-      tr.appendChild(sancionCell)
+      tr.replaceChild(sancionCell, tr.children[10])
       tbody.appendChild(tr)
     })
 
   table.appendChild(tbody)
   tablaWrapper.appendChild(table)
 
+  // Código de partidos y navegación (sin cambios)
   const partidosWrapper = document.createElement('div')
   partidosWrapper.className = 'partidos-wrapper'
   container.appendChild(partidosWrapper)
