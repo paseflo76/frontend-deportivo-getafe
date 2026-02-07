@@ -16,17 +16,12 @@ import {
 
 // Obtener sanciones del backend
 async function getSanciones() {
-  return await apiCatch(
-    '/sanciones',
-    'GET',
-    null,
-    localStorage.getItem('token')
-  )
+  return await apiCatch('/sanciones/teams')
 }
 
 // Guardar sanción de un equipo
 async function saveSancion(nombre, puntos) {
-  return await apiCatch('/sanciones/penalizacion', 'PUT', { nombre, puntos })
+  return await apiCatc('/sanciones/penalizacion', 'PUT', { nombre, puntos })
 }
 
 export async function Clasificacion() {
