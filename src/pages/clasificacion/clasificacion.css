@@ -114,6 +114,10 @@
   .tabla-wrapper h2 {
     font-size: 20px;
   }
+  .input-sancion {
+    width: 28px;
+    text-align: center;
+  }
 
   .partidos-wrapper {
     justify-content: center;
