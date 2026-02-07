@@ -17,12 +17,14 @@ import { apiCatch } from '../../utils/fetch/fech.js'
 
 // Obtener sanciones del backend
 async function getSanciones() {
-  return await apiCatch('/sanciones/teams')
+  return await apiCatch('/api/v2/sanciones/teams')
 }
 
-// Guardar sanción de un equipo
 async function saveSancion(nombre, puntos) {
-  return await apiCatch('/sanciones/penalizacion', 'PUT', { nombre, puntos })
+  return await apiCatch('/api/v2/sanciones/penalizacion', 'PUT', {
+    nombre,
+    puntos
+  })
 }
 
 export async function Clasificacion() {
