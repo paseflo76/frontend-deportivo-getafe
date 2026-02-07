@@ -2,68 +2,50 @@
   padding: 20px;
 }
 
-#stats #tipo {
-  border-radius: 10px;
-  padding: 8px;
-}
-
-#stats .filtro-stats {
-  margin-bottom: 10px;
-}
-
-#stats .admin-form {
-  margin-bottom: 15px;
-  gap: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-#stats .admin-form input {
-  margin-right: 5px;
-  padding: 5px;
-  border-radius: 10px;
-  border: none;
-}
-#nombre {
-  padding: 10px;
-  border-radius: 10px;
-  width: 100px;
-}
-#valor {
-  padding: 10px;
-  border-radius: 10px;
-  width: 50px;
-}
 #stats #tabla {
-  background-color: var(--perfil);
-  font-size: 15px;
-  font-weight: 500;
-  border-radius: 10px;
-  border: none;
-  overflow-x: hidden;
+  background: linear-gradient(180deg, #0a2a88, #0b3fb3);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 #stats table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed;
 }
 
-#stats th,
+#stats tr {
+  display: grid;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
 #stats td {
-  border: 1px solid #ccc;
-  padding: 8px;
+  border: none;
+  color: #fff;
   text-align: center;
-  white-space: normal;
-  word-break: break-word;
+  font-weight: 600;
+}
+
+/* GOLES y ASISTENCIAS */
+#stats .tabla-goles tr,
+#stats .tabla-asistencias tr {
+  grid-template-columns: 40px 1fr 60px 80px;
+}
+
+/* PORTEROS */
+#stats .tabla-porteros tr {
+  grid-template-columns:
+    40px
+    1.2fr
+    0.8fr
+    0.8fr
+    0.8fr
+    1fr;
 }
 
 @media (max-width: 600px) {
-  #stats table th,
-  #stats table td {
-    padding: 4px;
+  #stats tr {
     font-size: 13px;
   }
 }
