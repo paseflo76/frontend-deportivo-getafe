@@ -20,6 +20,7 @@ async function getSanciones() {
   return await apiCatch('/api/v2/sanciones/teams')
 }
 
+// Guardar sanción de un equipo
 async function saveSancion(nombre, puntos) {
   return await apiCatch('/api/v2/sanciones/penalizacion', 'PUT', {
     nombre,
@@ -145,7 +146,6 @@ async function renderClasificacion(container) {
         <th>Pos</th>
         <th>Equipo</th>
         <th>Puntos</th>
-        <th>Sanción</th>
         <th>J</th>
         <th>G</th>
         <th>E</th>
@@ -153,6 +153,7 @@ async function renderClasificacion(container) {
         <th>F</th>
         <th>C</th>
         <th>DIF</th>
+        <th>Sanción</th>
       </tr>
     </thead>
   `
@@ -171,7 +172,6 @@ async function renderClasificacion(container) {
         <td>${index + 1}</td>
         <td>${e.equipo}</td>
         <td>${e.puntos}</td>
-        <td></td>
         <td>${e.jugados}</td>
         <td>${e.ganados}</td>
         <td>${e.empatados}</td>
@@ -181,7 +181,6 @@ async function renderClasificacion(container) {
         <td>${e.gf - e.gc}</td>
       `
 
-      // Sanción
       const sancionCell = document.createElement('td')
       if (user?.rol === 'admin') {
         const input = document.createElement('input')
@@ -199,14 +198,14 @@ async function renderClasificacion(container) {
       } else {
         sancionCell.textContent = e.sancion
       }
-      tr.replaceChild(sancionCell, tr.children[3])
+
+      tr.appendChild(sancionCell)
       tbody.appendChild(tr)
     })
 
   table.appendChild(tbody)
   tablaWrapper.appendChild(table)
 
-  // Partidos y navegación
   const partidosWrapper = document.createElement('div')
   partidosWrapper.className = 'partidos-wrapper'
   container.appendChild(partidosWrapper)
