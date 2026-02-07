@@ -187,6 +187,7 @@ async function renderClasificacion(container) {
         const input = document.createElement('input')
         input.type = 'number'
         input.value = e.sancion
+        input.classList.add('input-sancion')
         sancionCell.appendChild(input)
 
         const btn = Button(sancionCell, 'Guardar', 'small', 'secondary')
