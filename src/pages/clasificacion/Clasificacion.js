@@ -16,6 +16,13 @@ import {
 import { Button } from '../../components/button/button.js'
 import { apiCatch } from '../../utils/fetch/fech.js'
 
+// Obtener sanciones del backend
+async function getSanciones() {
+  const res = await fetch('/api/v2/sanciones/teams')
+  if (!res.ok) throw new Error('Error al obtener sanciones')
+  return res.json()
+}
+
 export async function Clasificacion() {
   const main = document.querySelector('main')
   if (!main) return
@@ -46,6 +53,7 @@ async function renderClasificacion(container) {
   const resultados = await getResultados()
   const jornada = getJornadaActual()
   const user = parseJwt(localStorage.getItem('token'))
+  const sanciones = await getSanciones()
 
   const equipos = {}
   calendario.flat().forEach((m) => {
@@ -111,6 +119,13 @@ async function renderClasificacion(container) {
     }
   })
 
+  // Aplicar sanciones
+  Object.values(equipos).forEach((e) => {
+    const s = sanciones.find((t) => t.nombre === e.equipo)
+    if (s) e.puntos -= s.penalizacion
+    if (e.puntos < 0) e.puntos = 0
+  })
+
   const tablaWrapper = document.createElement('div')
   tablaWrapper.className = 'tabla-wrapper'
   container.appendChild(tablaWrapper)
@@ -166,6 +181,7 @@ async function renderClasificacion(container) {
   table.appendChild(tbody)
   tablaWrapper.appendChild(table)
 
+  // Render de partidos
   const partidosWrapper = document.createElement('div')
   partidosWrapper.className = 'partidos-wrapper'
   container.appendChild(partidosWrapper)
@@ -231,7 +247,6 @@ async function renderClasificacion(container) {
 
         div.appendChild(contenidoDiv)
 
-        // BOTÓN INDIVIDUAL DE GUARDAR
         const btnGuardar = Button(div, 'Guardar', 'secondary', 'small')
         btnGuardar.addEventListener('click', async () => {
           const local = inputL.dataset.local
@@ -264,6 +279,7 @@ async function renderClasificacion(container) {
     partidosWrapper.appendChild(div)
   })
 
+  // Botón borrar jornada
   if (user?.rol === 'admin') {
     Button(
       partidosWrapper,
@@ -289,6 +305,7 @@ async function renderClasificacion(container) {
     })
   }
 
+  // Navegación jornadas
   const navDiv = document.createElement('div')
   navDiv.className = 'navegacion-jornada'
 
