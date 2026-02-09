@@ -150,47 +150,35 @@
     width: 20px;
   }
   .tabla-clasificacion {
-    width: 100%;
-    font-size: 9px;
-    table-layout: auto;
+    font-size: 8px;
   }
 
   .tabla-clasificacion th,
   .tabla-clasificacion td {
-    padding: 2px 1px;
-    line-height: 1.1;
-    white-space: normal;
-    word-break: break-word;
-    text-align: center;
-    vertical-align: middle;
+    padding: 1px 1px;
+    line-height: 1.05;
   }
 
-  /* COLUMNA EQUIPO */
+  /* Equipo */
   .tabla-clasificacion th:nth-child(2),
   .tabla-clasificacion td:nth-child(2) {
-    text-align: left;
-    min-width: 95px;
-    font-weight: 600;
+    min-width: 85px;
   }
 
-  /* COLUMNAS NUMÉRICAS */
+  /* Números */
   .tabla-clasificacion th:not(:nth-child(2)),
   .tabla-clasificacion td:not(:nth-child(2)) {
-    min-width: 20px;
-    white-space: nowrap;
+    min-width: 18px;
   }
 
-  /* BOTÓN GUARDAR */
+  /* Botón */
   .tabla-clasificacion button {
-    font-size: 8px;
-    padding: 2px 4px;
-    white-space: nowrap;
+    font-size: 7px;
+    padding: 1px 3px;
   }
 
-  /* INPUT SANCIÓN */
   .input-sancion {
-    width: 26px;
-    font-size: 9px;
-    padding: 1px;
+    width: 22px;
+    font-size: 8px;
   }
 }
