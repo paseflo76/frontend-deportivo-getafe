@@ -136,17 +136,24 @@
 }
 
 @media (max-width: 480px) {
-  .equipo-local {
-    padding-right: 3px;
-    margin-right: 15px;
+  .contenido-partido {
+    width: 100%;
+    overflow: hidden;
   }
 
+  .equipo-local,
   .equipo-visitante {
-    text-align: left;
-    padding-left: 3px;
+    width: auto;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 5px;
   }
 
-  .contenido-partido input {
-    width: 20px;
+  .botones-partido {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 5px;
   }
 }
