@@ -151,20 +151,17 @@
   }
   .tabla-clasificacion {
     width: 100%;
+    font-size: 9px;
     table-layout: auto;
-    font-size: 10px;
-  }
-
-  .tabla-clasificacion tr {
-    height: auto;
   }
 
   .tabla-clasificacion th,
   .tabla-clasificacion td {
+    padding: 2px 1px;
+    line-height: 1.1;
     white-space: normal;
     word-break: break-word;
     text-align: center;
-    padding: 4px 2px;
     vertical-align: middle;
   }
 
@@ -172,21 +169,28 @@
   .tabla-clasificacion th:nth-child(2),
   .tabla-clasificacion td:nth-child(2) {
     text-align: left;
-    min-width: 120px;
+    min-width: 95px;
     font-weight: 600;
   }
 
-  /* Columnas numéricas */
+  /* COLUMNAS NUMÉRICAS */
   .tabla-clasificacion th:not(:nth-child(2)),
   .tabla-clasificacion td:not(:nth-child(2)) {
-    min-width: 26px;
+    min-width: 20px;
     white-space: nowrap;
   }
 
-  /* Botón Guardar */
+  /* BOTÓN GUARDAR */
   .tabla-clasificacion button {
-    font-size: 9px;
-    padding: 3px 6px;
+    font-size: 8px;
+    padding: 2px 4px;
     white-space: nowrap;
+  }
+
+  /* INPUT SANCIÓN */
+  .input-sancion {
+    width: 26px;
+    font-size: 9px;
+    padding: 1px;
   }
 }
