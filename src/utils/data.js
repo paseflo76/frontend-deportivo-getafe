@@ -356,8 +356,20 @@ export async function deleteResultado(id) {
   return await apiCatch(`/league/matches/${id}`, 'DELETE')
 }
 
+// ======================================================
+// BORRAR RESULTADOS DE UNA JORNADA
+// ======================================================
+
 export async function clearJornadaResultados(jornada) {
   return await apiCatch(`/league/matches/jornada/${jornada}/clear`, 'PUT')
+}
+
+// ======================================================
+// REINICIAR LIGA COMPLETA
+// ======================================================
+
+export async function resetLeague() {
+  return await apiCatch('/league/matches/reset', 'PUT')
 }
 
 // ======================================================

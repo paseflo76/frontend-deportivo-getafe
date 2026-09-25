@@ -12,7 +12,9 @@ import {
   saveResultado,
   saveResultadoNew,
   clearJornadaResultados,
-  parseJwt
+  resetLeague,
+  parseJwt,
+  apiCatch
 } from '../../utils/data.js'
 
 // ======================================================
@@ -20,14 +22,10 @@ import {
 // ======================================================
 
 async function getSanciones() {
-  const { apiCatch } = await import('../../utils/data.js')
-
   return await apiCatch('/sanciones/teams')
 }
 
 async function saveSancion(nombre, puntos) {
-  const { apiCatch } = await import('../../utils/data.js')
-
   return await apiCatch('/sanciones/penalizacion', 'PUT', {
     nombre,
     puntos
@@ -61,7 +59,9 @@ export async function Clasificacion() {
     window._clasificacionListener = null
   }
 
-  const handler = async () => await renderClasificacion(container)
+  const handler = async () => {
+    await renderClasificacion(container)
+  }
 
   window._clasificacionListener = handler
 
@@ -132,7 +132,9 @@ async function renderClasificacion(container) {
 
     const { local, visitante, golesLocal, golesVisitante, _id } = m
 
-    if (!equipos[local] || !equipos[visitante]) return
+    if (!equipos[local] || !equipos[visitante]) {
+      return
+    }
 
     if (!equipos[local].id) {
       equipos[local].id = _id
@@ -142,6 +144,7 @@ async function renderClasificacion(container) {
       equipos[visitante].id = _id
     }
 
+    // Solo se contabilizan partidos con resultado
     if (golesLocal != null && golesVisitante != null) {
       equipos[local].gf += golesLocal
       equipos[local].gc += golesVisitante
@@ -155,10 +158,12 @@ async function renderClasificacion(container) {
       if (golesLocal > golesVisitante) {
         equipos[local].puntos += 3
         equipos[local].ganados++
+
         equipos[visitante].perdidos++
       } else if (golesLocal < golesVisitante) {
         equipos[visitante].puntos += 3
         equipos[visitante].ganados++
+
         equipos[local].perdidos++
       } else {
         equipos[local].puntos++
@@ -264,6 +269,7 @@ async function renderClasificacion(container) {
 
         input.type = 'number'
         input.value = e.sancion
+
         input.classList.add('input-sancion')
 
         sancionCell.appendChild(input)
@@ -303,6 +309,10 @@ async function renderClasificacion(container) {
   const jornadaArray = calendario[jornada - 1] || []
 
   jornadaArray.forEach((m) => {
+    // ==================================================
+    // FECHA
+    // ==================================================
+
     if (m.fecha) {
       const fechaDiv = document.createElement('div')
 
@@ -339,20 +349,26 @@ async function renderClasificacion(container) {
 
         inputL.type = 'number'
         inputL.min = 0
+
         inputL.value = guardado?.golesLocal ?? ''
 
         inputL.dataset.local = m.local
+
         inputL.dataset.visitante = m.visitante
+
         inputL.dataset.id = guardado?._id || ''
 
         const inputV = document.createElement('input')
 
         inputV.type = 'number'
         inputV.min = 0
+
         inputV.value = guardado?.golesVisitante ?? ''
 
         inputV.dataset.local = m.local
+
         inputV.dataset.visitante = m.visitante
+
         inputV.dataset.id = guardado?._id || ''
 
         const contenidoDiv = document.createElement('div')
@@ -362,22 +378,29 @@ async function renderClasificacion(container) {
         const spanLocal = document.createElement('span')
 
         spanLocal.className = 'equipo-local'
+
         spanLocal.textContent = m.local
 
         const spanGuion = document.createElement('span')
 
         spanGuion.className = 'guion'
+
         spanGuion.textContent = '-'
 
         const spanVisitante = document.createElement('span')
 
         spanVisitante.className = 'equipo-visitante'
+
         spanVisitante.textContent = m.visitante
 
         contenidoDiv.appendChild(spanLocal)
+
         contenidoDiv.appendChild(inputL)
+
         contenidoDiv.appendChild(spanGuion)
+
         contenidoDiv.appendChild(inputV)
+
         contenidoDiv.appendChild(spanVisitante)
 
         div.appendChild(contenidoDiv)
@@ -386,9 +409,11 @@ async function renderClasificacion(container) {
 
         btnGuardar.addEventListener('click', async () => {
           const local = inputL.dataset.local
+
           const visitante = inputL.dataset.visitante
 
           const golesLocal = Number(inputL.value)
+
           const golesVisitante = Number(inputV.value)
 
           const id = inputL.dataset.id
@@ -422,21 +447,25 @@ async function renderClasificacion(container) {
   })
 
   // ====================================================
-  // BORRAR RESULTADOS DE LA JORNADA
+  // BOTONES DE ADMINISTRACIÓN
   // ====================================================
 
   if (user?.rol === 'admin') {
+    // ==================================================
+    // BORRAR RESULTADOS DE LA JORNADA
+    // ==================================================
+
     Button(
       partidosWrapper,
       'Borrar Resultados Jornada',
       'danger',
       'small'
     ).addEventListener('click', async () => {
-      if (
-        !confirm(
-          `¿Seguro que quieres borrar todos los resultados de la jornada ${jornada}?`
-        )
-      ) {
+      const confirmar = confirm(
+        `¿Seguro que quieres borrar todos los resultados de la jornada ${jornada}?`
+      )
+
+      if (!confirmar) {
         return
       }
 
@@ -450,6 +479,45 @@ async function renderClasificacion(container) {
         alert('No se han podido borrar los resultados.')
       }
     })
+
+    // ==================================================
+    // REINICIAR LIGA
+    // SOLO APARECE EN JORNADA 22
+    // ==================================================
+
+    if (Number(jornada) === 22) {
+      Button(
+        partidosWrapper,
+        'REINICIAR LIGA',
+        'danger',
+        'small'
+      ).addEventListener('click', async () => {
+        const confirmar = confirm(
+          '⚠️ ¿ESTÁS SEGURO DE QUE QUIERES REINICIAR LA LIGA?\n\n' +
+            'Se borrarán TODOS los resultados de las 22 jornadas.\n\n' +
+            'Los partidos, equipos y calendario NO se eliminarán.\n\n' +
+            'La clasificación volverá a cero.\n\n' +
+            'Esta acción no se puede deshacer.'
+        )
+
+        if (!confirmar) {
+          return
+        }
+
+        try {
+          await resetLeague()
+
+          // Volvemos a la jornada 1
+          setJornadaActual(1)
+
+          window.dispatchEvent(new Event('resultadosUpdated'))
+        } catch (error) {
+          console.error('Error al reiniciar la liga:', error)
+
+          alert('No se ha podido reiniciar la liga.')
+        }
+      })
+    }
   }
 
   // ====================================================
@@ -488,7 +556,9 @@ async function renderClasificacion(container) {
 // ======================================================
 
 function parseFecha(f) {
-  if (!f) return new Date(0)
+  if (!f) {
+    return new Date(0)
+  }
 
   const [d, m, y] = f.split('-').map(Number)
 
