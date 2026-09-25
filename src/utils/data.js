@@ -14,8 +14,14 @@ export const apiCatch = async (
   if (!token) token = localStorage.getItem('token')
 
   const headers = {}
-  if (token) headers['Authorization'] = `Bearer ${token}`
-  if (!isFormData) headers['Content-Type'] = 'application/json'
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`
+  }
+
+  if (!isFormData) {
+    headers['Content-Type'] = 'application/json'
+  }
 
   const options = {
     method,
@@ -25,17 +31,29 @@ export const apiCatch = async (
 
   try {
     const res = await fetch(API_BASE + url, options)
+
     const contentType = res.headers.get('Content-Type') || ''
     const isJson = contentType.includes('application/json')
+
     const body = isJson ? await res.json() : null
 
-    if (!res.ok) throw { status: res.status, body }
+    if (!res.ok) {
+      throw {
+        status: res.status,
+        body
+      }
+    }
+
     return body
   } catch (error) {
     throw error
   }
 }
-// utils/data.js
+
+// ======================================================
+// EQUIPOS
+// ======================================================
+
 export const equipos = [
   'ARSENAL GETAFE',
   'BRAVO GETAFE',
@@ -50,7 +68,10 @@ export const equipos = [
   'CERVEZAS CLUB'
 ]
 
-// Calendario completo 22 jornadas (ida + vuelta)
+// ======================================================
+// CALENDARIO COMPLETO 22 JORNADAS
+// ======================================================
+
 export const calendario = [
   // JORNADA 1
   [
@@ -295,7 +316,10 @@ export const calendario = [
   ]
 ]
 
-// Funciones API
+// ======================================================
+// FUNCIONES API
+// ======================================================
+
 export async function getResultados() {
   return await apiCatch('/league/matches')
 }
@@ -332,14 +356,31 @@ export async function deleteResultado(id) {
   return await apiCatch(`/league/matches/${id}`, 'DELETE')
 }
 
-// JWT
-export function parseJwt(token) {
-  if (!token) return null
-  const payload = token.split('.')[1]
-  return JSON.parse(atob(payload))
+export async function clearJornadaResultados(jornada) {
+  return await apiCatch(`/league/matches/jornada/${jornada}/clear`, 'PUT')
 }
 
-// Jornada actual
+// ======================================================
+// JWT
+// ======================================================
+
+export function parseJwt(token) {
+  if (!token) return null
+
+  try {
+    const payload = token.split('.')[1]
+
+    return JSON.parse(atob(payload))
+  } catch (error) {
+    console.error('Token JWT inválido:', error)
+    return null
+  }
+}
+
+// ======================================================
+// JORNADA ACTUAL
+// ======================================================
+
 export function getJornadaActual() {
   return Number(localStorage.getItem('jornadaActual') || '1')
 }
