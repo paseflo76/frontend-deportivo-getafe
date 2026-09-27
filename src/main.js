@@ -9,7 +9,7 @@ import { Perfil } from './pages/perfil/perfil'
 import { Calendario } from './pages/Jornadas/Jornadas'
 import { Clasificacion } from './pages/clasificacion/Clasificacion'
 import { Stats } from './pages/stats'
-import { Cronicas } from './pages/cronicas/cronicas'
+import { Cronicas } from './pages/Cronicas/Cronicas'
 
 const routes = {
   home: Home,
