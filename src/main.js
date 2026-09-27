@@ -9,7 +9,7 @@ import { Perfil } from './pages/perfil/perfil'
 import { Calendario } from './pages/Jornadas/Jornadas'
 import { Clasificacion } from './pages/clasificacion/Clasificacion'
 import { Stats } from './pages/stats'
-import { Cronicas } from './pages/Cronicas.js/Cronicas'
+import { Cronicas } from './pages/cronicas/cronicas'
 
 const routes = {
   home: Home,
@@ -19,7 +19,7 @@ const routes = {
   clasificacion: Clasificacion,
   jornadas: Calendario,
   stats: Stats,
-  cronicas: Cronicas
+  Cronicas: Cronicas
 }
 
 export const navigate = async (path) => {
