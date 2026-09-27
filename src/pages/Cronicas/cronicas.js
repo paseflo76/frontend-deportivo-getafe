@@ -61,6 +61,8 @@ export async function Cronicas() {
     const resultadosJornada = resultados.filter(
       (resultado) => Number(resultado.jornada) === Number(jornada)
     )
+    console.log('RESULTADOS JORNADA:', resultadosJornada)
+    console.log('PARTIDOS CALENDARIO:', partidos)
 
     const titulo = document.createElement('h1')
     titulo.textContent = 'CRÓNICAS'
