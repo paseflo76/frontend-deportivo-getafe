@@ -128,6 +128,8 @@ export async function Stats() {
 
       currentId = null
 
+      selectValor.value = '0'
+
       mostrar()
     })
 
