@@ -1,6 +1,7 @@
 import { navigate } from '../../main'
 import { Admin } from '../../pages/admin/admin'
 import { Clasificacion } from '../../pages/clasificacion/Clasificacion'
+import { Cronicas } from '../../pages/Cronicas/Cronicas'
 import { Home } from '../../pages/Home/Home'
 import { Calendario } from '../../pages/Jornadas/Jornadas'
 import { LoginRegister } from '../../pages/LoginRegister/LoginRegister'
@@ -72,6 +73,7 @@ export const Header = () => {
     { texto: 'Home', path: 'home', function: Home },
     { texto: 'Clasificación', path: 'clasificacion', function: Clasificacion },
     { texto: 'Calendario', path: 'jornadas', function: Calendario },
+    { texto: 'Crónicas', path: 'cronicas', function: Cronicas },
     { texto: 'Editar', path: 'admin', function: Admin },
     { texto: 'Login', path: 'login', function: LoginRegister },
     { texto: 'Perfil', path: 'perfil', function: Perfil },
