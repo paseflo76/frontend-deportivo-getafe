@@ -18,8 +18,9 @@ header {
   justify-content: space-between;
 }
 nav {
-  gap: 30px;
+  gap: 18px;
   display: flex;
+  align-items: center;
 }
 nav > a {
   color: black;
@@ -31,7 +32,7 @@ nav > a {
   justify-content: center;
 }
 .decoration {
-  width: 50%;
+  width: 40%;
   display: flex;
   justify-content: space-around;
 }
