@@ -373,6 +373,30 @@ export async function resetLeague() {
 }
 
 // ======================================================
+// CRÓNICAS
+// ======================================================
+
+export async function getCronicas() {
+  return await apiCatch('/cronicas')
+}
+
+export async function getCronica(jornada) {
+  return await apiCatch(`/cronicas/${jornada}`)
+}
+
+export async function saveCronica(data) {
+  return await apiCatch('/cronicas', 'POST', data)
+}
+
+export async function updateCronica(jornada, data) {
+  return await apiCatch(`/cronicas/${jornada}`, 'PUT', data)
+}
+
+export async function deleteCronica(jornada) {
+  return await apiCatch(`/cronicas/${jornada}`, 'DELETE')
+}
+
+// ======================================================
 // JWT
 // ======================================================
 
