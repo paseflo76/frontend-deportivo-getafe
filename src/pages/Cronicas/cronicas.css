@@ -1,251 +1,890 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Roboto+Condensed:wght@300;400;500;600;700&display=swap');
+
+/* ======================================================
+   GENERAL
+====================================================== */
+
 .cronicas-container {
-  width: min(1100px, 92%);
+  width: min(1150px, 94%);
   margin: 0 auto;
-  padding: 30px 0 50px;
+  padding: 20px 0 60px;
+  font-family: 'Roboto Condensed', sans-serif;
+  color: #111;
 }
 
-.cronicas-container > h1 {
-  text-align: center;
-  margin-bottom: 25px;
+.cronicas-container * {
+  box-sizing: border-box;
 }
 
-/* ============================= */
-/* NAVEGACIÓN */
-/* ============================= */
+/* ======================================================
+   CABECERA PERIÓDICO
+====================================================== */
 
-.cronicas-navegacion {
-  display: flex;
-  justify-content: center;
+.periodico-header {
+  background: #111;
+  color: white;
+  border-bottom: 6px solid #e30613;
+  margin-bottom: 20px;
+}
+
+.periodico-header-inner {
+  min-height: 125px;
+  display: grid;
+  grid-template-columns: 120px 1fr 120px;
   align-items: center;
-  gap: 25px;
-  margin-bottom: 30px;
+  gap: 20px;
+  padding: 15px 25px;
 }
 
-.cronicas-navegacion button {
-  border: 0;
-  padding: 8px 16px;
-  cursor: pointer;
-  border-radius: 6px;
-}
-
-.cronicas-navegacion button:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
-.cronicas-navegacion span {
-  font-weight: 700;
-  font-size: 1.2rem;
-}
-
-/* ============================= */
-/* CABECERA */
-/* ============================= */
-
-.cronica-cabecera {
+.periodico-balón {
+  font-size: 4rem;
   text-align: center;
-  padding: 35px 25px;
-  margin-bottom: 30px;
-  border-radius: 12px;
-  background: #f2f2f2;
 }
 
-.cronica-jornada {
-  font-size: 0.85rem;
-  font-weight: 700;
+.periodico-marca {
+  text-align: center;
+}
+
+.periodico-marca span {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 4px;
+  font-weight: 600;
+}
+
+.periodico-marca h1 {
+  margin: 3px 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  letter-spacing: 2px;
+  line-height: 0.95;
+}
+
+.periodico-marca small {
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 3px;
+  color: #ddd;
+}
+
+.periodico-jornada {
+  border-left: 1px solid #555;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.periodico-jornada span {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.8rem;
   letter-spacing: 2px;
 }
 
-.cronica-cabecera h2 {
-  font-size: 2rem;
-  margin: 15px 0 8px;
+.periodico-jornada strong {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 4rem;
+  line-height: 1;
 }
 
-.cronica-fecha {
-  opacity: 0.7;
-}
+/* ======================================================
+   NAVEGACIÓN
+====================================================== */
 
-.cronica-resumen {
-  max-width: 750px;
-  margin: 20px auto 0;
-  line-height: 1.6;
-}
-
-/* ============================= */
-/* PARTIDOS */
-/* ============================= */
-
-.cronicas-partidos {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-
-.cronica-partido {
-  padding: 22px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  background: white;
-}
-
-.cronica-equipos {
+.cronicas-navegacion {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
+  margin: 20px 0 35px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  background: white;
+}
+
+.btn-jornada {
+  min-height: 58px;
+  padding: 8px 20px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
   gap: 12px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+}
+
+.btn-jornada:first-child {
+  justify-self: start;
+}
+
+.btn-jornada:last-child {
+  justify-self: end;
+}
+
+.btn-jornada span {
+  font-size: 2rem;
+}
+
+.btn-jornada small {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.btn-jornada:hover:not(:disabled) {
+  background: #eee;
+}
+
+.btn-jornada:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.jornada-centro {
+  padding: 0 30px;
   text-align: center;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
 }
 
-.cronica-equipos strong {
-  font-size: 1.5rem;
-  white-space: nowrap;
+.jornada-centro span {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
 }
 
-.cronica-partido p {
-  margin-top: 18px;
-  line-height: 1.6;
+.jornada-centro strong {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
 }
 
-.sin-cronica {
-  opacity: 0.5;
-  font-style: italic;
-}
+/* ======================================================
+   TITULAR
+====================================================== */
 
-/* ============================= */
-/* DESCANSO */
-/* ============================= */
-
-.equipo-descansa {
-  margin: 25px 0;
-  padding: 18px;
+.titular-jornada {
   text-align: center;
-  border-radius: 10px;
-  background: #f2f2f2;
+  padding: 15px 20px 30px;
 }
 
-.equipo-descansa span {
-  display: block;
-  font-size: 0.8rem;
-  font-weight: 700;
+.titular-linea {
+  height: 3px;
+  background: #111;
+  width: 100%;
+  margin: 5px 0 20px;
+}
+
+.trofeo-titular {
+  font-size: 3rem;
   margin-bottom: 5px;
 }
 
-/* ============================= */
-/* DATOS */
-/* ============================= */
-
-.datos-jornada {
-  margin-top: 35px;
-  padding: 25px;
-  border-radius: 12px;
-  background: #f2f2f2;
+.etiqueta-seccion {
+  display: inline-block;
+  background: #111;
+  color: white;
+  padding: 5px 14px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
 }
 
-.datos-jornada h2 {
+.titular-jornada h2 {
+  max-width: 950px;
+  margin: 15px auto 10px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.titular-jornada p {
+  max-width: 800px;
+  margin: 15px auto;
+  font-size: 1.15rem;
+  line-height: 1.55;
+}
+
+.fecha-jornada {
+  display: block;
+  margin-top: 15px;
+  color: #666;
+  font-family: 'Oswald', sans-serif;
+}
+
+/* ======================================================
+   CABECERAS DE SECCIÓN
+====================================================== */
+
+.seccion-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  border-top: 4px solid #111;
+  border-bottom: 1px solid #111;
+  padding: 12px 0;
+}
+
+.seccion-cabecera h2 {
+  margin: 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  letter-spacing: 1px;
+}
+
+.seccion-cabecera span {
+  font-size: 1.3rem;
+}
+
+/* ======================================================
+   PARTIDO ESTRELLA
+====================================================== */
+
+.partido-estrella {
+  margin-bottom: 45px;
+}
+
+.estrella-contenido {
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+.estrella-titulo {
   text-align: center;
+  padding: 20px 15px 10px;
+}
+
+.estrella-titulo > span {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: #777;
+}
+
+.estrella-titulo h3 {
+  margin: 8px 0 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.3rem);
+}
+
+.estrella-titulo h3 b {
+  margin: 0 15px;
+  color: #e30613;
+  font-size: 1.5rem;
+}
+
+.marcador-estrella {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 30px;
+  padding: 25px 35px;
+  background: #f4f4f4;
+}
+
+.equipo-estrella {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.equipo-estrella strong {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.escudo {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+
+.escudo-estrella {
+  width: 105px;
+  height: 105px;
+}
+
+.resultado-estrella {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 8vw, 6.5rem);
+  line-height: 1;
+}
+
+.resultado-estrella b {
+  color: #e30613;
+}
+
+.imagen-estrella {
+  width: 100%;
+  max-height: 560px;
+  overflow: hidden;
+}
+
+.imagen-estrella img {
+  width: 100%;
+  display: block;
+  max-height: 560px;
+  object-fit: cover;
+}
+
+.cronica-estrella-texto {
+  padding: 30px 8%;
+}
+
+.cronica-estrella-texto h3 {
+  margin: 0 0 15px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  border-bottom: 2px solid #111;
+  padding-bottom: 7px;
+}
+
+.cronica-estrella-texto p {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.75;
+  white-space: pre-line;
+}
+
+/* ======================================================
+   RESULTADOS
+====================================================== */
+
+.resultados-jornada {
+  margin-bottom: 40px;
+}
+
+.imagen-resultados {
+  margin-bottom: 25px;
+  max-height: 450px;
+  overflow: hidden;
+}
+
+.imagen-resultados img {
+  display: block;
+  width: 100%;
+  max-height: 450px;
+  object-fit: cover;
+}
+
+.lista-resultados {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: #bbb;
+  border: 1px solid #bbb;
+}
+
+.resultado-card {
+  background: white;
+  padding: 20px;
+}
+
+.resultado-equipos {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 15px;
+}
+
+.resultado-equipo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.resultado-equipo:first-child {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.resultado-equipo.visitante {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.resultado-equipo .escudo {
+  width: 45px;
+  height: 45px;
+}
+
+.resultado-marcador {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.6rem;
+  min-width: 75px;
+  text-align: center;
+}
+
+.resultado-card p {
+  border-top: 1px solid #ddd;
+  margin: 18px 0 0;
+  padding-top: 15px;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+/* ======================================================
+   DESCANSO
+====================================================== */
+
+.equipo-descansa {
+  margin: 30px 0;
+  padding: 20px;
+  background: #f1f1f1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.equipo-descansa span {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+}
+
+.equipo-descansa strong {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+}
+
+/* ======================================================
+   DATOS
+====================================================== */
+
+.datos-jornada {
+  margin: 45px 0;
 }
 
 .datos-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+  gap: 1px;
+  background: #bbb;
+  border: 1px solid #bbb;
 }
 
 .datos-grid div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background: white;
+  padding: 25px 10px;
   text-align: center;
 }
 
 .datos-grid strong {
-  font-size: 1.7rem;
+  display: block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  line-height: 1;
 }
 
 .datos-grid span {
-  font-size: 0.85rem;
+  display: block;
+  margin-top: 8px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
 }
 
-/* ============================= */
-/* ADMIN */
-/* ============================= */
+/* ======================================================
+   PLACEHOLDER ESCUDO
+====================================================== */
+
+.escudo-placeholder {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eee;
+  border-radius: 50%;
+}
+
+/* ======================================================
+   ADMIN
+====================================================== */
 
 .cronica-admin {
-  margin-top: 40px;
+  margin-top: 60px;
   padding: 30px;
-  border-radius: 12px;
-  background: #f5f5f5;
+  background: #f3f3f3;
+  border-top: 5px solid #111;
 }
 
-.cronica-admin h2 {
-  margin-top: 0;
+.admin-titulo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.admin-titulo > span {
+  font-size: 2rem;
+}
+
+.admin-titulo small {
+  font-family: 'Oswald', sans-serif;
+  color: #777;
+  letter-spacing: 2px;
+}
+
+.admin-titulo h2 {
+  margin: 2px 0 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
 }
 
 .cronica-admin label {
   display: block;
-  margin-top: 18px;
-  margin-bottom: 6px;
-  font-weight: 700;
+  margin: 20px 0 7px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
 }
 
-.cronica-admin input,
+.cronica-admin input[type='text'],
 .cronica-admin textarea {
   width: 100%;
-  box-sizing: border-box;
   padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-family: inherit;
+  border: 1px solid #bbb;
+  background: white;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 1rem;
+  resize: vertical;
 }
 
+.cronica-admin input[type='text']:focus,
+.cronica-admin textarea:focus {
+  outline: 2px solid #111;
+}
+
+/* ======================================================
+   IMÁGENES ADMIN
+====================================================== */
+
+.imagenes-admin {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+  margin-top: 10px;
+}
+
+.imagen-admin-campo {
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.imagen-admin-campo input[type='file'] {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.preview-admin {
+  display: block;
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+}
+
+.preview-admin.vacio {
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eee;
+  color: #777;
+  font-family: 'Oswald', sans-serif;
+}
+
+/* ======================================================
+   EDITOR
+====================================================== */
+
 .editor-partidos {
-  margin-top: 30px;
+  margin-top: 35px;
+}
+
+.editor-partidos > h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  border-bottom: 2px solid #111;
+  padding-bottom: 8px;
 }
 
 .editor-partido {
-  margin-top: 25px;
+  background: white;
+  border: 1px solid #ccc;
+  margin-top: 20px;
+  padding: 20px;
 }
 
-.editor-partido h3 {
-  font-size: 1rem;
+.editor-partido-cabecera {
+  display: grid;
+  grid-template-columns: 50px 1fr 50px;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.escudo-editor {
+  width: 45px;
+  height: 45px;
+}
+
+.editor-partido-cabecera h4 {
+  margin: 0;
+  text-align: center;
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+}
+
+.editor-partido-cabecera h4 span {
+  color: #e30613;
+  margin: 0 8px;
+}
+
+.editor-partido textarea {
+  min-height: 140px;
+}
+
+/* ======================================================
+   BOTONES ADMIN
+====================================================== */
+
+.admin-botones {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 25px;
 }
 
 .cronica-admin button {
-  margin-top: 25px;
-  padding: 12px 20px;
   border: 0;
-  border-radius: 6px;
+  padding: 14px 22px;
   cursor: pointer;
-  font-weight: 700;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.btn-guardar {
+  background: #111;
+  color: white;
+}
+
+.btn-guardar:hover {
+  background: #333;
 }
 
 .btn-eliminar {
-  margin-left: 10px;
+  background: #e30613;
+  color: white;
 }
 
-/* ============================= */
-/* MÓVIL */
-/* ============================= */
+.btn-eliminar:hover {
+  background: #b8000b;
+}
 
-@media (max-width: 700px) {
-  .cronicas-partidos {
+.cronica-admin button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.sin-cronica {
+  color: #777;
+  font-style: italic;
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media (max-width: 800px) {
+  .periodico-header-inner {
+    grid-template-columns: 70px 1fr 70px;
+    padding: 15px 10px;
+    gap: 5px;
+  }
+
+  .periodico-balón {
+    font-size: 2.5rem;
+  }
+
+  .periodico-jornada strong {
+    font-size: 3rem;
+  }
+
+  .periodico-marca span {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+  }
+
+  .periodico-marca small {
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+  }
+
+  .marcador-estrella {
+    gap: 10px;
+    padding: 20px 10px;
+  }
+
+  .escudo-estrella {
+    width: 75px;
+    height: 75px;
+  }
+
+  .equipo-estrella strong {
+    font-size: 0.9rem;
+  }
+
+  .lista-resultados {
     grid-template-columns: 1fr;
+  }
+
+  .imagenes-admin {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .cronicas-container {
+    width: 96%;
+  }
+
+  .periodico-header-inner {
+    grid-template-columns: 45px 1fr 55px;
+  }
+
+  .periodico-balón {
+    font-size: 1.8rem;
+  }
+
+  .periodico-marca h1 {
+    font-size: 2.3rem;
+  }
+
+  .periodico-marca span {
+    font-size: 0.5rem;
+  }
+
+  .periodico-marca small {
+    display: none;
+  }
+
+  .periodico-jornada strong {
+    font-size: 2.3rem;
+  }
+
+  .cronicas-navegacion {
+    margin-bottom: 25px;
+  }
+
+  .btn-jornada {
+    padding: 8px;
+  }
+
+  .btn-jornada small {
+    display: none;
+  }
+
+  .jornada-centro {
+    padding: 0 20px;
+  }
+
+  .titular-jornada h2 {
+    font-size: 2.5rem;
+  }
+
+  .seccion-cabecera h2 {
+    font-size: 2rem;
+  }
+
+  .marcador-estrella {
+    grid-template-columns: 1fr auto 1fr;
+  }
+
+  .resultado-estrella {
+    font-size: 3.5rem;
+    gap: 5px;
+  }
+
+  .escudo-estrella {
+    width: 60px;
+    height: 60px;
+  }
+
+  .equipo-estrella strong {
+    font-size: 0.75rem;
+  }
+
+  .estrella-titulo h3 {
+    font-size: 1.8rem;
+  }
+
+  .estrella-titulo h3 b {
+    margin: 0 5px;
+    font-size: 1rem;
+  }
+
+  .resultado-equipos {
+    gap: 7px;
+  }
+
+  .resultado-equipo {
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.75rem;
+  }
+
+  .resultado-equipo:first-child,
+  .resultado-equipo.visitante {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .resultado-equipo .escudo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .resultado-marcador {
+    font-size: 2.2rem;
+    min-width: 55px;
   }
 
   .datos-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
   }
 
-  .cronica-cabecera h2 {
-    font-size: 1.5rem;
+  .cronica-admin {
+    padding: 20px 15px;
   }
 
-  .cronica-equipos {
-    grid-template-columns: 1fr;
+  .editor-partido-cabecera {
+    grid-template-columns: 40px 1fr 40px;
   }
 
-  .cronica-equipos strong {
-    order: 2;
+  .editor-partido-cabecera h4 {
+    font-size: 0.8rem;
+  }
+
+  .escudo-editor {
+    width: 35px;
+    height: 35px;
   }
 }
