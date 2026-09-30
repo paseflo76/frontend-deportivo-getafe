@@ -8,40 +8,32 @@ import {
   parseJwt
 } from '../../utils/data.js'
 
-import { API_BASE, apiCatch } from '../../utils/fetch/fech.js'
+import { apiCatch } from '../../utils/fetch/fech.js'
 
 // ======================================================
 // ESCUDOS
 // ======================================================
-
-import arsenalGetafe from '../../assets/escudos/arsenal-getafe.png'
-import bravoGetafe from '../../assets/escudos/bravo-getafe.png'
-import celticDeEsparta from '../../assets/escudos/celtic-de-esparta.png'
-import chacaritasGetafe from '../../assets/escudos/chacaritas-getafe.png'
-import deportivoGetafe from '../../assets/escudos/deportivo-getafe.png'
-import geAirbus from '../../assets/escudos/ge-airbus.png'
-import losBrasas from '../../assets/escudos/los-brasas.png'
-import olimpicDeUcrania from '../../assets/escudos/olimpic-de-ucrania.png'
-import sanFrancisFc from '../../assets/escudos/san-francis-fc.png'
-import cafeterosFc from '../../assets/escudos/cafeteros-fc.png'
-import cervezasClub from '../../assets/escudos/cervezas-club.png'
-
 // ======================================================
-// MAPA DE ESCUDOS
+// ESCUDOS
 // ======================================================
 
 const escudos = {
-  'ARSENAL GETAFE': arsenalGetafe,
-  'BRAVO GETAFE': bravoGetafe,
-  'CELTIC DE ESPARTA': celticDeEsparta,
-  'CHACARITAS GETAFE': chacaritasGetafe,
-  'DEPORTIVO GETAFE': deportivoGetafe,
-  'G.E AIRBUS': geAirbus,
-  'LOS BRASAS': losBrasas,
-  'OLIMPIC DE UCRANIA': olimpicDeUcrania,
-  'SAN FRANCIS FC': sanFrancisFc,
-  'CAFETEROS FC': cafeterosFc,
-  'CERVEZAS CLUB': cervezasClub
+  'ARSENAL GETAFE': '/assets/escudos/arsenal-getafe.png',
+  'BRAVO GETAFE': '/assets/escudos/bravo-getafe.png',
+  'CELTIC DE ESPARTA': '/assets/escudos/celtic-de-esparta.png',
+  'CHACARITAS GETAFE': '/assets/escudos/chacaritas-getafe.png',
+  'DEPORTIVO GETAFE': '/assets/escudos/deportivo-getafe.png',
+  'G.E AIRBUS': '/assets/escudos/ge-airbus.png',
+  'LOS BRASAS': '/assets/escudos/los-brasas.png',
+  'OLIMPIC DE UCRANIA': '/assets/escudos/olimpic-de-ucrania.png',
+  'SAN FRANCIS FC': '/assets/escudos/san-francis-fc.png',
+  'CAFETEROS FC': '/assets/escudos/cafeteros-fc.png',
+  'CERVEZAS CLUB': '/assets/escudos/cervezas-club.png'
+}
+
+function getEscudo(nombre) {
+  const equipo = normalizarEquipo(nombre)
+  return escudos[equipo] || '/assets/escudos/insignia-de-escudo.png'
 }
 
 // ======================================================
