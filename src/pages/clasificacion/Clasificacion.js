@@ -54,7 +54,7 @@ async function sincronizarCalendario() {
   }
 }
 
-sincronizarCalendario()
+//sincronizarCalendario()
 // ======================================================
 // CLASIFICACIÓN
 // ======================================================
