@@ -3,6 +3,7 @@ import './cronicas.css'
 import {
   calendario,
   getResultados,
+  getCronicas,
   getJornadaActual,
   setJornadaActual,
   parseJwt
@@ -10,9 +11,6 @@ import {
 
 import { apiCatch } from '../../utils/fetch/fech.js'
 
-// ======================================================
-// ESCUDOS
-// ======================================================
 // ======================================================
 // ESCUDOS
 // ======================================================
@@ -29,11 +27,6 @@ const escudos = {
   'SAN FRANCIS FC': '/assets/escudos/san-francis-fc.png',
   'CAFETEROS FC': '/assets/escudos/cafeteros-fc.png',
   'CERVEZAS CLUB': '/assets/escudos/cervezas-club.png'
-}
-
-function getEscudo(nombre) {
-  const equipo = normalizarEquipo(nombre)
-  return escudos[equipo] || '/assets/escudos/insignia-de-escudo.png'
 }
 
 // ======================================================
@@ -58,12 +51,28 @@ export async function Cronicas() {
 
   main.appendChild(container)
 
+  // ======================================================
+  // RESULTADOS
+  // ======================================================
+
   let resultados = []
 
   try {
     resultados = await getResultados()
   } catch (error) {
     console.error('Error al obtener resultados:', error)
+  }
+
+  // ======================================================
+  // CRÓNICAS
+  // ======================================================
+
+  let cronicas = []
+
+  try {
+    cronicas = await getCronicas()
+  } catch (error) {
+    console.error('Error al obtener las crónicas:', error)
   }
 
   // ======================================================
@@ -75,13 +84,8 @@ export async function Cronicas() {
 
     const partidosCalendario = calendario[jornada - 1] || []
 
-    let cronica = null
-
-    try {
-      cronica = await obtenerCronica(jornada)
-    } catch (error) {
-      cronica = null
-    }
+    const cronica =
+      cronicas.find((item) => Number(item.jornada) === Number(jornada)) || null
 
     const partidos = partidosCalendario.filter(
       (partido) => partido.local && partido.visitante
@@ -308,17 +312,13 @@ export async function Cronicas() {
             <div class="resultado-estrella">
 
               <span>
-                ${resultadoEstrella ? `${resultadoEstrella.golesLocal}` : '-'}
+                ${resultadoEstrella ? resultadoEstrella.golesLocal : '-'}
               </span>
 
               <b>:</b>
 
               <span>
-                ${
-                  resultadoEstrella
-                    ? `${resultadoEstrella.golesVisitante}`
-                    : '-'
-                }
+                ${resultadoEstrella ? resultadoEstrella.golesVisitante : '-'}
               </span>
 
             </div>
@@ -566,8 +566,10 @@ function crearPanelAdmin(container, jornada, partidos, cronica) {
   admin.innerHTML = `
     <div class="admin-titulo">
       <span>⚙</span>
+
       <div>
         <small>ADMINISTRACIÓN</small>
+
         <h2>
           ${cronica ? 'EDITAR CRÓNICA' : 'CREAR CRÓNICA'}
         </h2>
@@ -669,7 +671,10 @@ function crearPanelAdmin(container, jornada, partidos, cronica) {
 
     <div class="admin-botones">
 
-      <button id="guardar-cronica" class="btn-guardar">
+      <button
+        id="guardar-cronica"
+        class="btn-guardar"
+      >
         ${cronica ? 'ACTUALIZAR CRÓNICA' : 'GUARDAR CRÓNICA'}
       </button>
 
@@ -782,7 +787,6 @@ function crearPanelAdmin(container, jornada, partidos, cronica) {
     }
 
     guardar.disabled = true
-
     guardar.textContent = 'GUARDANDO...'
 
     try {
@@ -790,9 +794,7 @@ function crearPanelAdmin(container, jornada, partidos, cronica) {
 
       const metodo = cronica ? 'PUT' : 'POST'
 
-      const endpoint = cronica
-        ? `/api/v2/cronicas/${jornada}`
-        : '/api/v2/cronicas'
+      const endpoint = cronica ? `/cronicas/${jornada}` : '/cronicas'
 
       await apiCatch(endpoint, metodo, formData, token)
 
@@ -827,7 +829,7 @@ function crearPanelAdmin(container, jornada, partidos, cronica) {
       try {
         const token = localStorage.getItem('token')
 
-        await apiCatch(`/api/v2/cronicas/${jornada}`, 'DELETE', null, token)
+        await apiCatch(`/cronicas/${jornada}`, 'DELETE', null, token)
 
         alert('Crónica eliminada correctamente')
 
@@ -864,16 +866,6 @@ function mostrarPreview(input, preview) {
 
     preview.replaceWith(img)
   }
-}
-
-// ======================================================
-// OBTENER CRÓNICA
-// ======================================================
-
-async function obtenerCronica(jornada) {
-  const token = localStorage.getItem('token')
-
-  return await apiCatch(`/api/v2/cronicas/${jornada}`, 'GET', null, token)
 }
 
 // ======================================================
