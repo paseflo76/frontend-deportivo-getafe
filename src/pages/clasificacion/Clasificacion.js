@@ -1,608 +1,528 @@
 // clasificacion.js corregido para estructura de partidos horizontal
 
-import './clasificacion.css'
-
-import { Button } from '../../components/button/button.js'
-
-import {
-  calendario,
-  getJornadaActual,
-  setJornadaActual,
-  getResultados,
-  saveResultado,
-  saveResultadoNew,
-  clearJornadaResultados,
-  resetLeague,
-  parseJwt,
-  apiCatch
-} from '../../utils/data.js'
+const mongoose = require('mongoose')
+const Match = require('../models/Match')
 
 // ======================================================
-// SANCIONES
+// OBTENER TODOS LOS PARTIDOS
 // ======================================================
 
-async function getSanciones() {
-  return await apiCatch('/sanciones/teams')
+const getAllMatches = async (req, res) => {
+  try {
+    const matches = await Match.find().sort({
+      jornada: 1,
+      fecha: 1
+    })
+
+    res.status(200).json(matches)
+  } catch (err) {
+    console.error('Error obteniendo partidos:', err)
+
+    res.status(500).json({
+      message: 'Error obteniendo partidos',
+      error: err.message
+    })
+  }
 }
 
-async function saveSancion(nombre, puntos) {
-  return await apiCatch('/sanciones/penalizacion', 'PUT', {
-    nombre,
-    puntos
-  })
+// ======================================================
+// OBTENER PARTIDOS DE UNA JORNADA
+// ======================================================
+
+const getMatchesByJornada = async (req, res) => {
+  try {
+    const { jornada } = req.params
+
+    const matches = await Match.find({
+      jornada: Number(jornada)
+    }).sort({
+      fecha: 1
+    })
+
+    res.status(200).json(matches)
+  } catch (err) {
+    console.error('Error obteniendo jornada:', err)
+
+    res.status(500).json({
+      message: 'Error obteniendo jornada',
+      error: err.message
+    })
+  }
 }
+
+// ======================================================
+// CREAR PARTIDO
+// ======================================================
+
+const createMatch = async (req, res) => {
+  try {
+    const payload = {
+      jornada: Number(req.body.jornada),
+      fecha: req.body.fecha,
+      local: req.body.local,
+      visitante: req.body.visitante,
+      golesLocal: req.body.golesLocal ?? null,
+      golesVisitante: req.body.golesVisitante ?? null
+    }
+
+    // Evitar partidos duplicados
+    const exists = await Match.findOne({
+      jornada: payload.jornada,
+      local: payload.local,
+      visitante: payload.visitante
+    })
+
+    if (exists) {
+      return res.status(409).json({
+        message: 'El partido ya existe',
+        partido: exists
+      })
+    }
+
+    const match = new Match(payload)
+
+    const saved = await match.save()
+
+    res.status(201).json(saved)
+  } catch (err) {
+    console.error('Error creando partido:', err)
+
+    res.status(500).json({
+      message: 'Error creando partido',
+      error: err.message
+    })
+  }
+}
+
+// ======================================================
+// ACTUALIZAR PARTIDO
+// ======================================================
+
+const updateMatch = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const payload = {
+      jornada:
+        req.body.jornada !== undefined ? Number(req.body.jornada) : undefined,
+
+      fecha: req.body.fecha,
+
+      local: req.body.local,
+
+      visitante: req.body.visitante,
+
+      golesLocal:
+        req.body.golesLocal !== undefined ? req.body.golesLocal : null,
+
+      golesVisitante:
+        req.body.golesVisitante !== undefined ? req.body.golesVisitante : null
+    }
+
+    // Evitar duplicados al modificar
+    if (payload.jornada && payload.local && payload.visitante) {
+      const duplicate = await Match.findOne({
+        _id: { $ne: id },
+        jornada: payload.jornada,
+        local: payload.local,
+        visitante: payload.visitante
+      })
+
+      if (duplicate) {
+        return res.status(409).json({
+          message: 'Ya existe otro partido con esos datos'
+        })
+      }
+    }
+
+    const updated = await Match.findByIdAndUpdate(id, payload, {
+      new: true
+    })
+
+    if (!updated) {
+      return res.status(404).json({
+        message: 'Partido no encontrado'
+      })
+    }
+
+    res.status(200).json(updated)
+  } catch (err) {
+    console.error('Error actualizando partido:', err)
+
+    res.status(500).json({
+      message: 'Error actualizando partido',
+      error: err.message
+    })
+  }
+}
+
+// ======================================================
+// BORRAR PARTIDO
+// ======================================================
+
+const deleteMatch = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const deleted = await Match.findByIdAndDelete(id)
+
+    if (!deleted) {
+      return res.status(404).json({
+        message: 'Partido no encontrado'
+      })
+    }
+
+    res.status(200).json({
+      message: 'Partido eliminado correctamente'
+    })
+  } catch (err) {
+    console.error('Error eliminando partido:', err)
+
+    res.status(500).json({
+      message: 'Error eliminando partido',
+      error: err.message
+    })
+  }
+}
+
+// ======================================================
+// BORRAR RESULTADOS DE UNA JORNADA
+// ======================================================
+
+const clearJornadaResults = async (req, res) => {
+  try {
+    const jornada = Number(req.params.jornada)
+
+    if (!Number.isInteger(jornada) || jornada < 1) {
+      return res.status(400).json({
+        message: 'Jornada no válida'
+      })
+    }
+
+    const result = await Match.updateMany(
+      {
+        jornada
+      },
+      {
+        $set: {
+          golesLocal: null,
+          golesVisitante: null
+        }
+      }
+    )
+
+    res.status(200).json({
+      message: `Resultados de la jornada ${jornada} borrados`,
+      modificados: result.modifiedCount
+    })
+  } catch (err) {
+    console.error('Error borrando resultados de jornada:', err)
+
+    res.status(500).json({
+      message: 'Error borrando resultados',
+      error: err.message
+    })
+  }
+}
+
+// ======================================================
+// REINICIAR TODA LA LIGA
+// ======================================================
+
+const resetLeague = async (req, res) => {
+  try {
+    const result = await Match.updateMany(
+      {},
+      {
+        $set: {
+          golesLocal: null,
+          golesVisitante: null
+        }
+      }
+    )
+
+    res.status(200).json({
+      message: 'Liga reiniciada correctamente',
+      modificados: result.modifiedCount
+    })
+  } catch (err) {
+    console.error('Error reiniciando liga:', err)
+
+    res.status(500).json({
+      message: 'Error reiniciando liga',
+      error: err.message
+    })
+  }
+}
+
 // ======================================================
 // SINCRONIZAR CALENDARIO
 // ======================================================
 
-async function sincronizarCalendario() {
+const syncCalendar = async (req, res) => {
+  const session = await mongoose.startSession()
+
   try {
-    const resultado = await apiCatch('/league/matches/sync-calendar', 'POST', {
-      calendario
-    })
-
-    console.log('CALENDARIO SINCRONIZADO:', resultado)
-
-    alert(
-      `Calendario sincronizado correctamente.\n\n` +
-        `Partidos creados: ${resultado.partidos}\n` +
-        `Resultados conservados: ${resultado.resultadosConservados}`
-    )
-  } catch (error) {
-    console.error('ERROR SINCRONIZANDO:', error)
-    alert('Error al sincronizar el calendario')
-  }
-}
-// ======================================================
-// CLASIFICACIÓN
-// ======================================================
-
-export async function Clasificacion() {
-  const main = document.querySelector('main')
-
-  if (!main) return
-
-  main.innerHTML = ''
-
-  const container = document.createElement('div')
-  container.id = 'clasificacion'
-
-  main.appendChild(container)
-
-  await renderClasificacion(container)
-
-  if (window._clasificacionListener) {
-    window.removeEventListener(
-      'resultadosUpdated',
-      window._clasificacionListener
-    )
-
-    window._clasificacionListener = null
-  }
-
-  const handler = async () => {
-    await renderClasificacion(container)
-  }
-
-  window._clasificacionListener = handler
-
-  window.addEventListener('resultadosUpdated', handler)
-}
-
-// ======================================================
-// RENDER CLASIFICACIÓN
-// ======================================================
-
-async function renderClasificacion(container) {
-  container.innerHTML = ''
-
-  const resultados = await getResultados()
-
-  console.log('========== COMPROBACIÓN RESULTADOS ==========')
-
-  resultados.forEach((r) => {
-    console.log({
-      id: r._id,
-      jornada: r.jornada,
-      local: r.local,
-      visitante: r.visitante,
-      golesLocal: r.golesLocal,
-      golesVisitante: r.golesVisitante
-    })
-  })
-
-  console.log('=============================================')
-
-  const jornada = getJornadaActual()
-
-  const user = parseJwt(localStorage.getItem('token'))
-
-  const sanciones = await getSanciones()
-
-  const equipos = {}
-
-  // ====================================================
-  // CREAR EQUIPOS
-  // ====================================================
-
-  calendario.flat().forEach((m) => {
-    if (m.descansa) return
-
-    if (m.local && !equipos[m.local]) {
-      equipos[m.local] = {
-        equipo: m.local,
-        puntos: 0,
-        sancion: 0,
-        gf: 0,
-        gc: 0,
-        id: null,
-        jugados: 0,
-        ganados: 0,
-        empatados: 0,
-        perdidos: 0
-      }
-    }
-
-    if (m.visitante && !equipos[m.visitante]) {
-      equipos[m.visitante] = {
-        equipo: m.visitante,
-        puntos: 0,
-        sancion: 0,
-        gf: 0,
-        gc: 0,
-        id: null,
-        jugados: 0,
-        ganados: 0,
-        empatados: 0,
-        perdidos: 0
-      }
-    }
-  })
-
-  // ====================================================
-  // CALCULAR CLASIFICACIÓN
-  // ====================================================
-
-  resultados.forEach((m) => {
-    if (m.descansa) return
-
-    const { local, visitante, golesLocal, golesVisitante, _id } = m
-
-    if (!equipos[local] || !equipos[visitante]) {
-      return
-    }
-
-    if (!equipos[local].id) {
-      equipos[local].id = _id
-    }
-
-    if (!equipos[visitante].id) {
-      equipos[visitante].id = _id
-    }
-
-    // Solo se contabilizan partidos con resultado
-    if (golesLocal != null && golesVisitante != null) {
-      equipos[local].gf += golesLocal
-      equipos[local].gc += golesVisitante
-
-      equipos[visitante].gf += golesVisitante
-      equipos[visitante].gc += golesLocal
-
-      equipos[local].jugados++
-      equipos[visitante].jugados++
-
-      if (golesLocal > golesVisitante) {
-        equipos[local].puntos += 3
-        equipos[local].ganados++
-
-        equipos[visitante].perdidos++
-      } else if (golesLocal < golesVisitante) {
-        equipos[visitante].puntos += 3
-        equipos[visitante].ganados++
-
-        equipos[local].perdidos++
-      } else {
-        equipos[local].puntos++
-        equipos[visitante].puntos++
-
-        equipos[local].empatados++
-        equipos[visitante].empatados++
-      }
-    }
-  })
-
-  // ====================================================
-  // APLICAR SANCIONES
-  // ====================================================
-
-  Object.values(equipos).forEach((e) => {
-    const s = sanciones.find((t) => t.nombre === e.equipo)
-
-    e.sancion = s ? s.penalizacion : 0
-
-    e.puntos -= e.sancion
-
-    if (e.puntos < 0) {
-      e.puntos = 0
-    }
-  })
-
-  // ====================================================
-  // TABLA
-  // ====================================================
-
-  const tablaWrapper = document.createElement('div')
-
-  tablaWrapper.className = 'tabla-wrapper'
-
-  container.appendChild(tablaWrapper)
-
-  const h2 = document.createElement('h2')
-
-  h2.textContent = `Jornada ${jornada}`
-
-  h2.style.textAlign = 'center'
-
-  tablaWrapper.appendChild(h2)
-
-  const table = document.createElement('table')
-
-  table.className = 'tabla-clasificacion'
-
-  table.innerHTML = `
-    <thead>
-      <tr>
-        <th>Pos</th>
-        <th>Equipo</th>
-        <th>Puntos</th>
-        <th>J</th>
-        <th>G</th>
-        <th>E</th>
-        <th>P</th>
-        <th>F</th>
-        <th>C</th>
-        <th>DIF</th>
-        <th>Sanción</th>
-      </tr>
-    </thead>
-  `
-
-  const tbody = document.createElement('tbody')
-
-  Object.values(equipos)
-    .sort(
-      (a, b) =>
-        b.puntos - a.puntos || b.gf - b.gc - (a.gf - a.gc) || b.gf - a.gf
-    )
-    .forEach((e, index) => {
-      const tr = document.createElement('tr')
-
-      if (index === 0) {
-        tr.classList.add('primero')
-      }
-
-      tr.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${e.equipo}</td>
-        <td>${e.puntos}</td>
-        <td>${e.jugados}</td>
-        <td>${e.ganados}</td>
-        <td>${e.empatados}</td>
-        <td>${e.perdidos}</td>
-        <td>${e.gf}</td>
-        <td>${e.gc}</td>
-        <td>${e.gf - e.gc}</td>
-      `
-
-      // ==================================================
-      // SANCIONES
-      // ==================================================
-
-      const sancionCell = document.createElement('td')
-
-      if (user?.rol === 'admin') {
-        const input = document.createElement('input')
-
-        input.type = 'number'
-        input.value = e.sancion
-
-        input.classList.add('input-sancion')
-
-        sancionCell.appendChild(input)
-
-        const btn = Button(sancionCell, 'Guardar', 'small', 'secondary')
-
-        btn.addEventListener('click', async () => {
-          const puntos = Number(input.value)
-
-          await saveSancion(e.equipo, puntos)
-
-          window.dispatchEvent(new Event('resultadosUpdated'))
-        })
-      } else {
-        sancionCell.textContent = e.sancion
-      }
-
-      tr.appendChild(sancionCell)
-
-      tbody.appendChild(tr)
-    })
-
-  table.appendChild(tbody)
-
-  tablaWrapper.appendChild(table)
-
-  // ====================================================
-  // PARTIDOS
-  // ====================================================
-
-  const partidosWrapper = document.createElement('div')
-
-  partidosWrapper.className = 'partidos-wrapper'
-
-  container.appendChild(partidosWrapper)
-
-  const jornadaArray = calendario[jornada - 1] || []
-
-  jornadaArray.forEach((m) => {
-    // ==================================================
-    // FECHA
-    // ==================================================
-
-    if (m.fecha) {
-      const fechaDiv = document.createElement('div')
-
-      fechaDiv.className = 'fecha'
-
-      fechaDiv.textContent = 'Fecha: ' + formatearFecha(m.fecha)
-
-      partidosWrapper.appendChild(fechaDiv)
-
-      return
-    }
-
-    const div = document.createElement('div')
-
-    div.className = 'partido'
+    const calendario = req.body.calendario
 
     // ==================================================
-    // DESCANSA
+    // COMPROBAR CALENDARIO
     // ==================================================
 
-    if (m.descansa) {
-      div.textContent = `Descansa: ${m.descansa}`
-    } else {
-      const guardado = resultados.find(
-        (r) => r.local === m.local && r.visitante === m.visitante
-      )
-
-      // ==================================================
-      // ADMIN
-      // ==================================================
-
-      if (user?.rol === 'admin') {
-        const inputL = document.createElement('input')
-
-        inputL.type = 'number'
-        inputL.min = 0
-
-        inputL.value = guardado?.golesLocal ?? ''
-
-        inputL.dataset.local = m.local
-
-        inputL.dataset.visitante = m.visitante
-
-        inputL.dataset.id = guardado?._id || ''
-
-        const inputV = document.createElement('input')
-
-        inputV.type = 'number'
-        inputV.min = 0
-
-        inputV.value = guardado?.golesVisitante ?? ''
-
-        inputV.dataset.local = m.local
-
-        inputV.dataset.visitante = m.visitante
-
-        inputV.dataset.id = guardado?._id || ''
-
-        const contenidoDiv = document.createElement('div')
-
-        contenidoDiv.className = 'contenido-partido'
-
-        const spanLocal = document.createElement('span')
-
-        spanLocal.className = 'equipo-local'
-
-        spanLocal.textContent = m.local
-
-        const spanGuion = document.createElement('span')
-
-        spanGuion.className = 'guion'
-
-        spanGuion.textContent = '-'
-
-        const spanVisitante = document.createElement('span')
-
-        spanVisitante.className = 'equipo-visitante'
-
-        spanVisitante.textContent = m.visitante
-
-        contenidoDiv.appendChild(spanLocal)
-
-        contenidoDiv.appendChild(inputL)
-
-        contenidoDiv.appendChild(spanGuion)
-
-        contenidoDiv.appendChild(inputV)
-
-        contenidoDiv.appendChild(spanVisitante)
-
-        div.appendChild(contenidoDiv)
-
-        const btnGuardar = Button(div, 'Guardar', 'secondary', 'small')
-
-        btnGuardar.addEventListener('click', async () => {
-          const local = inputL.dataset.local
-
-          const visitante = inputL.dataset.visitante
-
-          const golesLocal = Number(inputL.value)
-
-          const golesVisitante = Number(inputV.value)
-
-          const id = inputL.dataset.id
-
-          if (id) {
-            await saveResultado(id, golesLocal, golesVisitante)
-          } else {
-            await saveResultadoNew(
-              local,
-              visitante,
-              golesLocal,
-              golesVisitante,
-              jornada
-            )
-          }
-
-          window.dispatchEvent(new Event('resultadosUpdated'))
-        })
-      } else {
-        // ==================================================
-        // USUARIO NORMAL
-        // ==================================================
-
-        div.textContent = `${m.local} ${guardado?.golesLocal ?? '-'} - ${
-          guardado?.golesVisitante ?? '-'
-        } ${m.visitante}`
-      }
-    }
-
-    partidosWrapper.appendChild(div)
-  })
-
-  // ====================================================
-  // BOTONES DE ADMINISTRACIÓN
-  // ====================================================
-
-  if (user?.rol === 'admin') {
-    // ==================================================
-    // BORRAR RESULTADOS DE LA JORNADA
-    // ==================================================
-
-    Button(
-      partidosWrapper,
-      'Borrar Resultados Jornada',
-      'danger',
-      'small'
-    ).addEventListener('click', async () => {
-      const confirmar = confirm(
-        `¿Seguro que quieres borrar todos los resultados de la jornada ${jornada}?`
-      )
-
-      if (!confirmar) {
-        return
-      }
-
-      try {
-        await clearJornadaResultados(jornada)
-
-        window.dispatchEvent(new Event('resultadosUpdated'))
-      } catch (error) {
-        console.error('Error al borrar los resultados:', error)
-
-        alert('No se han podido borrar los resultados.')
-      }
-    })
-
-    // ==================================================
-    // REINICIAR LIGA
-    // SOLO APARECE EN JORNADA 22
-    // ==================================================
-
-    if (Number(jornada) === 22) {
-      Button(
-        partidosWrapper,
-        'REINICIAR LIGA',
-        'danger',
-        'small'
-      ).addEventListener('click', async () => {
-        const confirmar = confirm(
-          '⚠️ ¿ESTÁS SEGURO DE QUE QUIERES REINICIAR LA LIGA?\n\n' +
-            'Se borrarán TODOS los resultados de las 22 jornadas.\n\n' +
-            'Los partidos, equipos y calendario NO se eliminarán.\n\n' +
-            'La clasificación volverá a cero.\n\n' +
-            'Esta acción no se puede deshacer.'
-        )
-
-        if (!confirmar) {
-          return
-        }
-
-        try {
-          await resetLeague()
-
-          // Volvemos a la jornada 1
-          setJornadaActual(1)
-
-          window.dispatchEvent(new Event('resultadosUpdated'))
-        } catch (error) {
-          console.error('Error al reiniciar la liga:', error)
-
-          alert('No se ha podido reiniciar la liga.')
-        }
+    if (!Array.isArray(calendario) || calendario.length !== 22) {
+      return res.status(400).json({
+        message: 'El calendario debe contener exactamente 22 jornadas'
       })
     }
+
+    // ==================================================
+    // NORMALIZAR EQUIPOS
+    // ==================================================
+
+    const normalizarEquipo = (nombre) => {
+      if (!nombre) return nombre
+
+      if (nombre === 'G  EMPRESAS AIRBUS' || nombre === 'G EMPRESAS AIRBUS') {
+        return 'G.E AIRBUS'
+      }
+
+      return nombre
+    }
+
+    // ==================================================
+    // CONVERTIR FECHA
+    // 27-09-26 -> Date
+    // ==================================================
+
+    const convertirFecha = (fecha) => {
+      if (!fecha) return null
+
+      const partes = fecha.split('-')
+
+      if (partes.length !== 3) {
+        return null
+      }
+
+      const dia = Number(partes[0])
+      const mes = Number(partes[1])
+      const anio = Number(partes[2])
+
+      if (
+        !Number.isInteger(dia) ||
+        !Number.isInteger(mes) ||
+        !Number.isInteger(anio)
+      ) {
+        return null
+      }
+
+      return new Date(2000 + anio, mes - 1, dia)
+    }
+
+    // ==================================================
+    // OBTENER PARTIDOS ANTIGUOS
+    // ==================================================
+
+    const partidosExistentes = await Match.find()
+      .sort({
+        updatedAt: -1,
+        createdAt: -1
+      })
+      .lean()
+
+    // ==================================================
+    // CONSERVAR RESULTADOS VÁLIDOS
+    //
+    // Se utiliza LOCAL + VISITANTE como clave.
+    //
+    // No utilizamos la jornada porque algunos partidos
+    // antiguos estaban guardados en jornadas diferentes.
+    // ==================================================
+
+    const resultadosValidos = new Map()
+
+    for (const partido of partidosExistentes) {
+      if (!partido.local || !partido.visitante) {
+        continue
+      }
+
+      if (partido.golesLocal == null || partido.golesVisitante == null) {
+        continue
+      }
+
+      const local = normalizarEquipo(partido.local)
+
+      const visitante = normalizarEquipo(partido.visitante)
+
+      // No conservar partidos de VILLABETIS
+      if (local === 'VILLABETIS' || visitante === 'VILLABETIS') {
+        continue
+      }
+
+      const key = `${local}|${visitante}`
+
+      // Al estar ordenados por fecha de modificación,
+      // conservamos el resultado más reciente.
+      if (!resultadosValidos.has(key)) {
+        resultadosValidos.set(key, {
+          golesLocal: partido.golesLocal,
+          golesVisitante: partido.golesVisitante
+        })
+      }
+    }
+
+    // ==================================================
+    // CREAR NUEVO CALENDARIO
+    // ==================================================
+
+    const nuevosPartidos = []
+
+    for (let i = 0; i < calendario.length; i++) {
+      const jornada = i + 1
+
+      const jornadaArray = calendario[i]
+
+      // Buscar fecha de la jornada
+      const fechaItem = jornadaArray.find((item) => item.fecha)
+
+      const fecha = convertirFecha(fechaItem?.fecha)
+
+      for (const partido of jornadaArray) {
+        // Ignorar elemento de fecha
+        if (partido.fecha) {
+          continue
+        }
+
+        // Ignorar descanso
+        if (partido.descansa) {
+          continue
+        }
+
+        if (!partido.local || !partido.visitante) {
+          continue
+        }
+
+        const local = normalizarEquipo(partido.local)
+
+        const visitante = normalizarEquipo(partido.visitante)
+
+        // Seguridad adicional
+        if (local === 'VILLABETIS' || visitante === 'VILLABETIS') {
+          continue
+        }
+
+        const key = `${local}|${visitante}`
+
+        const resultado = resultadosValidos.get(key)
+
+        nuevosPartidos.push({
+          jornada,
+          fecha,
+          local,
+          visitante,
+          golesLocal: resultado?.golesLocal ?? null,
+          golesVisitante: resultado?.golesVisitante ?? null
+        })
+      }
+    }
+
+    // ==================================================
+    // COMPROBAR QUE HAY 110 PARTIDOS
+    // ==================================================
+
+    if (nuevosPartidos.length !== 110) {
+      return res.status(400).json({
+        message: 'El calendario generado no contiene exactamente 110 partidos',
+        partidosGenerados: nuevosPartidos.length
+      })
+    }
+
+    // ==================================================
+    // COMPROBAR DUPLICADOS
+    // ==================================================
+
+    const claves = new Set()
+
+    for (const partido of nuevosPartidos) {
+      const key =
+        `${partido.jornada}|` + `${partido.local}|` + `${partido.visitante}`
+
+      if (claves.has(key)) {
+        return res.status(400).json({
+          message: 'Se ha detectado un partido duplicado en el calendario',
+          partido
+        })
+      }
+
+      claves.add(key)
+    }
+
+    // ==================================================
+    // TRANSACCIÓN
+    // ==================================================
+
+    session.startTransaction()
+
+    await Match.deleteMany(
+      {},
+      {
+        session
+      }
+    )
+
+    await Match.insertMany(nuevosPartidos, {
+      session,
+      ordered: true
+    })
+
+    await session.commitTransaction()
+
+    // ==================================================
+    // RESULTADOS CONSERVADOS
+    // ==================================================
+
+    const resultadosConservados = nuevosPartidos.filter(
+      (partido) => partido.golesLocal != null && partido.golesVisitante != null
+    ).length
+
+    // ==================================================
+    // RESPUESTA
+    // ==================================================
+
+    res.status(200).json({
+      message: 'Calendario sincronizado correctamente',
+      jornadas: calendario.length,
+      partidos: nuevosPartidos.length,
+      resultadosConservados
+    })
+  } catch (err) {
+    console.error('Error sincronizando calendario:', err)
+
+    try {
+      await session.abortTransaction()
+    } catch (abortError) {
+      console.error('Error abortando la transacción:', abortError)
+    }
+
+    res.status(500).json({
+      message: 'Error al sincronizar calendario',
+      error: err.message
+    })
+  } finally {
+    await session.endSession()
   }
-
-  // ====================================================
-  // NAVEGACIÓN ENTRE JORNADAS
-  // ====================================================
-
-  const navDiv = document.createElement('div')
-
-  navDiv.className = 'navegacion-jornada'
-
-  const btnAnterior = Button(navDiv, 'Anterior Jornada', 'secondary', 'small')
-
-  btnAnterior.disabled = jornada <= 1
-
-  btnAnterior.addEventListener('click', () => {
-    setJornadaActual(jornada - 1)
-
-    renderClasificacion(container)
-  })
-
-  const btnSiguiente = Button(navDiv, 'Siguiente Jornada', 'secondary', 'small')
-
-  btnSiguiente.disabled = jornada >= calendario.length
-
-  btnSiguiente.addEventListener('click', () => {
-    setJornadaActual(jornada + 1)
-
-    renderClasificacion(container)
-  })
-
-  partidosWrapper.appendChild(navDiv)
 }
 
 // ======================================================
-// FECHAS
+// EXPORTACIONES
 // ======================================================
 
-function parseFecha(f) {
-  if (!f) {
-    return new Date(0)
-  }
-
-  const [d, m, y] = f.split('-').map(Number)
-
-  return new Date(2000 + y, m - 1, d)
-}
-
-function formatearFecha(f) {
-  const date = parseFecha(f)
-
-  return isNaN(date) ? 'Fecha sin definir' : date.toLocaleDateString('es-ES')
+module.exports = {
+  getAllMatches,
+  getMatchesByJornada,
+  createMatch,
+  updateMatch,
+  deleteMatch,
+  clearJornadaResults,
+  resetLeague,
+  syncCalendar
 }
