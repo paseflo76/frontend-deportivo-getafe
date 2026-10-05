@@ -31,7 +31,28 @@ async function saveSancion(nombre, puntos) {
     puntos
   })
 }
+// ======================================================
+// SINCRONIZAR CALENDARIO
+// ======================================================
 
+async function sincronizarCalendario() {
+  try {
+    const resultado = await apiCatch('/league/matches/sync-calendar', 'POST', {
+      calendario
+    })
+
+    console.log('CALENDARIO SINCRONIZADO:', resultado)
+
+    alert(
+      `Calendario sincronizado correctamente.\n\n` +
+        `Partidos creados: ${resultado.partidos}\n` +
+        `Resultados conservados: ${resultado.resultadosConservados}`
+    )
+  } catch (error) {
+    console.error('ERROR SINCRONIZANDO:', error)
+    alert('Error al sincronizar el calendario')
+  }
+}
 // ======================================================
 // CLASIFICACIÓN
 // ======================================================
