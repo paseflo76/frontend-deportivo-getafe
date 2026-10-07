@@ -100,20 +100,7 @@ async function renderClasificacion(container) {
 
   const resultados = await getResultados()
 
-  console.log('========== COMPROBACIÓN RESULTADOS ==========')
-
-  resultados.forEach((r) => {
-    console.log({
-      id: r._id,
-      jornada: r.jornada,
-      local: r.local,
-      visitante: r.visitante,
-      golesLocal: r.golesLocal,
-      golesVisitante: r.golesVisitante
-    })
-  })
-
-  console.log('=============================================')
+  container.innerHTML = ''
 
   const jornada = getJornadaActual()
 

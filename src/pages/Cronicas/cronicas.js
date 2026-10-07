@@ -4,12 +4,13 @@ import {
   calendario,
   getResultados,
   getCronicas,
+  saveCronica,
+  updateCronica,
+  deleteCronica,
   getJornadaActual,
   setJornadaActual,
   parseJwt
 } from '../../utils/data.js'
-
-import { apiCatch } from '../../utils/fetch/fech.js'
 
 // ======================================================
 // ESCUDOS
@@ -790,13 +791,11 @@ function crearPanelAdmin(container, jornada, partidos, cronica) {
     guardar.textContent = 'GUARDANDO...'
 
     try {
-      const token = localStorage.getItem('token')
-
-      const metodo = cronica ? 'PUT' : 'POST'
-
-      const endpoint = cronica ? `/cronicas/${jornada}` : '/cronicas'
-
-      await apiCatch(endpoint, metodo, formData, token)
+      if (cronica) {
+        await updateCronica(jornada, formData)
+      } else {
+        await saveCronica(formData)
+      }
 
       alert('Crónica guardada correctamente')
 
@@ -827,9 +826,7 @@ function crearPanelAdmin(container, jornada, partidos, cronica) {
       if (!confirmar) return
 
       try {
-        const token = localStorage.getItem('token')
-
-        await apiCatch(`/cronicas/${jornada}`, 'DELETE', null, token)
+        await deleteCronica(jornada)
 
         alert('Crónica eliminada correctamente')
 
